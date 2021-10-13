@@ -12,6 +12,10 @@ target 'ExpenseAssist' do
     :hermes_enabled => false
   )
 
+  pod 'RNSVG', :path => '../node_modules/react-native-svg'
+
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
   target 'ExpenseAssistTests' do
     inherit! :complete
     # Pods for testing
