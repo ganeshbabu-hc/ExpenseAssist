@@ -15,6 +15,7 @@ import {
 import Add from './home/Add';
 import AddExpense from './expense/AddExpense';
 import {colors} from './styles/common';
+import AddType from './common/add/AddType';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -92,7 +93,8 @@ const Router = () => {
           component={Home}
           options={{title: 'Welcome'}}
         />
-        <Stack.Screen name="Add" component={AddExpense} />
+        <Stack.Screen name="AddType" component={AddType} />
+        <Stack.Screen name="AddExpense" component={AddExpense} />
       </Stack.Navigator>
     </NavigationContainer>
   );

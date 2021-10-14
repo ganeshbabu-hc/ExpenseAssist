@@ -54,7 +54,7 @@ export const HomeScreen = ({navigation}: any) => {
         </ScrollView>
       </SafeAreaView>
       {/* <Add /> */}
-      <Wave />
+      {/* <Wave /> */}
     </React.Fragment>
   );
 };

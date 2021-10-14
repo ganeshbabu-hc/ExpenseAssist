@@ -8,7 +8,12 @@ const AddExpenseCategory = ({navigation}) => {
 
   return (
     <View style={[commonStyles.container, styles.expenseWrapper]}>
-      <AppHeader navigation={navigation} homeScreen={false} backTo="Home" />
+      <AppHeader
+        title="Expense Category"
+        navigation={navigation}
+        homeScreen={false}
+        backTo="Home"
+      />
       <View>
         <View style={styles.inputWrapper}>
           <Text style={styles.inputLabel}>Income title</Text>

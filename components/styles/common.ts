@@ -1,10 +1,5 @@
 import {StyleSheet} from 'react-native';
 
-export const utils = {
-  fontFamily: 'Nunito',
-  inputRadius: 15,
-};
-
 export const colors = {
   brandLight: '#F6F4FF',
   brandMedium: '#8746D6',
@@ -14,6 +9,80 @@ export const colors = {
   grayText: '#85848B',
   grayCardText: '#ADADAD',
 };
+
+export const utils = {
+  fontFamily: 'Nunito',
+  inputRadius: 15,
+  inputElevation: {
+    elevation: 10,
+    shadowColor: colors.grayCardText,
+    shadowOpacity: 1,
+  },
+};
+
+export const formStyles = StyleSheet.create({
+  inputContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  inputWrapper: {
+    display: 'flex',
+    flexDirection: 'column',
+    marginVertical: 10,
+  },
+  inputLabel: {
+    marginBottom: 10,
+    fontSize: 20,
+    fontWeight: '600',
+  },
+  input: {
+    backgroundColor: colors.white,
+    borderRadius: utils.inputRadius,
+    fontSize: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    fontWeight: '600',
+    ...utils.inputElevation,
+  },
+  select: {
+    backgroundColor: colors.white,
+    borderRadius: utils.inputRadius,
+    fontSize: 20,
+    padding: 5,
+    ...utils.inputElevation,
+  },
+  pickerItemStyle: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: colors.black,
+  },
+  inputDivider: {
+    width: '4%',
+  },
+  halfWidth: {
+    width: '48%',
+  },
+  fullWidth: {
+    width: '100%',
+  },
+  button: {
+    marginVertical: 20,
+    paddingVertical: 14,
+    paddingHorizontal: 20,
+    backgroundColor: colors.brandMedium,
+    borderRadius: utils.inputRadius,
+    elevation: 4,
+    shadowColor: colors.brandMedium,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    label: {
+      color: colors.white,
+      fontSize: 20,
+      fontWeight: '600',
+    },
+  },
+});
 
 export const commonStyles = StyleSheet.create({
   container: {
@@ -32,13 +101,16 @@ export const commonStyles = StyleSheet.create({
     height: 100,
     width: 50,
     display: 'flex',
-    // boxShadow: '0 0 9px 0 red',
     borderRadius: 14,
     marginRight: 20,
     padding: 15,
     large: {
       height: 200,
       width: 150,
+    },
+    medium: {
+      height: 120,
+      width: 130,
     },
     brandWhite: {
       backgroundColor: colors.white,

@@ -36,7 +36,9 @@ const AppHeader = ({
         <Icon
           color={colors.brandMedium}
           onPress={() => {
-            if (backTo) {
+            if (backTo === '') {
+              navigation.goBack();
+            } else if (backTo) {
               navigation.navigate(backTo);
             } else {
               navigation.navigate('Home');

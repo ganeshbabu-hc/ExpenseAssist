@@ -7,7 +7,7 @@ const Add = ({navigation}) => {
     <Pressable
       style={styles.btnContainer}
       onPress={() => {
-        navigation.navigate('Add');
+        navigation.navigate('AddType');
       }}>
       <Icon name="add" color={colors.white} size={35} />
     </Pressable>
