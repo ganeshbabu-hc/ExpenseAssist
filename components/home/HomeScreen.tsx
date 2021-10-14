@@ -16,6 +16,7 @@ import SummaryList from './SummaryList';
 import Add from './Add';
 import QuickMenu from './QuickMenu';
 import Wave from './Wave';
+import DBApp from '../dbtest/DBApp';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -46,8 +47,9 @@ export const HomeScreen = ({navigation}: any) => {
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={commonStyles.container}>
-          <AppHeader />
+          <AppHeader navigation={navigation} />
           <SummaryList />
+          {/* <DBApp /> */}
           {/* <QuickMenu /> */}
         </ScrollView>
       </SafeAreaView>

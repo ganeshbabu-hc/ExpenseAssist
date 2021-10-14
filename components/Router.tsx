@@ -1,12 +1,21 @@
 import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-// import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 // import Home from './components/Home/Home';
 import {HomeScreen, ProfileScreen, HomeStackScreen} from './home/HomeScreen';
-import { Button } from 'react-native';
-// const Stack = createNativeStackNavigator();
+import {
+  Button,
+  Pressable,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import Add from './home/Add';
+import AddExpense from './expense/AddExpense';
+import {colors} from './styles/common';
+const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 enum Routes {
@@ -17,17 +26,9 @@ enum Routes {
   SETTINGS = 'settings',
 }
 
-const Router = () => {
+const Home = ({navigation}) => {
   return (
-    <NavigationContainer>
-      {/* <Stack.Navigator>
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{title: 'Welcome'}}
-        />
-        <Stack.Screen name="Profile" component={ProfileScreen} />
-      </Stack.Navigator> */}
+    <View style={styles.appContainer}>
       <Tab.Navigator
         screenOptions={({route}) => ({
           headerShown: false,
@@ -42,7 +43,7 @@ const Router = () => {
                 iconName = 'pie-chart';
                 break;
               case Routes.ADD:
-                iconName = '';
+                iconName = 'add';
                 break;
               case Routes.ACCOUNTS:
                 iconName = 'account-balance';
@@ -54,14 +55,17 @@ const Router = () => {
                 break;
             }
             // You can return any component that you like here!
-            return (
-              <Icon
-                style={{}}
-                name={iconName}
-                color={focused ? 'black' : '#CCCCCC'}
-                size={28}
-              />
-            );
+            if (Routes.ADD === route.name) {
+              return <Add navigation={navigation} />;
+            } else {
+              return (
+                <Icon
+                  name={iconName}
+                  color={focused ? 'black' : '#CCCCCC'}
+                  size={28}
+                />
+              );
+            }
           },
           tabBarActiveTintColor: 'black',
           tabBarInactiveTintColor: 'transparent',
@@ -72,8 +76,34 @@ const Router = () => {
         <Tab.Screen name={Routes.ACCOUNTS} component={ProfileScreen} />
         <Tab.Screen name={Routes.SETTINGS} component={ProfileScreen} />
       </Tab.Navigator>
+    </View>
+  );
+};
+
+const Router = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={({route}) => ({
+          headerShown: false,
+        })}>
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{title: 'Welcome'}}
+        />
+        <Stack.Screen name="Add" component={AddExpense} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 };
+
+const styles = StyleSheet.create({
+  appContainer: {
+    display: 'flex',
+    height: '100%',
+    position: 'relative',
+  },
+});
 
 export default Router;

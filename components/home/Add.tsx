@@ -1,10 +1,16 @@
-import React from 'react';
-import {Button, StyleSheet, View} from 'react-native';
-const Add = () => {
+import React, {useState} from 'react';
+import {Button, Pressable, StyleSheet, TextInput, View} from 'react-native';
+import Icon from 'react-native-vector-icons/dist/MaterialIcons';
+import {colors} from '../styles/common';
+const Add = ({navigation}) => {
   return (
-    <View style={styles.btnContainer}>
-      <Button title="asasa" onPress={() => {}} />
-    </View>
+    <Pressable
+      style={styles.btnContainer}
+      onPress={() => {
+        navigation.navigate('Add');
+      }}>
+      <Icon name="add" color={colors.white} size={35} />
+    </Pressable>
   );
 };
 
@@ -12,8 +18,17 @@ export default Add;
 
 const styles = StyleSheet.create({
   btnContainer: {
-    position: 'absolute',
-    bottom: -20,
-    zIndex: 0,
+    backgroundColor: colors.brandMedium,
+    zIndex: 1,
+    borderRadius: 30,
+    width: 60,
+    height: 60,
+    position: 'relative',
+    bottom: 16,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 10,
+    shadowColor: colors.brandMedium,
   },
 });

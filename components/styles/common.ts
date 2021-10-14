@@ -1,10 +1,11 @@
 import {StyleSheet} from 'react-native';
 
-const utils = {
+export const utils = {
   fontFamily: 'Nunito',
+  inputRadius: 15,
 };
 
-const colors = {
+export const colors = {
   brandLight: '#F6F4FF',
   brandMedium: '#8746D6',
   brandDark: '#3D2C8D',
@@ -14,7 +15,7 @@ const colors = {
   grayCardText: '#ADADAD',
 };
 
-const commonStyles = StyleSheet.create({
+export const commonStyles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
     backgroundColor: colors.brandLight,
@@ -85,5 +86,3 @@ const commonStyles = StyleSheet.create({
     shadowColor: '#52006A',
   },
 });
-
-export {commonStyles, colors};
