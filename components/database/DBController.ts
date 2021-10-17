@@ -1,39 +1,37 @@
-// import {
-//   enablePromise,
-//   openDatabase,
-//   SQLiteDatabase,
-// } from 'react-native-sqlite-storage';
+import {
+  enablePromise,
+  openDatabase,
+  SQLiteDatabase,
+} from 'react-native-sqlite-storage';
 
-// export type ToDoItem = {
-//   id: number;
-//   value: string;
-// };
+enablePromise(true);
 
-// const tableName = 'EXPENSE';
-
-// enablePromise(true);
-
-// export const getDBConnection = async () => {
-//   return openDatabase(
-//     {
-//       name: 'EXPENSE_ASSIST.db',
-//       createFromLocation: '~data/EXPENSE_ASSIST.sqlite',
-//       location: 'Library',
-//     },
-//     () => {
-//       console.log('database connection opened');
-//     },
-//     err => {
-//       console.log('database connection failed to open', err);
-//     },
-//   );
-// };
+export let databseConnection: SQLiteDatabase;
+export const getDBConnection = async () => {
+  if (!databseConnection) {
+    databseConnection = await openDatabase(
+      {
+        name: 'EXPENSE_ASSIST.db',
+        createFromLocation: '~www/EXPENSE_ASSIST.db',
+        location: 'default',
+      },
+      () => {
+        console.log('database connection opened');
+      },
+      err => {
+        console.log('database connection failed to open', err);
+      },
+    );
+    return databseConnection;
+  }
+  return databseConnection;
+};
 
 // export const createTable = async (db: SQLiteDatabase) => {
 //   // create table if not exists
 //   const query = `CREATE TABLE IF NOT EXISTS ${tableName}(
-//         value TEXT NOT NULL
-//     );`;
+//           value TEXT NOT NULL
+//       );`;
 
 //   await db.executeSql(query);
 // };

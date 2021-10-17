@@ -4574,6 +4574,11 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
+material-ui-colors@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/material-ui-colors/-/material-ui-colors-1.0.0.tgz#b9824ca9c165199c67218b1b5cc5ab89712a8b1c"
+  integrity sha512-3VqwlQrWIs9vP4hsV9Zj9wLGlb1tSBidzX5HCk6EKH/B2dsIYFuTQivmn3QpBvukod/K1vFh+fHxJVsfYM1JgQ==
+
 mdn-data@2.0.14:
   version "2.0.14"
   resolved "https://registry.npmjs.org/mdn-data/-/mdn-data-2.0.14.tgz#7113fc4281917d63ce29b43446f701e68c25ba50"

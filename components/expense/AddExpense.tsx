@@ -3,7 +3,6 @@ import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
-  Button,
   TextInput,
   StyleSheet,
   Pressable,
@@ -11,35 +10,40 @@ import {
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import AppHeader from '../common/AppHeader';
+import {getCurrncyTypes} from '../database/common/CurrencyController';
+import {saveExpense} from '../database/expense/ExpenseController';
+import {IExpense} from '../database/expense/ExpenseTypes';
 import {colors, commonStyles, formStyles} from '../styles/common';
 import ExpenseCategoryList from './ExpenseCategotyList';
 
 const AddExpense = ({navigation}) => {
   const [title, setTitle] = useState('');
   const [amount, setAmount] = useState('');
-  const [payType, setPayType] = useState(1);
+  const [paymentId, setPaymentId] = useState(1);
   const [description, setDescription] = useState('');
-  const [expenseCategory, setExpenseCategory] = useState();
+  const [expenseCategoryId, setExpenseCategoryId] = useState(1);
 
-  const saveExpense = () => {
-    console.log('saveExpense');
-    console.log(
-      'title:',
+  const saveExpenseHandler = async () => {
+    const expense: IExpense = {
       title,
-      'amount:',
-      amount,
-      'payType:',
-      payType,
-      'description:',
+      amount: Number(amount),
+      paymentId: Number(paymentId),
       description,
-      'expenseCategory:',
-      expenseCategory,
-    );
+      expenseCategoryId: Number(expenseCategoryId),
+      currencyId: 47,
+    };
+    const result = await saveExpense([expense]);
+    console.log(result);
+  };
+
+  const getCurrencies = async () => {
+    // const currencies = await getCurrncyTypes();
   };
 
   useEffect(() => {
-    console.log(expenseCategory);
-  }, [expenseCategory]);
+    getCurrencies();
+    // console.log(expenseCategoryId);
+  }, [expenseCategoryId]);
 
   return (
     <SafeAreaView>
@@ -81,10 +85,10 @@ const AddExpense = ({navigation}) => {
               <Text style={formStyles.inputLabel}>Pay type</Text>
               <View style={formStyles.select}>
                 <Picker
-                  selectedValue={payType}
+                  selectedValue={paymentId}
                   style={formStyles.pickerItemStyle}
                   itemStyle={formStyles.pickerItemStyle}
-                  onValueChange={itemValue => setPayType(itemValue)}>
+                  onValueChange={itemValue => setPaymentId(itemValue)}>
                   <Picker.Item label="UPI" value="1" />
                   <Picker.Item label="Cash" value="2" />
                   <Picker.Item label="Accounts" value="3" />
@@ -92,7 +96,7 @@ const AddExpense = ({navigation}) => {
               </View>
             </View>
           </View>
-          <ExpenseCategoryList onChange={setExpenseCategory} />
+          <ExpenseCategoryList onChange={setExpenseCategoryId} />
           <View>
             <View style={formStyles.inputWrapper}>
               <Text style={formStyles.inputLabel}>Note</Text>
@@ -109,7 +113,7 @@ const AddExpense = ({navigation}) => {
           <Pressable
             style={[formStyles.button, formStyles.fullWidth]}
             onPress={() => {
-              saveExpense();
+              saveExpenseHandler();
             }}>
             <Text style={formStyles.button.label}>Save</Text>
           </Pressable>

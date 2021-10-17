@@ -54,7 +54,7 @@ const ExpenseCategoryList = ({onChange}) => {
                   onPress={() => {
                     onChange(item.id);
                   }}>
-                  <Icon name="add" size={48} />
+                  <Icon name="add" size={48} color={colors.grayCardText} />
                 </Pressable>
               </View>
             );
@@ -97,6 +97,11 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: colors.grayCardText,
     borderStyle: 'dotted',
+    width: 80,
+    paddingVertical: 6,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   categoryItem: {
     marginVertical: 20,
