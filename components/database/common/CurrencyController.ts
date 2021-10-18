@@ -1,4 +1,4 @@
-import {CURRENCY_TABLE_NAME} from '../../utils/Constants';
+import {TNAME_CURRENCY_TYPES} from '../../utils/Constants';
 import {getDBConnection} from '../DBController';
 
 interface ICurrency {
@@ -14,7 +14,7 @@ export const getCurrncyTypes = async (): Promise<ICurrency[]> => {
     try {
       const db = await getDBConnection();
       const results = await db.executeSql(
-        `SELECT * FROM ${CURRENCY_TABLE_NAME}`,
+        `SELECT * FROM ${TNAME_CURRENCY_TYPES}`,
       );
       results.forEach((result: any) => {
         for (let index = 0; index < result.rows.length; index++) {

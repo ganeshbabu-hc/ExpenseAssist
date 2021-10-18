@@ -1,58 +1,53 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, FlatList, Pressable} from 'react-native';
 import {colors, utils} from '../styles/common';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
+import {getExpenseCaetegories} from '../database/expense/ExpenseController';
 
 interface IExpenseCategory {
-  id: number;
-  name: string;
+  expensecategoryId: number;
+  title: string;
   description: string;
+  dateAddedTlm?: string;
+  dateUpdatedTlm?: string;
+  categoryIcon: string;
 }
 
-const categries: IExpenseCategory[] = [
-  {
-    id: 0,
-    name: 'Add',
-    description: '',
-  },
-  {
-    id: 1,
-    name: 'Food',
-    description: '',
-  },
-  {
-    id: 2,
-    name: 'Social',
-    description: '',
-  },
-  {
-    id: 3,
-    name: 'Transport',
-    description: '',
-  },
-  {
-    id: 4,
-    name: 'Investment',
-    description: '',
-  },
-];
-
 const ExpenseCategoryList = ({onChange}) => {
+  const [expenseCategories, setExpenseCategories] = useState<
+    IExpenseCategory[]
+  >([
+    {
+      expensecategoryId: 0,
+      title: '',
+      description: '',
+      categoryIcon: 'plus',
+    },
+  ]);
+
+  const getCategoryList = async () => {
+    const list = await getExpenseCaetegories();
+    console.log(list);
+  };
+
+  useEffect(() => {
+    getCategoryList();
+  }, []);
   return (
     <View style={styles.expenseWrapper}>
       <Text style={styles.title}>Category</Text>
       <FlatList
         showsHorizontalScrollIndicator={false}
         horizontal
-        data={categries}
+        data={expenseCategories}
         renderItem={({item, index}) => {
-          if (item.id === 0) {
+          if (item.expensecategoryId === 0) {
             return (
               <View style={styles.categoryAddBtnWrapper}>
                 <Pressable
                   style={styles.categoryAddBtn}
                   onPress={() => {
-                    onChange(item.id);
+                    onChange(item.expensecategoryId);
                   }}>
                   <Icon name="add" size={48} color={colors.grayCardText} />
                 </Pressable>
@@ -68,9 +63,9 @@ const ExpenseCategoryList = ({onChange}) => {
                   : styles.categoryItem.dark,
               ]}
               onPress={() => {
-                onChange(item.id);
+                onChange(item.expensecategoryId);
               }}>
-              <Text style={styles.categoryTitle}>{item.name}</Text>
+              <Text style={styles.categoryTitle}>{item.title}</Text>
             </Pressable>
           );
         }}
