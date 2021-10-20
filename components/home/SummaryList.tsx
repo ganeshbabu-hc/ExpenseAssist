@@ -1,6 +1,6 @@
 import React from 'react';
 import {FlatList, StyleSheet, Text, View} from 'react-native';
-import {commonStyles, colors} from '../styles/common';
+import {commonStyles} from '../styles/common';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
 
@@ -24,6 +24,7 @@ const summaryList: ISummaryItem[] = [
 ];
 
 const SummaryList = ({navigation}: any) => {
+
   const _keyExtractor = (item: any, index: any) => item.id;
 
   const _renderItem = (item: ISummaryItem, index: number) => {

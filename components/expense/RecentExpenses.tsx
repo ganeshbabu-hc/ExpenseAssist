@@ -5,31 +5,27 @@ import {IExpense} from '../database/expense/ExpenseTypes';
 import {colors, commonStyles, utils} from '../styles/common';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import IconMap from './IconMap';
+import { useSelector } from 'react-redux';
+import { IExpenseState } from '../../redux/Types';
 
 interface IRecentExpenses {
   limit?: number;
 }
 const RecentExpenses = ({limit = 5}: IRecentExpenses) => {
-  const [expenseList, setExpenseList] = useState<IExpense[]>([]);
+  const expenseList = useSelector((state: any) => {
+    return state.expense.expenseList;
+  });
 
-  const getExpensesList = async () => {
-    const list: IExpense[] = await getExpenses(limit);
-    setExpenseList(list);
-  };
-
-  const getFoemattedDate = (dateStr?: string) => {
+  const getFormattedDate = (dateStr?: string) => {
     if (dateStr) {
       return new Date(dateStr).toLocaleDateString();
     }
     return null;
   };
-  useEffect(() => {
-    getExpensesList();
-  }, []);
   return (
     <View style={styles.listWrapper}>
       <View style={styles.listHeader}>
-        <Text style={styles.listTitle}>Recent entries</Text>
+        <Text style={styles.listTitle}>Recent</Text>
         <Icon
           style={styles.listHeaderIcon}
           name="more-horiz"
@@ -51,7 +47,7 @@ const RecentExpenses = ({limit = 5}: IRecentExpenses) => {
               <View style={styles.listItemDescription}>
                 <Text style={styles.listItemTitle}>{expense.title}</Text>
                 <Text style={styles.listItemDate}>
-                  {getFoemattedDate(expense.dateAddedTlm)}
+                  {getFormattedDate(expense.dateAddedTlm)}
                 </Text>
               </View>
             </View>
@@ -86,7 +82,7 @@ const styles = StyleSheet.create({
   },
   listWrapper: {
     backgroundColor: colors.white,
-    paddingHorizontal: commonStyles.container.paddingHorizontal,
+    paddingHorizontal: 10,
   },
   listItem: {
     display: 'flex',

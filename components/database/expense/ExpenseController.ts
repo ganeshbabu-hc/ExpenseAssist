@@ -1,4 +1,4 @@
-import {IExpense, IExpenseCategory, ExpenseCategory} from './ExpenseTypes';
+import {IExpense, IExpenseCategory} from './ExpenseTypes';
 import {
   EXPENSE_QUERY_LIMIT,
   TNAME_CURRENCY_TYPES,
@@ -21,7 +21,6 @@ export const saveExpense = async (expense: IExpense[]) => {
   const db = await getDBConnection();
   return db.executeSql(insertQuery);
 };
-
 
 export const getExpenses = async (limit?: number): Promise<IExpense[]> => {
   try {
@@ -53,7 +52,6 @@ export const getExpenses = async (limit?: number): Promise<IExpense[]> => {
 
     results.forEach((result: any) => {
       for (let index = 0; index < result.rows.length; index++) {
-        console.log('---result---', result.rows.item(index));
         expenses.push(result.rows.item(index));
       }
     });
@@ -72,13 +70,11 @@ export const getExpenseCaetegories = async (): Promise<IExpenseCategory[]> => {
     const results = await db.executeSql(
       `SELECT TITLE as title, DESCRIPTION as decsription, EXPENSE_CATEGORY_ID as expenseCategoryId, DATE_ADDED_TLM as dateAddedTlm, DATE_UPDATED_TLM as dateUpdatedTlm, CATEGORY_ICON as categoryIcon FROM ${TNAME_EXPENSE_CATEGORIES}`,
     );
-    // console.log('---getExpenses---');
     results.forEach((result: any) => {
       for (let index = 0; index < result.rows.length; index++) {
         categories.push(result.rows.item(index));
       }
     });
-    // console.log('---getExpenses---', categories);
     return categories;
   } catch (error) {
     console.error(error);

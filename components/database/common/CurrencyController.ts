@@ -1,13 +1,13 @@
 import {TNAME_CURRENCY_TYPES} from '../../utils/Constants';
 import {getDBConnection} from '../DBController';
-
-interface ICurrency {
+export interface ICurrency {
   currencyId?: number;
   name: string;
   code: string;
   symbol: string;
   dateAddedTlm: string;
 }
+
 export const getCurrncyTypes = async (): Promise<ICurrency[]> => {
   try {
     const currencies: ICurrency[] = [];

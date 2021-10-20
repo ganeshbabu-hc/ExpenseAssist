@@ -1,7 +1,7 @@
 import React from 'react';
 import {SafeAreaView, ScrollView, View} from 'react-native';
 import RecentExpenses from '../../expense/RecentExpenses';
-import Wave from '../../home/Wave';
+import Wave from '../Wave';
 import {commonStyles} from '../../styles/common';
 import AppHeader from '../AppHeader';
 import TypeList from './TypeList';
@@ -20,7 +20,7 @@ const AddType = ({navigation}) => {
             />
             <TypeList navigation={navigation} />
           </View>
-
+          <Wave />
           <RecentExpenses />
         </ScrollView>
       </SafeAreaView>

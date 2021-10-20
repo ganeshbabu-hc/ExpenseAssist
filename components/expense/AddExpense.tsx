@@ -9,9 +9,10 @@ import {
   ScrollView,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {useDispatch} from 'react-redux';
+import {UPDATE_EXPENSE_LIST} from '../../redux/constants/StoreConstants';
 import AppHeader from '../common/AppHeader';
-import {getCurrncyTypes} from '../database/common/CurrencyController';
-import {saveExpense} from '../database/expense/ExpenseController';
+import {getExpenses, saveExpense} from '../database/expense/ExpenseController';
 import {IExpense} from '../database/expense/ExpenseTypes';
 import {colors, commonStyles, formStyles} from '../styles/common';
 import {dateFormatter} from '../utils/Formatter';
@@ -28,6 +29,7 @@ const AddExpense = ({navigation}) => {
   const [dateAddedTlm, setDateAddedTlm] = useState(() => {
     return dateFormatter(new Date());
   });
+  const dispatch = useDispatch();
 
   const saveExpenseHandler = async () => {
     const expense: IExpense = {
@@ -39,20 +41,12 @@ const AddExpense = ({navigation}) => {
       currencyId: 47,
       dateAddedTlm,
     };
-    console.log(expense);
     const result = await saveExpense([expense]);
-    console.log(result);
+    if (result) {
+      const savedExpenses = await getExpenses();
+      dispatch({type: UPDATE_EXPENSE_LIST, payload: savedExpenses});
+    }
   };
-
-  const getCurrencies = async () => {
-    // const currencies = await getCurrncyTypes();
-  };
-
-  useEffect(() => {
-    getCurrencies();
-    // console.log(expenseCategoryId);
-    // console.log(dateAddedTlm);
-  }, []);
 
   return (
     <SafeAreaView>

@@ -14,10 +14,7 @@ import AppHeader from '../common/AppHeader';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {commonStyles} from '../styles/common';
 import SummaryList from './SummaryList';
-import Add from './Add';
 import QuickMenu from './QuickMenu';
-import Wave from './Wave';
-import DBApp from '../dbtest/DBApp';
 import RecentExpenses from '../expense/RecentExpenses';
 
 const HomeStack = createNativeStackNavigator();
@@ -52,7 +49,7 @@ export const HomeScreen = ({navigation}: any) => {
             <SummaryList />
           </View>
           {/* <DBApp /> */}
-          {/* <QuickMenu /> */}
+          <QuickMenu />
           <RecentExpenses />
         </ScrollView>
       </SafeAreaView>

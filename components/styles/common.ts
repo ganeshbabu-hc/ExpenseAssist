@@ -25,6 +25,9 @@ export const utils = {
     shadowColor: colors.grayCardText,
     shadowOpacity: 1,
   },
+  bgWhite: {
+    backgroundColor: colors.white,
+  },
 };
 
 export const formStyles = StyleSheet.create({

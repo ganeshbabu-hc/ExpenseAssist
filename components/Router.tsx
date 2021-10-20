@@ -16,6 +16,11 @@ import Add from './home/Add';
 import AddExpense from './expense/AddExpense';
 import {colors} from './styles/common';
 import AddType from './common/add/AddType';
+import {useEffect} from 'react';
+import {useDispatch} from 'react-redux';
+import {getExpenses} from './database/expense/ExpenseController';
+import {UPDATE_CURRENCY_TYPES, UPDATE_EXPENSE_LIST} from '../redux/constants/StoreConstants';
+import { getCurrncyTypes } from './database/common/CurrencyController';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -82,6 +87,16 @@ const Home = ({navigation}) => {
 };
 
 const Router = () => {
+  const dispatch = useDispatch();
+  const intializeStore = async () => {
+    const expenseList = await getExpenses();
+    dispatch({type: UPDATE_EXPENSE_LIST, payload: expenseList});
+    const currencyList = await getCurrncyTypes();
+    dispatch({type: UPDATE_CURRENCY_TYPES, payload: currencyList});
+  };
+  useEffect(() => {
+    intializeStore();
+  }, []);
   return (
     <NavigationContainer>
       <Stack.Navigator
