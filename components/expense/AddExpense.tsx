@@ -14,7 +14,10 @@ import {getCurrncyTypes} from '../database/common/CurrencyController';
 import {saveExpense} from '../database/expense/ExpenseController';
 import {IExpense} from '../database/expense/ExpenseTypes';
 import {colors, commonStyles, formStyles} from '../styles/common';
+import {dateFormatter} from '../utils/Formatter';
 import ExpenseCategoryList from './ExpenseCategotyList';
+import PaymentsDropdown from './PaymentsDropdown';
+import WeeklyView from './WeeklyView';
 
 const AddExpense = ({navigation}) => {
   const [title, setTitle] = useState('');
@@ -22,6 +25,9 @@ const AddExpense = ({navigation}) => {
   const [paymentId, setPaymentId] = useState(1);
   const [description, setDescription] = useState('');
   const [expenseCategoryId, setExpenseCategoryId] = useState(1);
+  const [dateAddedTlm, setDateAddedTlm] = useState(() => {
+    return dateFormatter(new Date());
+  });
 
   const saveExpenseHandler = async () => {
     const expense: IExpense = {
@@ -31,7 +37,9 @@ const AddExpense = ({navigation}) => {
       description,
       expenseCategoryId: Number(expenseCategoryId),
       currencyId: 47,
+      dateAddedTlm,
     };
+    console.log(expense);
     const result = await saveExpense([expense]);
     console.log(result);
   };
@@ -43,7 +51,8 @@ const AddExpense = ({navigation}) => {
   useEffect(() => {
     getCurrencies();
     // console.log(expenseCategoryId);
-  }, [expenseCategoryId]);
+    // console.log(dateAddedTlm);
+  }, []);
 
   return (
     <SafeAreaView>
@@ -57,6 +66,7 @@ const AddExpense = ({navigation}) => {
             homeScreen={false}
             backTo=""
           />
+          <WeeklyView onChange={setDateAddedTlm} />
           <View>
             <View style={formStyles.inputWrapper}>
               <Text style={formStyles.inputLabel}>Income title</Text>
@@ -81,20 +91,7 @@ const AddExpense = ({navigation}) => {
               />
             </View>
             <View style={formStyles.inputDivider} />
-            <View style={[formStyles.inputWrapper, formStyles.halfWidth]}>
-              <Text style={formStyles.inputLabel}>Pay type</Text>
-              <View style={formStyles.select}>
-                <Picker
-                  selectedValue={paymentId}
-                  style={formStyles.pickerItemStyle}
-                  itemStyle={formStyles.pickerItemStyle}
-                  onValueChange={itemValue => setPaymentId(itemValue)}>
-                  <Picker.Item label="UPI" value="1" />
-                  <Picker.Item label="Cash" value="2" />
-                  <Picker.Item label="Accounts" value="3" />
-                </Picker>
-              </View>
-            </View>
+            <PaymentsDropdown onChange={setPaymentId} />
           </View>
           <ExpenseCategoryList onChange={setExpenseCategoryId} />
           <View>
@@ -115,7 +112,7 @@ const AddExpense = ({navigation}) => {
             onPress={() => {
               saveExpenseHandler();
             }}>
-            <Text style={formStyles.button.label}>Save</Text>
+            <Text style={formStyles.buttonLabel}>Save</Text>
           </Pressable>
         </View>
       </ScrollView>

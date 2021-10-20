@@ -2,15 +2,32 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import IonIcon from 'react-native-vector-icons/dist/Ionicons';
 import {colors, commonStyles} from '../styles/common';
+import {StyleSheet} from 'react-native';
+interface IconMap {
+  iconName: string;
+  color?: string;
+  style?: StyleSheet.NamedStyles<string>;
+}
 
-const IconMap = ({iconName}) => {
+const IconMap = ({iconName, color, style}: IconMap) => {
   let IconComponent;
   switch (iconName) {
-    case 'cash' || 'gift':
+    case 'cash':
       IconComponent = (
         <IonIcon
-          color={colors.black}
-          name="cash"
+          style={style}
+          color={color ? color : colors.black}
+          name={iconName}
+          size={commonStyles.icon.width}
+        />
+      );
+      break;
+    case 'gift':
+      IconComponent = (
+        <IonIcon
+          style={style}
+          color={color ? color : colors.black}
+          name={'gift-sharp'}
           size={commonStyles.icon.width}
         />
       );
@@ -18,8 +35,9 @@ const IconMap = ({iconName}) => {
     default:
       IconComponent = (
         <Icon
-          color={colors.black}
-          name="account-balance"
+          style={style}
+          color={color ? color : colors.black}
+          name={iconName}
           size={commonStyles.icon.width}
         />
       );
@@ -28,18 +46,3 @@ const IconMap = ({iconName}) => {
   return IconComponent;
 };
 export default IconMap;
-
-// <IonIcon name="cash" size={commonStyles.icon.width} />
-// <Icon name="account-balance" size={commonStyles.icon.width} />
-// <Icon name="touch-app" size={commonStyles.icon.width} />
-// <Icon name="credit-card" size={commonStyles.icon.width} />
-
-// <Icon name="fastfood" size={commonStyles.icon.width} />
-// <Icon name="shopping-bag" size={commonStyles.icon.width} />
-// <Icon name="emoji-transportation" size={commonStyles.icon.width} />
-// <Icon name="groups" size={commonStyles.icon.width} />
-// <Icon name="store" size={commonStyles.icon.width} />
-// <Icon name="local-hospital" size={commonStyles.icon.width} />
-// <IonIcon name="gift" size={commonStyles.icon.width} />
-// <Icon name="school" size={commonStyles.icon.width} />
-// <Icon name="person" size={commonStyles.icon.width} />

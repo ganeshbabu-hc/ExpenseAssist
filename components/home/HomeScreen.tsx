@@ -5,6 +5,7 @@ import {
   StatusBar,
   Text,
   useColorScheme,
+  View,
 } from 'react-native';
 // import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -45,11 +46,11 @@ export const HomeScreen = ({navigation}: any) => {
     <React.Fragment>
       <SafeAreaView>
         <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={commonStyles.container}>
-          <AppHeader navigation={navigation} />
-          <SummaryList />
+        <ScrollView contentInsetAdjustmentBehavior="automatic">
+          <View style={commonStyles.container}>
+            <AppHeader navigation={navigation} />
+            <SummaryList />
+          </View>
           {/* <DBApp /> */}
           {/* <QuickMenu /> */}
           <RecentExpenses />

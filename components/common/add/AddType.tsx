@@ -1,5 +1,6 @@
 import React from 'react';
-import {SafeAreaView, ScrollView} from 'react-native';
+import {SafeAreaView, ScrollView, View} from 'react-native';
+import RecentExpenses from '../../expense/RecentExpenses';
 import Wave from '../../home/Wave';
 import {commonStyles} from '../../styles/common';
 import AppHeader from '../AppHeader';
@@ -9,16 +10,18 @@ const AddType = ({navigation}) => {
   return (
     <React.Fragment>
       <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={commonStyles.container}>
-          <AppHeader
-            homeScreen={false}
-            navigation={navigation}
-            title="Add"
-            backTo="Home"
-          />
-          <TypeList navigation={navigation} />
+        <ScrollView contentInsetAdjustmentBehavior="automatic">
+          <View style={commonStyles.container}>
+            <AppHeader
+              homeScreen={false}
+              navigation={navigation}
+              title="Add"
+              backTo="Home"
+            />
+            <TypeList navigation={navigation} />
+          </View>
+
+          <RecentExpenses />
         </ScrollView>
       </SafeAreaView>
       {/* <Add /> */}

@@ -2,32 +2,26 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, FlatList, Pressable} from 'react-native';
 import {colors, utils} from '../styles/common';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
+import {IExpenseCategory} from "../database/expense/ExpenseTypes";
 import {getExpenseCaetegories} from '../database/expense/ExpenseController';
+import IconMap from './IconMap';
 
-interface IExpenseCategory {
-  expensecategoryId: number;
-  title: string;
-  description: string;
-  dateAddedTlm?: string;
-  dateUpdatedTlm?: string;
-  categoryIcon: string;
-}
+const defaultCategory: IExpenseCategory = {
+  expenseCategoryId: 0,
+  title: '',
+  description: '',
+  categoryIcon: 'plus',
+};
 
 const ExpenseCategoryList = ({onChange}) => {
   const [expenseCategories, setExpenseCategories] = useState<
     IExpenseCategory[]
-  >([
-    {
-      expensecategoryId: 0,
-      title: '',
-      description: '',
-      categoryIcon: 'plus',
-    },
-  ]);
+  >([defaultCategory]);
 
   const getCategoryList = async () => {
-    const list = await getExpenseCaetegories();
-    console.log(list);
+    const list: IExpenseCategory[] = await getExpenseCaetegories();
+    list.unshift(defaultCategory);
+    setExpenseCategories(list);
   };
 
   useEffect(() => {
@@ -41,13 +35,13 @@ const ExpenseCategoryList = ({onChange}) => {
         horizontal
         data={expenseCategories}
         renderItem={({item, index}) => {
-          if (item.expensecategoryId === 0) {
+          if (item.expenseCategoryId === 0) {
             return (
               <View style={styles.categoryAddBtnWrapper}>
                 <Pressable
                   style={styles.categoryAddBtn}
                   onPress={() => {
-                    onChange(item.expensecategoryId);
+                    onChange(item.expenseCategoryId);
                   }}>
                   <Icon name="add" size={48} color={colors.grayCardText} />
                 </Pressable>
@@ -63,13 +57,16 @@ const ExpenseCategoryList = ({onChange}) => {
                   : styles.categoryItem.dark,
               ]}
               onPress={() => {
-                onChange(item.expensecategoryId);
+                onChange(item.expenseCategoryId);
               }}>
+              <IconMap iconName={item.categoryIcon} color={colors.white} />
               <Text style={styles.categoryTitle}>{item.title}</Text>
             </Pressable>
           );
         }}
-        keyExtractor={(item: any) => item.id}
+        keyExtractor={(category: IExpenseCategory) =>
+          category.expenseCategoryId.toString()
+        }
       />
     </View>
   );
@@ -85,6 +82,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'flex-start',
     justifyContent: 'center',
+    marginVertical: 20,
     marginRight: 15,
   },
   categoryAddBtn: {
@@ -99,6 +97,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   categoryItem: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
     marginVertical: 20,
     padding: 20,
     backgroundColor: colors.brandMedium,
@@ -115,6 +117,7 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 18,
     fontWeight: '600',
+    marginLeft: 10,
   },
   title: {
     marginTop: 20,

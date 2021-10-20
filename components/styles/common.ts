@@ -62,6 +62,7 @@ export const formStyles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '600',
     color: colors.black,
+    paddingHorizontal: 20,
   },
   inputDivider: {
     width: '4%',
@@ -83,11 +84,11 @@ export const formStyles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    label: {
-      color: colors.white,
-      fontSize: 20,
-      fontWeight: '600',
-    },
+  },
+  buttonLabel: {
+    color: colors.white,
+    fontSize: 20,
+    fontWeight: '600',
   },
 });
 

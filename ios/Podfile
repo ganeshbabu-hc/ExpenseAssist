@@ -20,6 +20,8 @@ target 'ExpenseAssist' do
 
   pod 'RNCPicker', :path => '../node_modules/@react-native-community/picker'
 
+  pod 'RNDateTimePicker', :path => '../node_modules/@react-native-community/datetimepicker'
+
   target 'ExpenseAssistTests' do
     inherit! :complete
     # Pods for testing
