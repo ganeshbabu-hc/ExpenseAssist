@@ -4,7 +4,7 @@ import {colors, utils} from '../styles/common';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import {IExpenseCategory} from "../database/expense/ExpenseTypes";
 import {getExpenseCaetegories} from '../database/expense/ExpenseController';
-import IconMap from './IconMap';
+import IconMap from '../common/IconMap';
 
 const defaultCategory: IExpenseCategory = {
   expenseCategoryId: 0,

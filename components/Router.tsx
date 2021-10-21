@@ -19,8 +19,12 @@ import AddType from './common/add/AddType';
 import {useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import {getExpenses} from './database/expense/ExpenseController';
-import {UPDATE_CURRENCY_TYPES, UPDATE_EXPENSE_LIST} from '../redux/constants/StoreConstants';
+import {UPDATE_CURRENCY_TYPES, UPDATE_EXPENSE_LIST, UPDATE_INCOME_LIST, UPDATE_SUMMARY} from '../redux/constants/StoreConstants';
 import { getCurrncyTypes } from './database/common/CurrencyController';
+import color from 'material-ui-colors/dist/amber';
+import AddIncome from './income/AddIncome';
+import { getIncomes } from './database/income/IncomeController';
+import { getSummary } from './database/common/SummaryController';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -38,6 +42,12 @@ const Home = ({navigation}) => {
       <Tab.Navigator
         screenOptions={({route}) => ({
           headerShown: false,
+          tabBarStyle: {
+            height: 70,
+            backgroundColor: colors.gray50,
+            elevation: 0,
+          },
+          tabBarShowLabel: false,
           tabBarIcon: ({focused, color, size}) => {
             let iconName;
 
@@ -91,6 +101,10 @@ const Router = () => {
   const intializeStore = async () => {
     const expenseList = await getExpenses();
     dispatch({type: UPDATE_EXPENSE_LIST, payload: expenseList});
+    const summary = await getSummary();
+    dispatch({type: UPDATE_SUMMARY, payload: summary});
+    const incomeList = await getIncomes();
+    dispatch({type: UPDATE_INCOME_LIST, payload: incomeList});
     const currencyList = await getCurrncyTypes();
     dispatch({type: UPDATE_CURRENCY_TYPES, payload: currencyList});
   };
@@ -110,6 +124,7 @@ const Router = () => {
         />
         <Stack.Screen name="AddType" component={AddType} />
         <Stack.Screen name="AddExpense" component={AddExpense} />
+        <Stack.Screen name="AddIncome" component={AddIncome} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,5 +1,4 @@
-import {Picker} from '@react-native-community/picker';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -10,44 +9,44 @@ import {
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
-import {UPDATE_EXPENSE_LIST} from '../../redux/constants/StoreConstants';
+import {UPDATE_INCOME_LIST} from '../../redux/constants/StoreConstants';
 import AppHeader from '../common/AppHeader';
-import {getExpenses, saveExpense} from '../database/expense/ExpenseController';
-import {IExpense} from '../database/expense/ExpenseTypes';
+import {getIncomes, saveIncome} from '../database/income/IncomeController';
+import {IIncome} from '../database/income/IncomeTypes';
 import {colors, commonStyles, formStyles} from '../styles/common';
 import {dateFormatter} from '../utils/Formatter';
-import ExpenseCategoryList from './ExpenseCategotyList';
-import PaymentsDropdown from '../common/PaymentsDropdown';
+import IncomeCategoryList from './IncomeCategoryList';
+import PaymentsDropdown from '../common//PaymentsDropdown';
 import WeeklyView from '../common/WeeklyView';
-import {ShowSnackBar} from '../common/Util';
+import { ShowSnackBar } from '../common/Util';
 
-const AddExpense = ({navigation}) => {
+const AddIncome = ({navigation}) => {
   const [title, setTitle] = useState('');
   const [amount, setAmount] = useState('');
   const [paymentId, setPaymentId] = useState(1);
   const [description, setDescription] = useState('');
-  const [expenseCategoryId, setExpenseCategoryId] = useState(1);
+  const [incomeCategoryId, setIncomeCategoryId] = useState(1);
   const [dateAddedTlm, setDateAddedTlm] = useState(() => {
     return dateFormatter(new Date());
     // return new Date();
   });
   const dispatch = useDispatch();
 
-  const saveExpenseHandler = async () => {
-    const expense: IExpense = {
+  const saveIncomeHandler = async () => {
+    const income: IIncome = {
       title,
       amount: Number(amount),
       paymentId: Number(paymentId),
       description,
-      expenseCategoryId: Number(expenseCategoryId),
+      incomeCategoryId: Number(incomeCategoryId),
       currencyId: 47,
       dateAddedTlm,
     };
-    const result = await saveExpense([expense]);
+    const result = await saveIncome([income]);
     if (result) {
-      ShowSnackBar(`${expense.title} is saved`);
-      const savedExpenses = await getExpenses();
-      dispatch({type: UPDATE_EXPENSE_LIST, payload: savedExpenses});
+      ShowSnackBar(`${income.title} is saved`);
+      const savedIncomes = await getIncomes();
+      dispatch({type: UPDATE_INCOME_LIST, payload: savedIncomes});
     }
   };
 
@@ -56,9 +55,9 @@ const AddExpense = ({navigation}) => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentInsetAdjustmentBehavior="automatic">
-        <View style={[commonStyles.container, styles.expenseWrapper]}>
+        <View style={[commonStyles.container, styles.incomeWrapper]}>
           <AppHeader
-            title="Add Expense"
+            title="Add Income"
             navigation={navigation}
             homeScreen={false}
             backTo=""
@@ -66,7 +65,7 @@ const AddExpense = ({navigation}) => {
           <WeeklyView onChange={setDateAddedTlm} />
           <View>
             <View style={formStyles.inputWrapper}>
-              <Text style={formStyles.inputLabel}>Expense title</Text>
+              <Text style={formStyles.inputLabel}>Income title</Text>
               <TextInput
                 placeholder="Eg, Spetember salary"
                 style={formStyles.input}
@@ -90,7 +89,7 @@ const AddExpense = ({navigation}) => {
             <View style={formStyles.inputDivider} />
             <PaymentsDropdown onChange={setPaymentId} />
           </View>
-          <ExpenseCategoryList onChange={setExpenseCategoryId} />
+          <IncomeCategoryList onChange={setIncomeCategoryId} />
           <View>
             <View style={formStyles.inputWrapper}>
               <Text style={formStyles.inputLabel}>Note</Text>
@@ -107,7 +106,7 @@ const AddExpense = ({navigation}) => {
           <Pressable
             style={[formStyles.button, formStyles.fullWidth]}
             onPress={() => {
-              saveExpenseHandler();
+              saveIncomeHandler();
             }}>
             <Text style={formStyles.buttonLabel}>Save</Text>
           </Pressable>
@@ -118,11 +117,11 @@ const AddExpense = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  expenseWrapper: {
+  incomeWrapper: {
     backgroundColor: colors.brandLight,
     display: 'flex',
     overflow: 'scroll',
   },
 });
 
-export default AddExpense;
+export default AddIncome;

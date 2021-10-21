@@ -17,7 +17,6 @@ export const saveExpense = async (expense: IExpense[]) => {
           `('${i.title}', ${i.amount}, ${i.paymentId}, ${i.currencyId},${i.expenseCategoryId}, '${i.description}', '${i.dateAddedTlm}', CURRENT_TIMESTAMP)`,
       )
       .join(',');
-  console.log(insertQuery);
   const db = await getDBConnection();
   return db.executeSql(insertQuery);
 };
@@ -46,16 +45,16 @@ export const getExpenses = async (limit?: number): Promise<IExpense[]> => {
       LEFT JOIN ${TNAME_PAYMENT_TYPES} pt ON ex.PAYMENT_ID = pt.PAYMENT_ID 
       LEFT JOIN ${TNAME_EXPENSE_CATEGORIES} ec ON ex.EXPENSE_CATEGORY_ID = ec.EXPENSE_CATEGORY_ID 
       LEFT JOIN ${TNAME_CURRENCY_TYPES} ct ON ct.CURRENCY_ID = ex.CURRENCY_ID 
-      ORDER BY ex.DATE_ADDED_TLM DESC 
+      ORDER BY ex.DATE_ADDED_TLM ASC 
       LIMIT ${dataLimit}`,
     );
 
     results.forEach((result: any) => {
       for (let index = 0; index < result.rows.length; index++) {
-        expenses.push(result.rows.item(index));
+        const expense: IExpense = result.rows.item(index) as IExpense;
+        expenses.push(expense);
       }
     });
-    console.log(expenses);
     return expenses;
   } catch (error) {
     console.error(error);
@@ -79,5 +78,17 @@ export const getExpenseCaetegories = async (): Promise<IExpenseCategory[]> => {
   } catch (error) {
     console.error(error);
     throw Error('Failed to get categories !!!');
+  }
+};
+
+export const removeExpenses = async (expenseIds: number): Promise<any> => {
+  try {
+    const db = await getDBConnection();
+    const deleteQuery = `DELETE from ${TNAME_EXPENSE} where EXPENSE_ID = ${expenseIds}`;
+    const results = await db.executeSql(deleteQuery);
+    return results;
+  } catch (error) {
+    console.error(error);
+    throw Error('Failed to remove expense !!!');
   }
 };

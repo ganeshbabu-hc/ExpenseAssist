@@ -18,3 +18,10 @@ LEFT JOIN ${TNAME_EXPENSE_CATEGORIES} ec ON ex.EXPENSE_CATEGORY_ID = ec.EXPENSE_
 LEFT JOIN ${TNAME_CURRENCY_TYPES} ct ON ct.CURRENCY_ID = ex.CURRENCY_ID 
 ORDER BY ex.DATE_ADDED_TLM DESC
 LIMIT ${dataLimit}
+
+
+SELECT * from 
+(SELECT SUM(AMOUNT) as totalExpense from ${TNAME_EXPENSE}) e 
+LEFT JOIN (SELECT SUM(AMOUNT) as totalIncome from ${TNAME_INCOME}) i 
+LEFT JOIN (SELECT SUM(AMOUNT) as totalMonthlyExpense from ${TNAME_EXPENSE} where strftime('%Y-%m-', DATE_ADDED_TLM) = strftime('%Y-%m','now')) em
+LEFT JOIN (SELECT SUM(AMOUNT) as totalMontlyIncome from ${TNAME_INCOME} where strftime('%Y-%m-', DATE_ADDED_TLM) = strftime('%Y-%m','now')) im 

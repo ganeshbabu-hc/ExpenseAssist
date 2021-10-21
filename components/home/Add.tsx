@@ -30,5 +30,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     elevation: 10,
     shadowColor: colors.brandMedium,
+    shadowOffset: {
+      width: 10,
+      height: 10,
+    },
   },
 });

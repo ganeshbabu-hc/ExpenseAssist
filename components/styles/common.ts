@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {deepPurple, grey} from 'material-ui-colors';
+import {deepPurple, grey, pink} from 'material-ui-colors';
 
 // https://material.io/design/color/the-color-system.html#tools-for-picking-colors
 export const colors = {
@@ -9,10 +9,12 @@ export const colors = {
   // brandLight: deepPurple[50],
   brandMedium: deepPurple.A700,
   brandDark: deepPurple[900],
+  brandDanger: pink[600],
   black: '#000',
   white: '#fff',
   // grayText: '#85848B',
   // grayCardText: '#ADADAD',
+  gray50: grey[50],
   grayText: grey[500],
   grayCardText: grey[400],
 };

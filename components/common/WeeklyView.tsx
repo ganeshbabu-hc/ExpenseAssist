@@ -3,7 +3,7 @@ import {View, Text, StyleSheet, Pressable} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {colors, commonStyles, utils} from '../styles/common';
 import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
-import {DAYS, DAYS_SHORT, monthNames} from '../utils/Constants';
+import {DAYS_SHORT, MONTH_NAMES} from '../utils/Constants';
 import {dateFormatter} from '../utils/Formatter';
 
 const WeeklyView = ({onChange}) => {
@@ -19,9 +19,9 @@ const WeeklyView = ({onChange}) => {
   const onDateChange = (event: Event, selectedDate: Date | undefined) => {
     setShow(false);
     if (selectedDate) {
-      console.log(selectedDate);
       setDate(selectedDate);
       const formattedDate = dateFormatter(selectedDate);
+      // const formattedDate = selectedDate;
       onChange(formattedDate);
     }
   };
@@ -43,14 +43,7 @@ const WeeklyView = ({onChange}) => {
         new Date(todayDate.setDate(selectedDate.getDate() - todayNumber + i)),
       );
     }
-    console.log(daysList);
     return daysList;
-    // new Date(todayDate.setDate(selectedDate.getDate() - todayNumber + 2)),
-    // new Date(todayDate.setDate(selectedDate.getDate() - todayNumber + 3)),
-    // new Date(todayDate.setDate(selectedDate.getDate() - todayNumber + 4)),
-    // new Date(todayDate.setDate(selectedDate.getDate() - todayNumber + 5)),
-    // new Date(todayDate.setDate(selectedDate.getDate() - todayNumber + 6)),
-    // new Date(todayDate.setDate(selectedDate.getDate() - todayNumber + 7)),
   };
 
   const formatTime = () => {
@@ -74,7 +67,7 @@ const WeeklyView = ({onChange}) => {
             color={colors.brandMedium}
           />
           <Text style={styles.btnText}>{`${
-            monthNames[date.getMonth()]
+            MONTH_NAMES[date.getMonth()]
           } ${date.getFullYear()}`}</Text>
         </Pressable>
         <Pressable onPress={showTimepicker} style={styles.dateBtn}>

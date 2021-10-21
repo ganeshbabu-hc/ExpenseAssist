@@ -1,30 +1,19 @@
-import {DATE_FORMAT} from './Constants';
+import moment from 'moment';
+import {DATE_DISPLAY_FORMAT, DATE_DB_FORMAT} from './Constants';
 
 export const dateFormatter = (date: Date): string => {
-  let formatPlaceholder = DATE_FORMAT;
-  formatPlaceholder = formatPlaceholder.replace(
-    'yyyy',
-    date.getFullYear().toString(),
-  );
-  formatPlaceholder = formatPlaceholder.replace(
-    'mm',
-    (date.getMonth() + 1).toString(),
-  );
-  formatPlaceholder = formatPlaceholder.replace(
-    'dd',
-    date.getDate().toString(),
-  );
-  formatPlaceholder = formatPlaceholder.replace(
-    'hh',
-    date.getHours().toString(),
-  );
-  formatPlaceholder = formatPlaceholder.replace(
-    'mm',
-    date.getMinutes().toString(),
-  );
-  formatPlaceholder = formatPlaceholder.replace(
-    'ss',
-    date.getSeconds().toString(),
-  );
-  return formatPlaceholder;
+  return moment(date).format(DATE_DB_FORMAT);
+};
+
+export const displayDateFormat = (dateStr: string | undefined): string => {
+  const formatted = moment(dateStr, DATE_DB_FORMAT).format(DATE_DISPLAY_FORMAT);
+  if (moment(dateStr, DATE_DB_FORMAT).isSame(moment(), 'day')) {
+    return 'Today';
+  } else if (
+    moment(dateStr, DATE_DB_FORMAT).isSame(moment().subtract(1, 'd'), 'day')
+  ) {
+    return 'Yesterday';
+  }
+
+  return formatted;
 };

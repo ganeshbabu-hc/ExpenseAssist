@@ -1,8 +1,10 @@
 export const TNAME_EXPENSE = 'EXPENSE';
-export const TNAME_CURRENCY_TYPES = 'CURRENCY_TYPES';
 export const TNAME_EXPENSE_CATEGORIES = 'EXPENSE_CATEGORIES';
+export const TNAME_INCOME = 'INCOME';
+export const TNAME_INCOME_CATEGORIES = 'INCOME_CATEGORIES';
+export const TNAME_CURRENCY_TYPES = 'CURRENCY_TYPES';
 export const TNAME_PAYMENT_TYPES = 'PAYMENT_TYPES';
-export const monthNames = [
+export const MONTH_NAMES = [
   'January',
   'February',
   'March',
@@ -28,4 +30,6 @@ export const DAYS = [
   'Saturday',
 ];
 export const EXPENSE_QUERY_LIMIT = 5;
-export const DATE_FORMAT = 'yyyy-mm-dd hh:mm:ss';
+export const INCOME_QUERY_LIMIT = 5;
+export const DATE_DB_FORMAT = 'YYYY-MM-DD HH:mm:ss';
+export const DATE_DISPLAY_FORMAT = 'DD MMM YY';

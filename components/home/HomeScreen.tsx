@@ -16,6 +16,7 @@ import {commonStyles} from '../styles/common';
 import SummaryList from './SummaryList';
 import QuickMenu from './QuickMenu';
 import RecentExpenses from '../expense/RecentExpenses';
+import RecentIncomes from '../income/RecentIncomes';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -51,6 +52,7 @@ export const HomeScreen = ({navigation}: any) => {
           {/* <DBApp /> */}
           <QuickMenu />
           <RecentExpenses />
+          <RecentIncomes />
         </ScrollView>
       </SafeAreaView>
       {/* <Add /> */}

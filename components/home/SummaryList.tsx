@@ -3,27 +3,48 @@ import {FlatList, StyleSheet, Text, View} from 'react-native';
 import {commonStyles} from '../styles/common';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
+import {useSelector} from 'react-redux';
+import {ISummary} from '../database/common/SummaryController';
 
 interface ISummaryItem {
   id: number;
   title: string;
   icon: string;
-  total: number;
+  total: number | undefined;
 }
 
-const summaryList: ISummaryItem[] = [
-  {id: 1, title: 'Total Income', icon: 'account-balance-wallet', total: 10000},
-  {id: 2, title: 'Total Expense', icon: 'payments', total: 10000},
-  {id: 3, title: "Month's Income", icon: 'credit-card', total: 10000},
-  {
-    id: 4,
-    title: "Month's Expense",
-    icon: 'account-balance-wallet',
-    total: 10000,
-  },
-];
 
 const SummaryList = ({navigation}: any) => {
+  const summary: ISummary = useSelector(
+    (state: any) => state.summary.summaryList,
+  );
+
+  const summaryCardList: ISummaryItem[] = [
+    {
+      id: 3,
+      title: 'Income',
+      icon: 'account-balance-wallet',
+      total: summary.monthlyIncome,
+    },
+    {
+      id: 4,
+      title: 'Expense',
+      icon: 'account-balance-wallet',
+      total: summary.monthlyExpense,
+    },
+    {
+      id: 1,
+      title: 'Total Income',
+      icon: 'account-balance-wallet',
+      total: summary.totalIncome,
+    },
+    {
+      id: 2,
+      title: 'Total Expense',
+      icon: 'account-balance-wallet',
+      total: summary.totalExpense,
+    },
+  ];
 
   const _keyExtractor = (item: any, index: any) => item.id;
 
@@ -74,7 +95,7 @@ const SummaryList = ({navigation}: any) => {
         style={styles.list}
         showsHorizontalScrollIndicator={false}
         horizontal
-        data={summaryList}
+        data={summaryCardList}
         renderItem={({item, index}) => _renderItem(item, index)}
         keyExtractor={_keyExtractor}
       />
