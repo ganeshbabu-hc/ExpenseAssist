@@ -1,49 +1,85 @@
 import React from 'react';
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {FlatList, Pressable, StyleSheet, Text, View} from 'react-native';
 import {colors, commonStyles, utils} from '../styles/theme';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
-import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
 import {useSelector} from 'react-redux';
 import {ISummary} from '../database/common/SummaryController';
-import CText from '../common/CText';
 import {numberFormatter} from '../utils/Formatter';
+import {ICurrency} from '../database/common/CurrencyController';
 
 interface ISummaryItem {
   id: number;
   title: string;
   icon: string;
   total: number | undefined;
+  onPress?: Function;
 }
 
 const SummaryList = ({navigation}: any) => {
   const summary: ISummary = useSelector(
     (state: any) => state.summary.summaryList,
   );
+  const currency: ICurrency = useSelector((state: any) => {
+    return state.common.configuration.currency.value;
+  });
+
+  // console.log(summary.monthlyIncome - summary.monthlyExpense);
+  // console.log(summary.monthlyExpense);
+
+  const getBalance = (monthlyIncome?: number, monthlyExpense?: number) => {
+    const income = monthlyIncome || 0;
+    const expense = monthlyExpense || 0;
+    return income - expense;
+  };
 
   const summaryCardList: ISummaryItem[] = [
+    {
+      id: 1,
+      title: 'Monthly \nbalance',
+      icon: 'account-balance-wallet',
+      total: getBalance(summary.monthlyIncome, summary.monthlyExpense),
+    },
+    {
+      id: 2,
+      title: 'Monthly \nexpense',
+      icon: 'account-balance-wallet',
+      total: summary.monthlyExpense,
+      onPress: () => {
+        navigation.navigate('RecentList', {type: 'expense', header: true});
+      },
+    },
     {
       id: 3,
       title: 'Monthly \nincome',
       icon: 'account-balance-wallet',
       total: summary.monthlyIncome,
+      onPress: () => {
+        navigation.navigate('RecentList', {type: 'income', header: true});
+      },
     },
     {
       id: 4,
-      title: 'Monthly \nexpense',
+      title: 'Total \nbalance',
       icon: 'account-balance-wallet',
-      total: summary.monthlyExpense,
+      total: getBalance(summary.totalIncome, summary.totalExpense),
     },
     {
-      id: 1,
-      title: 'Total \nincome',
-      icon: 'account-balance-wallet',
-      total: summary.totalIncome,
-    },
-    {
-      id: 2,
+      id: 5,
       title: 'Total \nexpense',
       icon: 'account-balance-wallet',
       total: summary.totalExpense,
+      onPress: () => {
+        navigation.navigate('RecentList', {type: 'expense', header: true});
+      },
+    },
+    {
+      id: 6,
+      title: 'Total \nincome',
+      icon: 'account-balance-wallet',
+      total: summary.totalIncome,
+      onPress: () => {
+        navigation.navigate('RecentList', {type: 'income', header: true});
+      },
     },
   ];
 
@@ -56,7 +92,12 @@ const SummaryList = ({navigation}: any) => {
         : commonStyles.card.brandMedium;
     const lastCard = index === summaryCardList.length - 1;
     return (
-      <View
+      <Pressable
+        onPress={() => {
+          if (item.onPress) {
+            item.onPress();
+          }
+        }}
         style={[
           commonStyles.card,
           commonStyles.card.large,
@@ -74,18 +115,14 @@ const SummaryList = ({navigation}: any) => {
           <Text style={[cardType.text, styles.summaryCard.title]}>
             {item.title}
           </Text>
-          <FontAwesome
-            android="rupee"
-            name="rupee"
-            style={styles.summaryCard.currencyIcon}
-            color={cardType.totalText.color}
-            size={18}
-          />
+          <Text style={[styles.currencyIcon, {color: cardType.text.color}]}>
+            {currency.symbol}
+          </Text>
           <Text style={[cardType.totalText, styles.summaryCard.total]}>
             {numberFormatter(item.total)}
           </Text>
         </View>
-      </View>
+      </Pressable>
     );
   };
 
@@ -135,16 +172,18 @@ const styles = StyleSheet.create({
     title: {
       marginTop: 6,
       fontFamily: utils.fontFamily.Bold,
-      fontSize: utils.fontSize.xsmall,
+      fontSize: utils.fontSize.small,
     },
     total: {
       marginTop: 4,
       fontSize: utils.fontSize.small,
       fontFamily: utils.fontFamily.Bold,
     },
-    currencyIcon: {
-      marginTop: 20,
-    },
+  },
+  currencyIcon: {
+    fontSize: utils.fontSize.small,
+    fontWeight: '700',
+    marginTop: 16,
   },
   list: {},
   title: {

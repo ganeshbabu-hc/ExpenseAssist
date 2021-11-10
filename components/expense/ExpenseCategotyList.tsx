@@ -60,7 +60,11 @@ const ExpenseCategoryList = ({navigation, onChange, defaultValue}) => {
         renderItem={({item, index}) => {
           if (item.expenseCategoryId === 0) {
             return (
-              <View style={categoryList.categoryAddBtnWrapper}>
+              <View
+                style={[
+                  categoryList.categoryAddBtnWrapper,
+                  index === 0 ? commonStyles.card.firstCard : {},
+                ]}>
                 <Pressable
                   style={categoryList.categoryAddBtn}
                   onPress={() => {
@@ -75,9 +79,6 @@ const ExpenseCategoryList = ({navigation, onChange, defaultValue}) => {
             <Pressable
               style={[
                 categoryList.categoryItem,
-                activeCategory === item.expenseCategoryId
-                  ? categoryList.activeCategory
-                  : {},
                 index % 2 === 0
                   ? categoryList.categoryItem.light
                   : categoryList.categoryItem.dark,
@@ -86,7 +87,17 @@ const ExpenseCategoryList = ({navigation, onChange, defaultValue}) => {
                 setActiveCategory(item.expenseCategoryId);
                 onChange(item.expenseCategoryId);
               }}>
-              <IconMap iconName={item.categoryIcon} color={colors.white} />
+              {activeCategory === item.expenseCategoryId && (
+                <IconMap
+                  style={categoryList.activeCategory}
+                  iconName={'check-circle'}
+                  color={colors.brand.brandMediumDark}
+                />
+              )}
+              <IconMap
+                iconName={item.categoryIcon ?? 'cash-minus'}
+                color={colors.white}
+              />
               <Text style={categoryList.categoryTitle}>{item.title}</Text>
             </Pressable>
           );

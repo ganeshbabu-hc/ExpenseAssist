@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="/Users/ghc/work/personal/react-native/ExpenseAssist/android/app/src/main/assets/www/EXPENSE_ASSIST.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure pragmas browser query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="3020"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,15:mainsqlite_sequence"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="CURRENCY_TYPES" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="84"/><column index="2" value="154"/><column index="3" value="38"/><column index="4" value="52"/><column index="5" value="113"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="sqlite_sequence" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="36"/><column index="2" value="27"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">CREATE TABLE CURRENCY_TYPES (
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="/Users/ghc/work/personal/react-native/ExpenseAssist/android/app/src/main/assets/www/EXPENSE_ASSIST.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure pragmas browser query" current="0"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="3020"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,18:mainEXPENSE_CATEGORIES"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="CONFIGURATION" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="113"/><column index="2" value="54"/><column index="3" value="79"/><column index="4" value="36"/><column index="5" value="300"/><column index="6" value="111"/><column index="7" value="120"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="CURRENCY_TYPES" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="84"/><column index="2" value="154"/><column index="3" value="38"/><column index="4" value="52"/><column index="5" value="113"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="EXPENSE_CATEGORIES" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="137"/><column index="2" value="63"/><column index="3" value="277"/><column index="4" value="58"/><column index="5" value="113"/><column index="6" value="120"/><column index="7" value="111"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="INCOME" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="68"/><column index="2" value="38"/><column index="3" value="55"/><column index="4" value="75"/><column index="5" value="131"/><column index="6" value="79"/><column index="7" value="84"/><column index="8" value="107"/><column index="9" value="120"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="sqlite_sequence" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="36"/><column index="2" value="104"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">CREATE TABLE CURRENCY_TYPES (
 	CURRENCY_ID INTEGER PRIMARY KEY AUTOINCREMENT,
 	NAME text NOT NULL,
 	CODE text NOT NULL,
@@ -10,6 +10,7 @@ CREATE TABLE PAYMENT_TYPES (
 	PAYMENT_ID INTEGER PRIMARY KEY AUTOINCREMENT,
 	TITLE text NOT NULL,
 	DESCRIPTION text,
+	EDITABLE INTEGER NOT NULL DEFAULT 0,
 	DATE_ADDED_TLM DATE NOT NULL,
 	DATE_UPDATED_TLM DATE NOT NULL,
     PAYMENT_ICON TEXT NOT NULL DEFAULT 'payment'
@@ -34,6 +35,7 @@ CREATE TABLE EXPENSE_CATEGORIES (
 	EXPENSE_CATEGORY_ID INTEGER PRIMARY KEY AUTOINCREMENT,
 	TITLE text NOT NULL,
 	DESCRIPTION text,
+	EDITABLE INTEGER NOT NULL DEFAULT 0,
 	DATE_ADDED_TLM DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	DATE_UPDATED_TLM DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CATEGORY_ICON TEXT DEFAULT 'cash-minus'
@@ -59,40 +61,54 @@ CREATE TABLE INCOME_CATEGORIES (
 	INCOME_CATEGORY_ID INTEGER PRIMARY KEY AUTOINCREMENT,
 	TITLE text NOT NULL,
 	DESCRIPTION text,
+	EDITABLE INTEGER NOT NULL DEFAULT 0,
 	DATE_ADDED_TLM DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	DATE_UPDATED_TLM DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CATEGORY_ICON TEXT DEFAULT 'cash-plus'
 );
 
+CREATE TABLE CONFIGURATION (
+	CONFIGURATION_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+	NAME text NOT NULL,
+	DESCRIPTION text,
+	TYPE text NOT NULL DEFAULT 'string',
+	VALUE text NOT NULL DEFAULT '',
+	DATE_ADDED_TLM DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	DATE_UPDATED_TLM DATE NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+--currency 
+INSERT INTO CONFIGURATION(NAME, DESCRIPTION, TYPE, VALUE, DATE_ADDED_TLM, DATE_UPDATED_TLM) VALUES (&quot;currency&quot;, &quot;&quot;,&quot;json&quot;, '{&quot;code&quot;:&quot;INR&quot;,&quot;currencyId&quot;:47,&quot;name&quot;:&quot;Rupees&quot;,&quot;symbol&quot;:&quot;₹&quot;}',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);
+
 -- Income categories
-INSERT INTO INCOME_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON) VALUES (&quot;Salary&quot;, &quot;Income by salary&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;account-cash&quot;);
-INSERT INTO INCOME_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON) VALUES (&quot;Cash&quot;, &quot;Cash Income&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;cash&quot;);
-INSERT INTO INCOME_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON) VALUES (&quot;Awards&quot;, &quot;Awars Income&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;award&quot;);
-INSERT INTO INCOME_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON) VALUES (&quot;Allowance&quot;, &quot;Allowance income&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;hand-holding-usd&quot;);
-INSERT INTO INCOME_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON) VALUES (&quot;Bonus&quot;, &quot;Bonus income&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;sale&quot;);
-INSERT INTO INCOME_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON) VALUES (&quot;Cashback&quot;, &quot;Income by cashback&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;cash-refund&quot;);
-INSERT INTO INCOME_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON) VALUES (&quot;Capital Gains&quot;, &quot;Income by capital gains&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;chart-line&quot;);
-INSERT INTO INCOME_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON) VALUES (&quot;Sales&quot;, &quot;Income by sales&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;business&quot;);
-INSERT INTO INCOME_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON) VALUES (&quot;Other&quot;, &quot;Other income&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;cash-plus&quot;);
+INSERT INTO INCOME_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON, EDITABLE) VALUES (&quot;Salary&quot;, &quot;Income by salary&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;account-cash&quot;, 0);
+INSERT INTO INCOME_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON, EDITABLE) VALUES (&quot;Cash&quot;, &quot;Cash Income&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;cash&quot;, 0);
+INSERT INTO INCOME_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON, EDITABLE) VALUES (&quot;Awards&quot;, &quot;Awars Income&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;award&quot;, 0);
+INSERT INTO INCOME_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON, EDITABLE) VALUES (&quot;Allowance&quot;, &quot;Allowance income&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;hand-holding-usd&quot;, 0);
+INSERT INTO INCOME_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON, EDITABLE) VALUES (&quot;Bonus&quot;, &quot;Bonus income&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;sale&quot;, 0);
+INSERT INTO INCOME_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON, EDITABLE) VALUES (&quot;Cashback&quot;, &quot;Income by cashback&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;cash-refund&quot;, 0);
+INSERT INTO INCOME_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON, EDITABLE) VALUES (&quot;Capital Gains&quot;, &quot;Income by capital gains&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;chart-line&quot;, 0);
+INSERT INTO INCOME_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON, EDITABLE) VALUES (&quot;Sales&quot;, &quot;Income by sales&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;business&quot;, 0);
+INSERT INTO INCOME_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON, EDITABLE) VALUES (&quot;Other&quot;, &quot;Other income&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;cash-plus&quot;, 0);
 
 -- Expense categories
-INSERT INTO EXPENSE_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON) VALUES (&quot;Food&quot;, &quot;Food related expenses&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;fastfood&quot;);
-INSERT INTO EXPENSE_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON) VALUES (&quot;Shopping&quot;, &quot;Shopping expenses&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;shopping-bag&quot;);
-INSERT INTO EXPENSE_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON) VALUES (&quot;Transport&quot;, &quot;Transport related expenses&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;emoji-transportation&quot;);
-INSERT INTO EXPENSE_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON) VALUES (&quot;Social&quot;, &quot;Social related expenses&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;groups&quot;);
-INSERT INTO EXPENSE_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON) VALUES (&quot;Household&quot;, &quot;Household expenses&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;store&quot;);
-INSERT INTO EXPENSE_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON) VALUES (&quot;Health&quot;, &quot;Health expenses like, medical insurance, health checkup&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;local-hospital&quot;);
-INSERT INTO EXPENSE_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON) VALUES (&quot;Gift&quot;, &quot;Transport related expenses&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;gift&quot;);
-INSERT INTO EXPENSE_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON) VALUES (&quot;Education&quot;, &quot;Education expenses&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;school&quot;);
-INSERT INTO EXPENSE_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON) VALUES (&quot;Beauty&quot;, &quot;Beauty/fashion expenses&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;person&quot;);
-INSERT INTO EXPENSE_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON) VALUES (&quot;Other&quot;, &quot;Other expenses&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;cash-minus&quot;);
+INSERT INTO EXPENSE_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON, EDITABLE) VALUES (&quot;Food&quot;, &quot;Food related expenses&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;fastfood&quot;, 0);
+INSERT INTO EXPENSE_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON, EDITABLE) VALUES (&quot;Shopping&quot;, &quot;Shopping expenses&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;shopping-bag&quot;, 0);
+INSERT INTO EXPENSE_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON, EDITABLE) VALUES (&quot;Transport&quot;, &quot;Transport related expenses&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;emoji-transportation&quot;, 0);
+INSERT INTO EXPENSE_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON, EDITABLE) VALUES (&quot;Social&quot;, &quot;Social related expenses&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;groups&quot;, 0);
+INSERT INTO EXPENSE_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON, EDITABLE) VALUES (&quot;Household&quot;, &quot;Household expenses&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;store&quot;, 0);
+INSERT INTO EXPENSE_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON, EDITABLE) VALUES (&quot;Health&quot;, &quot;Health expenses like, medical insurance, health checkup&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;local-hospital&quot;, 0);
+INSERT INTO EXPENSE_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON, EDITABLE) VALUES (&quot;Gift&quot;, &quot;Transport related expenses&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;gift&quot;, 0);
+INSERT INTO EXPENSE_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON, EDITABLE) VALUES (&quot;Education&quot;, &quot;Education expenses&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;school&quot;, 0);
+INSERT INTO EXPENSE_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON, EDITABLE) VALUES (&quot;Beauty&quot;, &quot;Beauty/fashion expenses&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;person&quot;, 0);
+INSERT INTO EXPENSE_CATEGORIES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_ICON, EDITABLE) VALUES (&quot;Other&quot;, &quot;Other expenses&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;cash-minus&quot;, 0);
 
 
 -- Payment tyes
-INSERT INTO PAYMENT_TYPES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, PAYMENT_ICON) VALUES (&quot;Cash&quot;, &quot;Cash payment, like GooglePay.&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;cash&quot;);
-INSERT INTO PAYMENT_TYPES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, PAYMENT_ICON) VALUES (&quot;Account&quot;, &quot;Pais by bank account.&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;account-balance&quot;);
-INSERT INTO PAYMENT_TYPES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, PAYMENT_ICON) VALUES (&quot;UPI&quot;, &quot;UPI payments, like Google Pay.&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;touch-app&quot;);
-INSERT INTO PAYMENT_TYPES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, PAYMENT_ICON) VALUES (&quot;Card&quot;, &quot;Credit/Debit card payment.&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;credit-card&quot;);
+INSERT INTO PAYMENT_TYPES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, PAYMENT_ICON, EDITABLE) VALUES (&quot;Cash&quot;, &quot;Cash payment, like GooglePay.&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;cash&quot;, 0);
+INSERT INTO PAYMENT_TYPES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, PAYMENT_ICON, EDITABLE) VALUES (&quot;Account&quot;, &quot;Pais by bank account.&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;account-balance&quot;, 0);
+INSERT INTO PAYMENT_TYPES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, PAYMENT_ICON, EDITABLE) VALUES (&quot;UPI&quot;, &quot;UPI payments, like Google Pay.&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;touch-app&quot;, 0);
+INSERT INTO PAYMENT_TYPES(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, PAYMENT_ICON, EDITABLE) VALUES (&quot;Card&quot;, &quot;Credit/Debit card payment.&quot;,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,&quot;credit-card&quot;, 0);
 
 
 

@@ -3,6 +3,7 @@ import {
   openDatabase,
   SQLiteDatabase,
 } from 'react-native-sqlite-storage';
+import {resetDatabase} from './common/CommonController';
 
 enablePromise(true);
 

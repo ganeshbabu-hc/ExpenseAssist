@@ -78,8 +78,13 @@ const QuickMenu = ({navigation}) => {
           source={require('../../assets/img/wave.png')}
         />
       </View> */}
+    
       <View style={[utils.bgWhite]}>
+     
         <View style={styles.typeListContainer}>
+        <Text style={[commonStyles.title, commonStyles.card.firstCard]}>
+        Quick Menu
+      </Text>
           <FlatList
             style={styles.list}
             showsHorizontalScrollIndicator={false}
@@ -100,9 +105,12 @@ export default QuickMenu;
 const styles = StyleSheet.create({
   quickMenuContainer: {
     backgroundColor: colors.brand.brandLight,
-    borderTopLeftRadius: 30,
+    // borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     overflow: 'hidden',
+  },
+  quickMenuTitle: {
+    // color:
   },
   imgContainer: {
     marginTop: 30,
@@ -142,7 +150,7 @@ const styles = StyleSheet.create({
     },
   },
   list: {
-    marginTop: 20,
+    // marginTop: 20,
   },
   title: {
     marginTop: 20,

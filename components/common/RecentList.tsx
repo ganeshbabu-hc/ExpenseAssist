@@ -13,6 +13,7 @@ import {
 import {IExpense} from '../database/expense/ExpenseTypes';
 import {colors, commonStyles, recentList, utils} from '../styles/theme';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
+import FeatherIcon from 'react-native-vector-icons/dist/Feather';
 import IconMap from './IconMap';
 import {useDispatch, useSelector} from 'react-redux';
 import Swipeout from 'react-native-swipeout';
@@ -34,6 +35,7 @@ import {IIncome} from '../database/income/IncomeTypes';
 import {removeIncomes, getIncomes} from '../database/income/IncomeController';
 import {FadeInFlatList} from '@ja-ka/react-native-fade-in-flatlist';
 import AppHeader from './AppHeader';
+import { ICurrency } from '../database/common/CurrencyController';
 
 interface IRecentList {
   limit?: number;
@@ -52,6 +54,11 @@ interface IRecentListItem {
 const RecentListItem = ({item, navigation, type, index}: IRecentListItem) => {
   const dispatch = useDispatch();
   const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  const currency: ICurrency = useSelector((state: any) => {
+    return state.common.configuration.currency.value;
+  });
+
   const removeExpense = async (removableExpense: IExpense) => {
     const result = await removeExpenses(removableExpense.expenseId);
     if (result) {
@@ -119,10 +126,10 @@ const RecentListItem = ({item, navigation, type, index}: IRecentListItem) => {
             },
             component: (
               <View style={[recentList.swipeIcon, recentList.swipeIconDelete]}>
-                <Icon
-                  name="delete"
+                <FeatherIcon
+                  name="trash-2"
                   size={commonStyles.icon.width}
-                  color={colors.white}
+                  color={colors.brand.brandMedium}
                 />
               </View>
             ),
@@ -137,10 +144,10 @@ const RecentListItem = ({item, navigation, type, index}: IRecentListItem) => {
             },
             component: (
               <View style={[recentList.swipeIcon, recentList.swipeIconEdit]}>
-                <Icon
+                <FeatherIcon
                   name="edit"
                   size={commonStyles.icon.width}
-                  color={colors.white}
+                  color={colors.brand.brandMedium}
                 />
               </View>
             ),
@@ -166,27 +173,44 @@ const RecentListItem = ({item, navigation, type, index}: IRecentListItem) => {
           }}
           style={recentList.listItem}>
           <View style={recentList.listItemInfo}>
-            <View style={recentList.listItemIconWrapper}>
+            <View
+              style={[
+                recentList.listItemIconWrapper,
+                {
+                  backgroundColor:
+                    index % 2 === 0
+                      ? colors.brand.brandMedium
+                      : colors.brand.brandMediumDark,
+                },
+              ]}>
               <IconMap
                 iconName={
                   type === 'income'
                     ? item.incomeCategoryIcon ?? 'payment'
                     : item.expenseCategoryIcon ?? 'payment'
                 }
-                color={colors.brand.brandMedium}
+                color={colors.white}
               />
             </View>
-            <View style={recentList.listItemDescription}>
+            <View>
+              <View style={recentList.listItemDescription}>
+                <Text style={recentList.listItemPayment}>
+                  {`${item.paymentTitle} • `}
+                </Text>
+                <Text style={recentList.listItemDate}>
+                  {displayDateFormat(item.dateAddedTlm)}
+                </Text>
+              </View>
               <Text style={recentList.listItemTitle}>{item.title}</Text>
-              <Text style={recentList.listItemDate}>
-                {displayDateFormat(item.dateAddedTlm)}
+              <Text style={recentList.listItemAmount}>
+                {currency.symbol} {item.amount}
               </Text>
             </View>
           </View>
-          <View style={recentList.listItemAmountWrapper}>
+          {/* <View style={recentList.listItemAmountWrapper}>
             <Text style={recentList.listItemAmount}>{item.amount}</Text>
             <Text style={recentList.listItemPayment}>{item.paymentTitle}</Text>
-          </View>
+          </View> */}
         </Pressable>
       </Swipeout>
     </Animated.View>
@@ -218,7 +242,7 @@ const RecentList = ({
       <View style={[commonStyles.container, recentList.listWrapper]}>
         {header && <AppHeader navigation={navigation} homeScreen={false} />}
         <View style={recentList.listHeader}>
-          <Text style={recentList.listTitle}>
+          <Text style={[commonStyles.title, recentList.listTitle]}>
             Recent {header ? (type === 'income' ? 'incomes' : 'expenses') : ''}
           </Text>
           {!header && (

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Pressable, StyleSheet} from 'react-native';
-import Icon from 'react-native-vector-icons/dist/MaterialIcons';
+import Icon from 'react-native-vector-icons/dist/Feather';
 import {colors, utils} from '../styles/theme';
 const Add = ({navigation}) => {
   return (
@@ -9,7 +9,7 @@ const Add = ({navigation}) => {
       onPress={() => {
         navigation.navigate('AddType');
       }}>
-      <Icon name="add" color={colors.white} size={32} />
+      <Icon name="plus" color={colors.white} size={32} />
     </Pressable>
   );
 };

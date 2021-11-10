@@ -40,7 +40,11 @@ const IncomeCategoryList = ({navigation, onChange, defaultValue}) => {
         renderItem={({item, index}) => {
           if (item.incomeCategoryId === 0) {
             return (
-              <View style={categoryList.categoryAddBtnWrapper}>
+              <View
+                style={[
+                  categoryList.categoryAddBtnWrapper,
+                  index === 0 ? commonStyles.card.firstCard : {},
+                ]}>
                 <Pressable
                   style={categoryList.categoryAddBtn}
                   onPress={() => {

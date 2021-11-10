@@ -8,7 +8,7 @@ import {StyleSheet} from 'react-native';
 interface IconMap {
   iconName: string;
   color?: string;
-  style?: StyleSheet.NamedStyles<string>;
+  style?: any;
 }
 
 const IconMap = ({iconName, color, style}: IconMap) => {

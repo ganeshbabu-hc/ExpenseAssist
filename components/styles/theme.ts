@@ -167,7 +167,7 @@ export const formStyles = StyleSheet.create({
     color: colors.black,
     backgroundColor: colors.white,
     borderRadius: utils.inputRadius,
-    fontSize: utils.fontSize.small,
+    fontSize: utils.fontSize.medium,
     fontFamily: utils.fontFamily.Bold,
     paddingHorizontal: 20,
     paddingVertical: 16,
@@ -176,6 +176,8 @@ export const formStyles = StyleSheet.create({
   inputError: {
     color: colors.brand.brandDanger,
     paddingVertical: 6,
+    fontFamily: utils.fontFamily.Bold,
+    fontSize: utils.fontSize.small,
   },
   select: {
     backgroundColor: colors.white,
@@ -183,6 +185,18 @@ export const formStyles = StyleSheet.create({
     fontSize: utils.fontSize.large,
     padding: 5,
     ...utils.inputElevation,
+  },
+  selectBtn: {
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    ...utils.inputElevation,
+    backgroundColor: colors.white,
+    borderRadius: utils.inputRadius,
+  },
+  selectBtnLabel: {
+    color: colors.black,
+    fontSize: utils.fontSize.medium,
+    fontFamily: utils.fontFamily.Bold,
   },
   pickerItemStyle: {
     fontSize: utils.fontSize.large,
@@ -216,10 +230,16 @@ export const formStyles = StyleSheet.create({
   },
 });
 
+export const containerLeftMargin = 50;
 export const commonStyles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    display: 'flex',
+    backgroundColor: colors.brand.brandLight,
+  },
   container: {
     paddingHorizontal: 20,
-    paddingLeft: 50,
+    paddingLeft: containerLeftMargin,
     backgroundColor: colors.brand.brandLight,
     fontFamily: utils.fontFamily,
   },
@@ -242,7 +262,7 @@ export const commonStyles = StyleSheet.create({
     padding: 15,
     marginVertical: 20,
     firstCard: {
-      marginLeft: 50,
+      marginLeft: containerLeftMargin,
     },
     large: {
       height: 170,
@@ -306,6 +326,7 @@ export const commonStyles = StyleSheet.create({
     marginTop: 20,
     fontSize: utils.fontSize.small,
     fontFamily: utils.fontFamily.Bold,
+    marginLeft: containerLeftMargin,
   },
 });
 
@@ -318,6 +339,7 @@ export const recentList = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    marginVertical: 8,
   },
   divider: {
     borderBottomWidth: 1,
@@ -337,11 +359,11 @@ export const recentList = StyleSheet.create({
     justifyContent: 'center',
   },
   swipeIconEdit: {
-    backgroundColor: colors.brand.brandMedium,
+    backgroundColor: colors.white,
     height: '100%',
   },
   swipeIconDelete: {
-    backgroundColor: colors.brand.brandDark,
+    backgroundColor: colors.white,
     height: '100%',
   },
   listHeader: {
@@ -362,8 +384,8 @@ export const recentList = StyleSheet.create({
     paddingHorizontal: 12,
   },
   listTitle: {
-    fontSize: utils.fontSize.large,
-    fontFamily: utils.fontFamily.Bold,
+    // fontSize: utils.fontSize.large,
+    // fontFamily: utils.fontFamily.Bold,
     color: colors.black,
     paddingVertical: 16,
   },
@@ -380,7 +402,7 @@ export const recentList = StyleSheet.create({
   listItemInfo: {
     display: 'flex',
     justifyContent: 'flex-start',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     flexDirection: 'row',
   },
   listItemIconWrapper: {
@@ -389,17 +411,21 @@ export const recentList = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: colors.brand.brandLight,
     marginVertical: 10,
-    marginRight: 10,
+    marginRight: 20,
     borderRadius: utils.inputRadius,
     padding: 10,
     width: 44,
     height: 44,
   },
-  listItemDescription: {},
+  listItemDescription: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
   listItemTitle: {
     color: colors.black,
     fontSize: utils.fontSize.small,
     fontFamily: utils.fontFamily.Bold,
+    maxWidth: '90%',
   },
   listItemAmountWrapper: {
     // marginRight: 10,
@@ -440,6 +466,8 @@ export const categoryList = StyleSheet.create({
     backgroundColor: colors.brand.brandLight,
     display: 'flex',
     overflow: 'scroll',
+    marginLeft: -commonStyles.container.paddingLeft,
+    marginRight: -commonStyles.container.paddingHorizontal,
   },
   categoryAddBtnWrapper: {
     display: 'flex',
@@ -460,9 +488,9 @@ export const categoryList = StyleSheet.create({
     justifyContent: 'center',
   },
   activeCategory: {
-    borderColor: colors.brand.brandMediumDark,
-    borderLeftWidth: 10,
-    borderTopLeftRadius: 0,
+    color: colors.brand.brandLight,
+    position: 'relative',
+    paddingRight: 8,
   },
   categoryItem: {
     display: 'flex',

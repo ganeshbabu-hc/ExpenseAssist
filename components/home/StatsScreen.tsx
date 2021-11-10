@@ -1,8 +1,9 @@
 import {deepPurple} from 'material-ui-colors';
 import React, {useEffect, useState} from 'react';
 import {Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import {getMonthlyStats} from '../database/common/StatsController';
-import {colors, utils} from '../styles/theme';
+import {colors, commonStyles, utils} from '../styles/theme';
 // import PieChart from 'react-native-d3-charts';
 
 const chartData = [
@@ -72,7 +73,7 @@ const StatsScreen = ({route}: any) => {
     getStats();
   }, [type]);
   return (
-    <View>
+    <SafeAreaView style={commonStyles.screen}>
       <ScrollView
         keyboardDismissMode="interactive"
         keyboardShouldPersistTaps="always"
@@ -99,7 +100,7 @@ const StatsScreen = ({route}: any) => {
           <Text style={styles.typeBtnText}>Income</Text>
         </Pressable>
       </View>
-    </View>
+    </Safe>
   );
 };
 const styles = StyleSheet.create({

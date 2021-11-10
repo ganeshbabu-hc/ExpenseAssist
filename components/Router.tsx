@@ -3,6 +3,9 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
+import FeatherIcon from 'react-native-vector-icons/dist/Feather';
+import IonIcon from 'react-native-vector-icons/dist/Ionicons';
+import CommunityIcon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import {HomeScreen, ProfileScreen} from './home/HomeScreen';
 import {StyleSheet, View} from 'react-native';
 import Add from './home/Add';
@@ -13,6 +16,7 @@ import {useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import {getExpenses} from './database/expense/ExpenseController';
 import {
+  UPDATE_CONFIGURATIONS,
   UPDATE_CURRENCY_TYPES,
   UPDATE_EXPENSE_LIST,
   UPDATE_INCOME_LIST,
@@ -27,6 +31,9 @@ import AddEditCategory from './common/AddEditCategory';
 import {BlurView} from '@react-native-community/blur';
 import StatsScreen1 from './home/StatsScreen1';
 import RecentList from './common/RecentList';
+import {SettingsScreen} from './settings/SettingsScreen';
+import CurrencyScreen from './settings/CurrencyScreen';
+import {getConfigurations} from './database/common/CommonController';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -63,19 +70,51 @@ const Home = ({navigation}) => {
 
             switch (route.name) {
               case Routes.HOME:
-                iconName = 'home';
+                iconName = (
+                  <CommunityIcon
+                    name={'home-outline'}
+                    color={
+                      focused ? colors.brand.brandDark : colors.grayCardText
+                    }
+                    size={28}
+                  />
+                );
                 break;
               case Routes.STATS:
-                iconName = 'pie-chart';
+                iconName = (
+                  <CommunityIcon
+                    name={'chart-arc'}
+                    color={
+                      focused ? colors.brand.brandDark : colors.grayCardText
+                    }
+                    size={28}
+                  />
+                );
                 break;
               case Routes.ADD:
                 iconName = 'add';
                 break;
               case Routes.ACCOUNTS:
-                iconName = 'account-balance';
+                iconName = (
+                  <CommunityIcon
+                    name={'bank-outline'}
+                    color={
+                      focused ? colors.brand.brandDark : colors.grayCardText
+                    }
+                    size={28}
+                  />
+                );
                 break;
               case Routes.SETTINGS:
-                iconName = 'settings';
+                iconName = (
+                  <Icon
+                    name={'settings'}
+                    color={
+                      focused ? colors.brand.brandDark : colors.grayCardText
+                    }
+                    size={28}
+                  />
+                );
                 break;
               default:
                 break;
@@ -84,13 +123,7 @@ const Home = ({navigation}) => {
             if (Routes.ADD === route.name) {
               return <Add navigation={navigation} />;
             } else {
-              return (
-                <Icon
-                  name={iconName}
-                  color={focused ? colors.brand.brandDark : colors.grayCardText}
-                  size={28}
-                />
-              );
+              return iconName;
             }
           },
           tabBarActiveTintColor: 'black',
@@ -103,7 +136,7 @@ const Home = ({navigation}) => {
         />
         <Tab.Screen name={Routes.STATS} component={StatsScreen1} />
         <Tab.Screen name={Routes.ACCOUNTS} component={ProfileScreen} />
-        <Tab.Screen name={Routes.SETTINGS} component={ProfileScreen} />
+        <Tab.Screen name={Routes.SETTINGS} component={SettingsScreen} />
         <Tab.Screen name={Routes.ADD} component={HomeScreen} />
       </Tab.Navigator>
     </View>
@@ -119,8 +152,10 @@ const Router = () => {
     dispatch({type: UPDATE_SUMMARY, payload: summary});
     const incomeList = await getIncomes();
     dispatch({type: UPDATE_INCOME_LIST, payload: incomeList});
-    const currencyList = await getCurrncyTypes();
-    dispatch({type: UPDATE_CURRENCY_TYPES, payload: currencyList});
+    const configs = await getConfigurations();
+    dispatch({type: UPDATE_CONFIGURATIONS, payload: configs});
+    // const currencyList = await getConfigurations();
+    // dispatch({type: UPDATE_CURRENCY_TYPES, payload: configs});
   };
   useEffect(() => {
     intializeStore();
@@ -156,6 +191,11 @@ const Router = () => {
         <Stack.Screen
           name="RecentList"
           component={RecentList}
+          initialParams={{}}
+        />
+        <Stack.Screen
+          name="CurrencyScreen"
+          component={CurrencyScreen}
           initialParams={{}}
         />
       </Stack.Navigator>

@@ -45,7 +45,7 @@ export const HomeScreen = ({navigation}: any) => {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={commonStyles.screen}>
       <StatusBar
         backgroundColor={colors.brand.brandLight}
         barStyle={'dark-content'}
@@ -58,7 +58,7 @@ export const HomeScreen = ({navigation}: any) => {
         <View style={commonStyles.container}>
           <AppHeader navigation={navigation} />
         </View>
-        <SummaryList />
+        <SummaryList navigation={navigation} />
         <QuickMenu navigation={navigation} />
         <RecentList navigation={navigation} />
       </ScrollView>

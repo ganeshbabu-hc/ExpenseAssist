@@ -7,13 +7,28 @@ import configureStore from './redux/store/ConfigureStore';
 import Notifications from './services/Notification';
 // import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import Reminders from '@wiicamp/react-native-reminders';
+
+import {
+  createConfigTable,
+  dropTables,
+  getConfigurations,
+  insertStatements,
+  resetDatabase,
+} from './components/database/common/CommonController';
+import {LogBox} from 'react-native';
+// TODO: Remove when fixed
+LogBox.ignoreLogs([
+  'VirtualizedLists should never be nested inside plain ScrollViews with the same orientation because it can break windowing and other functionality - use another VirtualizedList-backed container instead',
+]);
+
 const store = configureStore();
 
 const App = () => {
   getDBConnection();
 
   useEffect(() => {
-    Reminders.requestPermission();
+    // resetDatabase();
+    // Reminders.requestPermission();
 
     // Get reminders
 
@@ -40,6 +55,12 @@ const App = () => {
       // });
       // // Remove reminder
       // Reminders.removeReminder('the-reminder-id');
+      // dropTables();
+      // createConfigTable();
+      // insertStatements();
+      // resetDatabase();
+      // const result = await getConfigurations();
+      // console.log(result);
     }, 1000);
   }, []);
   return (

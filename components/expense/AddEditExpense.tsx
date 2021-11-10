@@ -10,7 +10,7 @@ import {
   TouchableHighlight,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   UPDATE_EXPENSE_LIST,
   UPDATE_SUMMARY,
@@ -29,6 +29,7 @@ import PaymentsDropdown from '../common/PaymentsDropdown';
 import WeeklyView from '../common/WeeklyView';
 import {ShowSnackBar} from '../common/Util';
 import {getSummary} from '../database/common/SummaryController';
+import { ICurrency } from '../database/common/CurrencyController';
 
 interface IAddEditExpense {
   navigation: any;
@@ -46,6 +47,10 @@ const defaultErrMsg: IErrorMessages = {
 };
 
 const AddEditExpense = ({navigation, route}: IAddEditExpense) => {
+  const currency: ICurrency = useSelector((state: any) => {
+    return state.common.configuration.currency.value;
+  });
+
   const {expense}: {expense: IExpense} = route.params;
 
   const [errMsg, setErrMsg] = useState<IErrorMessages>(defaultErrMsg);
@@ -169,7 +174,9 @@ const AddEditExpense = ({navigation, route}: IAddEditExpense) => {
           </View>
           <View style={formStyles.inputContainer}>
             <View style={[formStyles.inputWrapper, formStyles.halfWidth]}>
-              <Text style={formStyles.inputLabel}>Amount</Text>
+              <Text style={formStyles.inputLabel}>
+                {currency.symbol} Amount
+              </Text>
               <TextInput
                 placeholderTextColor={colors.grayCardText}
                 keyboardType="number-pad"
