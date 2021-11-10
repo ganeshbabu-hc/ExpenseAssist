@@ -1,6 +1,6 @@
 import React from 'react';
 import {FlatList, Pressable, StyleSheet, Text, View} from 'react-native';
-import {commonStyles, colors, utils} from '../../styles/common';
+import {commonStyles, colors, utils, ripple} from '../../styles/theme';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 
 interface ITypeItem {
@@ -10,14 +10,20 @@ interface ITypeItem {
   route: string;
 }
 
-const summaryList: ITypeItem[] = [
-  {id: 0, title: '', icon: 'add', route: ''},
-  {id: 1, title: 'Add Expense', icon: 'payments', route: 'AddExpense'},
+const typeList: ITypeItem[] = [
+  // {id: 0, title: '', icon: 'add', route: ''},
+  {id: 1, title: 'Add \nExpense', icon: 'payments', route: 'AddExpense'},
   {
     id: 2,
-    title: 'Add Income',
+    title: 'Add \nIncome',
     icon: 'account-balance-wallet',
     route: 'AddIncome',
+  },
+  {
+    id: 3,
+    title: 'Add \nReminder',
+    icon: 'alarm',
+    route: 'AddReminder',
   },
 ];
 
@@ -26,11 +32,10 @@ const TypeList = ({navigation}: any) => {
 
   const _renderItem = (item: ITypeItem, index: number) => {
     const cardType: any =
-      index % 2 === 0
+      index % 2 !== 0
         ? commonStyles.card.brandWhite
         : commonStyles.card.brandMedium;
-
-    //for add btn
+    const lastCard = index === typeList.length - 1;
     if (item.id === 0) {
       return (
         <View style={styles.addBtnWrapper}>
@@ -51,9 +56,11 @@ const TypeList = ({navigation}: any) => {
           commonStyles.card.medium,
           commonStyles.shadowGray,
           cardType,
+          lastCard ? commonStyles.mr20 : {},
+          index === 0 ? commonStyles.card.firstCard : {},
         ]}
         onPress={() => {
-          navigation.navigate(item.route);
+          navigation.navigate(item.route, {});
         }}>
         <View style={styles.typeCard}>
           <Icon
@@ -71,16 +78,18 @@ const TypeList = ({navigation}: any) => {
   };
 
   return (
-    <View style={styles.typeListContainer}>
-      <FlatList
-        style={styles.list}
-        showsHorizontalScrollIndicator={false}
-        horizontal
-        scrollEnabled={false}
-        data={summaryList}
-        renderItem={({item, index}) => _renderItem(item, index)}
-        keyExtractor={_keyExtractor}
-      />
+    <View style={styles.typeListWrapper}>
+      <View style={styles.typeListContainer}>
+        <FlatList
+          style={styles.list}
+          showsHorizontalScrollIndicator={false}
+          horizontal
+          scrollEnabled
+          data={typeList}
+          renderItem={({item, index}) => _renderItem(item, index)}
+          keyExtractor={_keyExtractor}
+        />
+      </View>
     </View>
   );
 };
@@ -88,24 +97,24 @@ const TypeList = ({navigation}: any) => {
 export default TypeList;
 
 const styles = StyleSheet.create({
+  typeListWrapper: {
+    backgroundColor: colors.white,
+  },
   typeListContainer: {
-    marginTop: 10,
+    backgroundColor: colors.brand.brandLight,
+    overflow: 'hidden',
+    paddingBottom: 20,
+    borderBottomRightRadius: 40,
   },
   typeCard: {
     display: 'flex',
     icon: {
-      marginTop: 15,
+      marginTop: 12,
     },
     title: {
       marginTop: 10,
-    },
-    total: {
-      marginTop: 10,
-      fontSize: 20,
-      fontWeight: '700',
-    },
-    currencyIcon: {
-      marginTop: 30,
+      fontSize: utils.fontSize.xsmall,
+      fontFamily: utils.fontFamily.Bold,
     },
   },
   list: {
@@ -118,7 +127,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'flex-start',
     justifyContent: 'center',
-    width: 80,
+    marginLeft: commonStyles.container.paddingHorizontal,
   },
   addBtn: {
     borderRadius: utils.inputRadius,

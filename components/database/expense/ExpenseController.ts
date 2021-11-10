@@ -21,6 +21,21 @@ export const saveExpense = async (expense: IExpense[]) => {
   return db.executeSql(insertQuery);
 };
 
+export const updateExpense = async (expense: IExpense) => {
+  const insertQuery = `UPDATE ${TNAME_EXPENSE} 
+  SET TITLE='${expense.title}',
+  AMOUNT=${expense.amount},
+  PAYMENT_ID=${expense.paymentId},
+  CURRENCY_ID=${expense.currencyId},
+  EXPENSE_CATEGORY_ID=${expense.expenseCategoryId},
+  DESCRIPTION='${expense.description}',
+  DATE_ADDED_TLM='${expense.dateAddedTlm}',
+  DATE_UPDATED_TLM=CURRENT_TIMESTAMP
+  WHERE EXPENSE_ID=${expense.expenseId}`;
+  const db = await getDBConnection();
+  return db.executeSql(insertQuery);
+};
+
 export const getExpenses = async (limit?: number): Promise<IExpense[]> => {
   try {
     const expenses: IExpense[] = [];
@@ -45,7 +60,7 @@ export const getExpenses = async (limit?: number): Promise<IExpense[]> => {
       LEFT JOIN ${TNAME_PAYMENT_TYPES} pt ON ex.PAYMENT_ID = pt.PAYMENT_ID 
       LEFT JOIN ${TNAME_EXPENSE_CATEGORIES} ec ON ex.EXPENSE_CATEGORY_ID = ec.EXPENSE_CATEGORY_ID 
       LEFT JOIN ${TNAME_CURRENCY_TYPES} ct ON ct.CURRENCY_ID = ex.CURRENCY_ID 
-      ORDER BY ex.DATE_ADDED_TLM ASC 
+      ORDER BY ex.DATE_ADDED_TLM DESC 
       LIMIT ${dataLimit}`,
     );
 
@@ -81,7 +96,7 @@ export const getExpenseCaetegories = async (): Promise<IExpenseCategory[]> => {
   }
 };
 
-export const removeExpenses = async (expenseIds: number): Promise<any> => {
+export const removeExpenses = async (expenseIds?: number): Promise<any> => {
   try {
     const db = await getDBConnection();
     const deleteQuery = `DELETE from ${TNAME_EXPENSE} where EXPENSE_ID = ${expenseIds}`;

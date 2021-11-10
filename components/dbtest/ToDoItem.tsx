@@ -1,5 +1,6 @@
 import React from 'react';
 import {Button, StyleSheet, Text, View} from 'react-native';
+import { utils } from '../styles/theme';
 
 type ToDoItem = {
   id: number;
@@ -38,7 +39,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   sectionTitle: {
-    fontSize: 20,
-    fontWeight: '400',
+    fontSize: utils.fontSize.large,
   },
 });

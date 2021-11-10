@@ -139,7 +139,6 @@ const styles = StyleSheet.create({
   },
   appTitleText: {
     fontSize: 24,
-    fontWeight: '800',
   },
   textInputContainer: {
     marginTop: 30,

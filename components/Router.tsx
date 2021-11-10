@@ -3,28 +3,30 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
-// import Home from './components/Home/Home';
-import {HomeScreen, ProfileScreen, HomeStackScreen} from './home/HomeScreen';
-import {
-  Button,
-  Pressable,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {HomeScreen, ProfileScreen} from './home/HomeScreen';
+import {StyleSheet, View} from 'react-native';
 import Add from './home/Add';
-import AddExpense from './expense/AddExpense';
-import {colors} from './styles/common';
+import AddEditExpense from './expense/AddEditExpense';
+import {colors} from './styles/theme';
 import AddType from './common/add/AddType';
 import {useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import {getExpenses} from './database/expense/ExpenseController';
-import {UPDATE_CURRENCY_TYPES, UPDATE_EXPENSE_LIST, UPDATE_INCOME_LIST, UPDATE_SUMMARY} from '../redux/constants/StoreConstants';
-import { getCurrncyTypes } from './database/common/CurrencyController';
-import color from 'material-ui-colors/dist/amber';
-import AddIncome from './income/AddIncome';
-import { getIncomes } from './database/income/IncomeController';
-import { getSummary } from './database/common/SummaryController';
+import {
+  UPDATE_CURRENCY_TYPES,
+  UPDATE_EXPENSE_LIST,
+  UPDATE_INCOME_LIST,
+  UPDATE_SUMMARY,
+} from '../redux/constants/StoreConstants';
+import {getCurrncyTypes} from './database/common/CurrencyController';
+import AddEditIncome from './income/AddEditIncome';
+import {getIncomes} from './database/income/IncomeController';
+import {getSummary} from './database/common/SummaryController';
+import StatsScreen from './home/StatsScreen';
+import AddEditCategory from './common/AddEditCategory';
+import {BlurView} from '@react-native-community/blur';
+import StatsScreen1 from './home/StatsScreen1';
+import RecentList from './common/RecentList';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -35,17 +37,25 @@ enum Routes {
   ACCOUNTS = 'accounts',
   SETTINGS = 'settings',
 }
-
+// tabBarBackground: () => (
+//   <BlurView
+//     blurType="light"
+//     blurAmount={10}
+//     reducedTransparencyFallbackColor="white"
+//     style={StyleSheet.absoluteFill}
+//   />
+// ),
 const Home = ({navigation}) => {
   return (
     <View style={styles.appContainer}>
       <Tab.Navigator
         screenOptions={({route}) => ({
+          lazy: true,
           headerShown: false,
           tabBarStyle: {
-            height: 70,
-            backgroundColor: colors.gray50,
-            elevation: 0,
+            height: 60,
+            borderTopWidth: 0,
+            shadowColor: colors.brand.brandLight,
           },
           tabBarShowLabel: false,
           tabBarIcon: ({focused, color, size}) => {
@@ -77,7 +87,7 @@ const Home = ({navigation}) => {
               return (
                 <Icon
                   name={iconName}
-                  color={focused ? 'black' : '#CCCCCC'}
+                  color={focused ? colors.brand.brandDark : colors.grayCardText}
                   size={28}
                 />
               );
@@ -86,11 +96,15 @@ const Home = ({navigation}) => {
           tabBarActiveTintColor: 'black',
           tabBarInactiveTintColor: 'transparent',
         })}>
-        <Tab.Screen name={Routes.HOME} component={HomeScreen} />
-        <Tab.Screen name={Routes.STATS} component={ProfileScreen} />
-        <Tab.Screen name={Routes.ADD} component={ProfileScreen} />
+        <Tab.Screen
+          name={Routes.HOME}
+          component={HomeScreen}
+          options={{unmountOnBlur: true}}
+        />
+        <Tab.Screen name={Routes.STATS} component={StatsScreen1} />
         <Tab.Screen name={Routes.ACCOUNTS} component={ProfileScreen} />
         <Tab.Screen name={Routes.SETTINGS} component={ProfileScreen} />
+        <Tab.Screen name={Routes.ADD} component={HomeScreen} />
       </Tab.Navigator>
     </View>
   );
@@ -116,6 +130,7 @@ const Router = () => {
       <Stack.Navigator
         screenOptions={({route}) => ({
           headerShown: false,
+          headerBackButtonMenuEnabled: true,
         })}>
         <Stack.Screen
           name="Home"
@@ -123,8 +138,26 @@ const Router = () => {
           options={{title: 'Welcome'}}
         />
         <Stack.Screen name="AddType" component={AddType} />
-        <Stack.Screen name="AddExpense" component={AddExpense} />
-        <Stack.Screen name="AddIncome" component={AddIncome} />
+        <Stack.Screen
+          name="AddExpense"
+          component={AddEditExpense}
+          initialParams={{}}
+        />
+        <Stack.Screen
+          name="AddIncome"
+          component={AddEditIncome}
+          initialParams={{}}
+        />
+        <Stack.Screen
+          name="AddEditCategory"
+          component={AddEditCategory}
+          initialParams={{}}
+        />
+        <Stack.Screen
+          name="RecentList"
+          component={RecentList}
+          initialParams={{}}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

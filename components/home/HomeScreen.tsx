@@ -3,6 +3,7 @@ import {
   SafeAreaView,
   ScrollView,
   StatusBar,
+  StyleSheet,
   Text,
   useColorScheme,
   View,
@@ -12,11 +13,14 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 // import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import AppHeader from '../common/AppHeader';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {commonStyles} from '../styles/common';
+import {colors, commonStyles} from '../styles/theme';
 import SummaryList from './SummaryList';
 import QuickMenu from './QuickMenu';
 import RecentExpenses from '../expense/RecentExpenses';
 import RecentIncomes from '../income/RecentIncomes';
+import NeuMorph from '../common/NeuMorph';
+import Icon from 'react-native-vector-icons/dist/MaterialIcons';
+import RecentList from '../common/RecentList';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -41,22 +45,29 @@ export const HomeScreen = ({navigation}: any) => {
   };
 
   return (
-    <React.Fragment>
-      <SafeAreaView>
-        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-        <ScrollView contentInsetAdjustmentBehavior="automatic">
-          <View style={commonStyles.container}>
-            <AppHeader navigation={navigation} />
-            <SummaryList />
-          </View>
-          {/* <DBApp /> */}
-          <QuickMenu />
-          <RecentExpenses />
-          <RecentIncomes />
-        </ScrollView>
-      </SafeAreaView>
-      {/* <Add /> */}
-      {/* <Wave /> */}
-    </React.Fragment>
+    <SafeAreaView>
+      <StatusBar
+        backgroundColor={colors.brand.brandLight}
+        barStyle={'dark-content'}
+      />
+      <ScrollView
+        contentInsetAdjustmentBehavior="automatic"
+        keyboardDismissMode="interactive"
+        keyboardShouldPersistTaps="always"
+        style={styles.quickMenuContainer}>
+        <View style={commonStyles.container}>
+          <AppHeader navigation={navigation} />
+        </View>
+        <SummaryList />
+        <QuickMenu navigation={navigation} />
+        <RecentList navigation={navigation} />
+      </ScrollView>
+    </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  quickMenuContainer: {
+    backgroundColor: colors.brand.brandLight,
+  },
+});

@@ -15,12 +15,12 @@ export interface IExpense {
 }
 
 export interface IExpenseCategory {
-  expenseCategoryId: number;
+  expenseCategoryId?: number;
   title: string;
-  description: string;
+  description?: string;
   dateAddedTlm?: string;
   dateUpdatedTlm?: string;
-  categoryIcon: string;
+  categoryIcon?: string;
 }
 
 export enum ExpenseCategory {

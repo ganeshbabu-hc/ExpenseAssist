@@ -1,22 +1,28 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Button, Pressable, StyleSheet, Text, View} from 'react-native';
 import {IIncome} from '../database/income/IncomeTypes';
-import {colors, commonStyles, utils} from '../styles/common';
+import {colors, commonStyles, recentList, ripple, utils} from '../styles/theme';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import IconMap from '../common/IconMap';
 import {useDispatch, useSelector} from 'react-redux';
 import Swipeout from 'react-native-swipeout';
 import {getIncomes, removeIncomes} from '../database/income/IncomeController';
-import {UPDATE_INCOME_LIST} from '../../redux/constants/StoreConstants';
+import {
+  SHOW_MODAL,
+  UPDATE_INCOME_LIST,
+  UPDATE_SUMMARY,
+} from '../../redux/constants/StoreConstants';
 import {displayDateFormat} from '../utils/Formatter';
-import Snackbar from 'react-native-snackbar';
-import { ShowSnackBar } from '../common/Util';
+import {ShowSnackBar} from '../common/Util';
+import {getSummary} from '../database/common/SummaryController';
+import ModalContent from '../common/modal/ModalContent';
 // Buttons
 
 interface IRecentIncomes {
+  navigation: any;
   limit?: number;
 }
-const RecentIncomes = ({limit = 5}: IRecentIncomes) => {
+const RecentIncomes = ({limit = 5, navigation}: IRecentIncomes) => {
   const dispatch = useDispatch();
 
   const incomeList = useSelector((state: any) => {
@@ -29,27 +35,34 @@ const RecentIncomes = ({limit = 5}: IRecentIncomes) => {
       ShowSnackBar(`${removableIncomes.title} has been removed`);
       const savedIncomes = await getIncomes();
       dispatch({type: UPDATE_INCOME_LIST, payload: savedIncomes});
+      const summary = await getSummary();
+      dispatch({type: UPDATE_SUMMARY, payload: summary});
     }
   };
 
-  const editIncome = (editIncome: IIncome) => {};
+  const editIncome = (income: IIncome) => {
+    navigation.navigate('AddIncome', {income});
+  };
+
   return (
-    <View style={styles.listWrapper}>
-      <View style={styles.listHeader}>
-        <Text style={styles.listTitle}>Recent incomes</Text>
+    <View style={recentList.listWrapper}>
+      <View style={recentList.listHeader}>
+        <Text style={recentList.listTitle}>Recent incomes</Text>
         <Icon
-          style={styles.listHeaderIcon}
+          style={recentList.listHeaderIcon}
           name="more-horiz"
           size={commonStyles.icon.width}
-          color={colors.brandMedium}
+          color={colors.brand.brandMedium}
         />
       </View>
-
-      {incomeList.map((income: IIncome) => {
+      {incomeList.length < 1 && (
+        <Text style={recentList.empty}>Not available</Text>
+      )}
+      {incomeList.map((income: IIncome, index: number) => {
         return (
           <Swipeout
             autoClose={true}
-            style={styles.swiper}
+            style={recentList.swiper}
             key={`income-${income.incomeId}`}
             right={[
               {
@@ -57,7 +70,8 @@ const RecentIncomes = ({limit = 5}: IRecentIncomes) => {
                   editIncome(income);
                 },
                 component: (
-                  <View style={[styles.swipeIcon, styles.swipeIconEdit]}>
+                  <View
+                    style={[recentList.swipeIcon, recentList.swipeIconEdit]}>
                     <Icon
                       name="edit"
                       size={commonStyles.icon.width}
@@ -71,7 +85,8 @@ const RecentIncomes = ({limit = 5}: IRecentIncomes) => {
                   removeIncome(income);
                 },
                 component: (
-                  <View style={[styles.swipeIcon, styles.swipeIconDelete]}>
+                  <View
+                    style={[recentList.swipeIcon, recentList.swipeIconDelete]}>
                     <Icon
                       name="delete"
                       size={commonStyles.icon.width}
@@ -81,118 +96,60 @@ const RecentIncomes = ({limit = 5}: IRecentIncomes) => {
                 ),
               },
             ]}>
-            <View style={styles.listItem}>
-              <View style={styles.listItemInfo}>
-                <View style={styles.listItemIconWrapper}>
+            <Pressable
+              onLongPress={() => {
+                dispatch({
+                  type: SHOW_MODAL,
+                  payload: {
+                    modalContent: () => (
+                      <ModalContent header={'Income : ' + income.title}>
+                        <Text style={recentList.modalPayment}>
+                          Payment Type: {income.paymentTitle}
+                        </Text>
+                        <Text style={recentList.modalDateAdded}>
+                          On: {income.dateAddedTlm}
+                        </Text>
+                        {income.description !== null && (
+                          <Text style={recentList.modalDesc}>
+                            {income.description}
+                          </Text>
+                        )}
+                      </ModalContent>
+                    ),
+                  },
+                });
+              }}
+              style={recentList.listItem}>
+              <View style={recentList.listItemInfo}>
+                <View style={recentList.listItemIconWrapper}>
                   <IconMap
                     iconName={income.incomeCategoryIcon ?? 'payment'}
-                    color={colors.brandMedium}
+                    color={colors.brand.brandMedium}
                   />
                 </View>
-                <View style={styles.listItemDescription}>
-                  <Text style={styles.listItemTitle}>{income.title}</Text>
-                  <Text style={styles.listItemDate}>
+                <View style={recentList.listItemDescription}>
+                  <Text style={recentList.listItemTitle}>{income.title}</Text>
+                  <Text style={recentList.listItemDate}>
                     {displayDateFormat(income.dateAddedTlm)}
                   </Text>
                 </View>
               </View>
-              <View style={styles.listItemAmountWrapper}>
-                <Text style={styles.listItemAmount}>{income.amount}</Text>
-                <Text style={styles.listItemPayment}>
+              <View style={recentList.listItemAmountWrapper}>
+                <Text style={recentList.listItemAmount}>{income.amount}</Text>
+                <Text style={recentList.listItemPayment}>
                   {income.paymentTitle}
                 </Text>
               </View>
-            </View>
+            </Pressable>
+            {index !== incomeList.length - 1 && (
+              <View style={recentList.dividerWrapper}>
+                <Text style={recentList.divider} />
+              </View>
+            )}
           </Swipeout>
         );
       })}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  swiper: {
-    backgroundColor: colors.white,
-    display: 'flex',
-  },
-  swipeIcon: {
-    backgroundColor: colors.brandLight,
-    height: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  swipeIconEdit: {
-    backgroundColor: colors.brandMedium,
-    height: '100%',
-  },
-  swipeIconDelete: {
-    backgroundColor: colors.brandDanger,
-    height: '100%',
-  },
-  listHeader: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  listHeaderIcon: {
-    padding: 14,
-  },
-  listTitle: {
-    fontSize: 28,
-    color: colors.black,
-    fontWeight: '600',
-    padding: 16,
-  },
-  listWrapper: {
-    backgroundColor: colors.white,
-    paddingHorizontal: 10,
-  },
-  listItem: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'row',
-    marginVertical: 8,
-  },
-  listItemInfo: {
-    display: 'flex',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  listItemIconWrapper: {
-    backgroundColor: colors.brandLight,
-    margin: 10,
-    borderRadius: utils.inputRadius,
-    padding: 10,
-  },
-  listItemDescription: {},
-  listItemTitle: {
-    color: colors.black,
-    fontSize: 18,
-    fontWeight: '600',
-  },
-  listItemAmountWrapper: {
-    marginRight: 10,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'flex-end',
-  },
-  listItemDate: {
-    marginTop: 4,
-    color: colors.grayText,
-  },
-  listItemAmount: {
-    color: colors.black,
-    fontSize: 18,
-    fontWeight: '600',
-  },
-  listItemPayment: {
-    color: colors.grayText,
-    fontSize: 16,
-    marginTop: 4,
-  },
-});
 export default RecentIncomes;

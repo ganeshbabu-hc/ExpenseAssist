@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, Button, TextInput, StyleSheet} from 'react-native';
 import AppHeader from '../common/AppHeader';
-import {colors, commonStyles, utils} from '../styles/common';
+import {colors, commonStyles, utils} from '../styles/theme';
 
 const AddExpenseCategory = ({navigation}) => {
   const [text, setText] = useState('');
@@ -72,7 +72,7 @@ const AddExpenseCategory = ({navigation}) => {
 
 const styles = StyleSheet.create({
   expenseWrapper: {
-    backgroundColor: colors.brandLight,
+    backgroundColor: colors.brand.brandLight,
     display: 'flex',
     overflow: 'scroll',
   },
@@ -88,17 +88,16 @@ const styles = StyleSheet.create({
   },
   inputLabel: {
     marginBottom: 10,
-    fontSize: 20,
-    fontWeight: '600',
+    fontSize: utils.fontSize.large,
   },
   input: {
     backgroundColor: colors.white,
     borderRadius: utils.inputRadius,
     // height: 60,
-    fontSize: 20,
+    fontSize: utils.fontSize.large,
     paddingHorizontal: 20,
     paddingVertical: 20,
-    // color: colors.brandDark,
+    // color: colors.brand.brandDark,
   },
   inputDivider: {
     width: '4%',

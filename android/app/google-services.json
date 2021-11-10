@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "511925957472",
+    "project_id": "expenseassist-12052",
+    "storage_bucket": "expenseassist-12052.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:511925957472:android:50d9684f22beced61a6405",
+        "android_client_info": {
+          "package_name": "com.expenseassist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "511925957472-b4cagcdnlrs11df5uvnj00g5tlf1pv3v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDr_GHChkdYelh4mLvZa_ePOwU5eFDg-u8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "511925957472-b4cagcdnlrs11df5uvnj00g5tlf1pv3v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

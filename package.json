@@ -10,7 +10,9 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "@ja-ka/react-native-fade-in-flatlist": "^1.0.7",
     "@klarna/react-native-vector-drawable": "^0.3.0",
+    "@react-native-community/blur": "^3.6.0",
     "@react-native-community/datetimepicker": "^3.5.2",
     "@react-native-community/picker": "^1.8.1",
     "@react-navigation/bottom-tabs": "^6.0.9",
@@ -18,16 +20,19 @@
     "@react-navigation/native-stack": "^6.2.4",
     "@types/react-redux": "^7.1.19",
     "@types/redux": "^3.6.0",
+    "@wiicamp/react-native-reminders": "^2.1.1",
     "material-ui-colors": "^1.0.0",
     "moment": "^2.29.1",
     "react": "17.0.2",
     "react-native": "0.66.0",
     "react-native-ionicons": "^4.x",
+    "react-native-push-notification": "^8.1.1",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.8.0",
     "react-native-snackbar": "^2.4.0",
     "react-native-sqlite-storage": "^6.0.1",
     "react-native-svg": "^12.1.1",
+    "react-native-svg-charts": "^5.4.0",
     "react-native-swipeout": "^2.3.6",
     "react-native-vector-icons": "^8.1.0",
     "react-redux": "^7.2.5",
@@ -50,7 +55,8 @@
     "typescript": "^3.8.3"
   },
   "resolutions": {
-    "@types/react": "^17"
+    "@types/react": "^17",
+    "react-native-svg": "^12.1.1"
   },
   "jest": {
     "preset": "react-native",

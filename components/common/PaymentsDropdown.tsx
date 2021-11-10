@@ -2,10 +2,15 @@ import {Picker} from '@react-native-community/picker';
 import React, {useEffect, useState} from 'react';
 import {View, Text} from 'react-native';
 import {getPaymentTypes, IPayment} from '../database/common/PaymentController';
-import {formStyles} from '../styles/common';
+import {formStyles} from '../styles/theme';
 
-const PaymentsDropdown = ({onChange}) => {
-  const [paymentId, setPaymentId] = useState(1);
+interface IpaymentDropdown {
+  onChange: Function;
+  defaultValue?: number;
+}
+
+const PaymentsDropdown = ({onChange, defaultValue}: IpaymentDropdown) => {
+  const [paymentId, setPaymentId] = useState(defaultValue);
   const [paymentList, setPaymentList] = useState<IPayment[]>([]);
   const onChangeHandle = (selectedPaymentId: any) => {
     setPaymentId(selectedPaymentId);

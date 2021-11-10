@@ -11,9 +11,10 @@
 import React from 'react';
 // import VectorImage from 'react-native-vector-image';
 import {Image, StyleSheet, Text, View} from 'react-native';
-import {colors, commonStyles} from '../styles/common';
+import {colors, commonStyles, utils} from '../styles/theme';
 import IconMenu from '../icons/IconMenu';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
+import color from 'material-ui-colors/dist/amber';
 
 interface IAppHeader {
   navigation?: any;
@@ -31,10 +32,15 @@ const AppHeader = ({
   return (
     <View style={styles.headerContainer}>
       {homeScreen ? (
-        <IconMenu />
+        <View style={styles.headerDesc}>
+          <Text style={styles.headerDescTitle}>MoneyAssist</Text>
+          <Text style={styles.headerDescSubTitle}>
+            Your expense manging partner
+          </Text>
+        </View>
       ) : (
         <Icon
-          color={colors.brandMedium}
+          color={colors.brand.brandMedium}
           onPress={() => {
             if (backTo === '') {
               navigation.goBack();
@@ -58,6 +64,9 @@ const AppHeader = ({
 };
 
 const styles = StyleSheet.create({
+  homeMenuIcon: {
+    transform: [{rotateZ: '90deg'}],
+  },
   headerContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -65,14 +74,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 20,
     img: {
-      width: 54,
-      height: 54,
+      width: 50,
+      height: 90,
       borderRadius: commonStyles.r10.borderRadius,
     },
   },
   appTitle: {
-    fontSize: 24,
+    fontSize: utils.fontSize.large,
+    fontFamily: utils.fontFamily.Bold,
     color: colors.black,
+  },
+  headerDesc: {
+    paddingVertical: 20,
+  },
+  headerDescTitle: {
+    color: colors.black,
+    fontSize: utils.fontSize.xxlarge,
+    fontFamily: utils.fontFamily.Bold,
+  },
+  headerDescSubTitle: {
+    color: colors.grayCardText,
+    fontSize: utils.fontSize.xsmall,
+    fontFamily: utils.fontFamily.Regular,
   },
 });
 

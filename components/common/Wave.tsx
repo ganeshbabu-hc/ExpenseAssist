@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import Svg, {Path} from 'react-native-svg';
-import {colors} from '../styles/common';
+import {colors} from '../styles/theme';
 
 const Wave = () => {
   return (
@@ -26,6 +26,6 @@ export default Wave;
 const styles = StyleSheet.create({
   waveContainer: {
     paddingTop: 20,
-    backgroundColor: colors.brandLight,
+    backgroundColor: colors.brand.brandLight,
   },
 });

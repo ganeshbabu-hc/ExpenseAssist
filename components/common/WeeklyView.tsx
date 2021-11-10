@@ -1,13 +1,21 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {colors, commonStyles, utils} from '../styles/common';
+import {colors, commonStyles, utils} from '../styles/theme';
 import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
-import {DAYS_SHORT, MONTH_NAMES} from '../utils/Constants';
+import {DATE_DB_FORMAT, DAYS_SHORT, MONTH_NAMES} from '../utils/Constants';
 import {dateFormatter} from '../utils/Formatter';
+import moment from 'moment';
 
-const WeeklyView = ({onChange}) => {
-  const [date, setDate] = useState(new Date());
+interface IWeeklyView {
+  onChange: Function;
+  defaultValue?: string;
+}
+
+const WeeklyView = ({onChange, defaultValue}: IWeeklyView) => {
+  const [date, setDate] = useState(() => {
+    return moment(defaultValue, DATE_DB_FORMAT).toDate();
+  });
   const [show, setShow] = useState(false);
   const [mode, setMode] = useState('date');
 
@@ -21,7 +29,6 @@ const WeeklyView = ({onChange}) => {
     if (selectedDate) {
       setDate(selectedDate);
       const formattedDate = dateFormatter(selectedDate);
-      // const formattedDate = selectedDate;
       onChange(formattedDate);
     }
   };
@@ -60,25 +67,29 @@ const WeeklyView = ({onChange}) => {
   return (
     <View style={styles.dateWrapper}>
       <View style={styles.dateHeader}>
-        <Pressable onPress={showDatepicker} style={styles.dateBtn}>
-          <Icon
-            name="calendar-month"
-            size={commonStyles.icon.width}
-            color={colors.brandMedium}
-          />
-          <Text style={styles.btnText}>{`${
-            MONTH_NAMES[date.getMonth()]
-          } ${date.getFullYear()}`}</Text>
-        </Pressable>
-        <Pressable onPress={showTimepicker} style={styles.dateBtn}>
-          <Icon
-            name="clock-time-five"
-            size={commonStyles.icon.width}
-            color={colors.brandMedium}
-          />
-          <Text style={styles.btnText}>{`${formatTime()}`}</Text>
-        </Pressable>
-        <View />
+        <View>
+          <Pressable onPress={showDatepicker} style={styles.dateBtn}>
+            <Icon
+              name="calendar-month"
+              size={commonStyles.icon.width}
+              color={colors.brand.brandMedium}
+            />
+            <Text style={styles.btnText}>{`${
+              MONTH_NAMES[date.getMonth()]
+            } ${date.getFullYear()}`}</Text>
+          </Pressable>
+        </View>
+        <View>
+          <Pressable onPress={showTimepicker} style={styles.timeBtn}>
+            <Text style={styles.btnText}>{`${formatTime()}`}</Text>
+            <Icon
+              style={styles.timeIon}
+              name="clock-time-five"
+              size={commonStyles.icon.width}
+              color={colors.brand.brandMedium}
+            />
+          </Pressable>
+        </View>
       </View>
       <View style={styles.daysContainer}>
         {daysInWeek(date).map((weekDay: Date, index: number) => {
@@ -110,6 +121,7 @@ const WeeklyView = ({onChange}) => {
 
       {show && (
         <DateTimePicker
+          themeVariant="light"
           testID="dateTimePicker"
           value={date}
           mode={mode}
@@ -133,20 +145,28 @@ const styles = StyleSheet.create({
   dateHeader: {
     display: 'flex',
     justifyContent: 'space-between',
+    width: '100%',
     flexDirection: 'row',
-    alignItems: 'center',
+    padding: 10,
+    marginTop: 10,
   },
   dateBtn: {
     display: 'flex',
-    justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 10,
+  },
+  timeBtn: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  timeIon: {
+    marginLeft: 10,
   },
   btnText: {
     color: colors.black,
-    fontSize: 18,
-    fontWeight: '600',
+    fontSize: utils.fontSize.small,
+    fontFamily: utils.fontFamily.Bold,
     marginLeft: 10,
   },
   daysContainer: {
@@ -159,12 +179,11 @@ const styles = StyleSheet.create({
   },
   dayName: {
     paddingHorizontal: 10,
-    fontSize: 18,
-    fontWeight: '700',
+    fontSize: utils.fontSize.small,
     color: colors.grayCardText,
+    fontFamily: utils.fontFamily.Bold,
   },
   dayNumberWrapper: {
-    fontWeight: '600',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -174,11 +193,12 @@ const styles = StyleSheet.create({
     marginTop: 10,
     active: {
       color: colors.white,
-      backgroundColor: colors.brandMedium,
+      backgroundColor: colors.brand.brandMedium,
     },
   },
   dayNumber: {
-    fontSize: 18,
+    fontSize: utils.fontSize.small,
+    fontFamily: utils.fontFamily.Bold,
     color: colors.black,
   },
 });

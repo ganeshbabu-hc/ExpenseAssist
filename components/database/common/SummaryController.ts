@@ -13,10 +13,10 @@ export const getSummary = async (): Promise<ISummary> => {
     try {
       const db = await getDBConnection();
       const query = `SELECT * from 
-      (SELECT SUM(AMOUNT) as totalExpense from ${TNAME_EXPENSE}) e 
-      LEFT JOIN (SELECT SUM(AMOUNT) as totalIncome from ${TNAME_INCOME}) i 
-      LEFT JOIN (SELECT SUM(AMOUNT) as monthlyExpense from ${TNAME_EXPENSE} where strftime('%Y-%m', DATE_ADDED_TLM)=strftime('%Y-%m','now')) em 
-      LEFT JOIN (SELECT SUM(AMOUNT) as monthlyIncome from ${TNAME_INCOME} where strftime('%Y-%m', DATE_ADDED_TLM)=strftime('%Y-%m','now')) im `;
+      (SELECT IFNULL(SUM(AMOUNT), 0) as totalExpense from ${TNAME_EXPENSE}) e 
+      LEFT JOIN (SELECT IFNULL(SUM(AMOUNT), 0) as totalIncome from ${TNAME_INCOME}) i 
+      LEFT JOIN (SELECT IFNULL(SUM(AMOUNT), 0) as monthlyExpense from ${TNAME_EXPENSE} where strftime('%Y-%m', DATE_ADDED_TLM)=strftime('%Y-%m','now')) em 
+      LEFT JOIN (SELECT IFNULL(SUM(AMOUNT), 0) as monthlyIncome from ${TNAME_INCOME} where strftime('%Y-%m', DATE_ADDED_TLM)=strftime('%Y-%m','now')) im `;
       const results = await db.executeSql(query);
       results.forEach((result: any) => {
         for (let index = 0; index < result.rows.length; index++) {
