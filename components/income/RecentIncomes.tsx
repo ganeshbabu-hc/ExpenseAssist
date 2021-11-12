@@ -16,6 +16,7 @@ import {displayDateFormat} from '../utils/Formatter';
 import {ShowSnackBar} from '../common/Util';
 import {getSummary} from '../database/common/SummaryController';
 import ModalContent from '../common/modal/ModalContent';
+import { THEME } from '../utils/Constants';
 // Buttons
 
 interface IRecentIncomes {
@@ -52,12 +53,9 @@ const RecentIncomes = ({limit = 5, navigation}: IRecentIncomes) => {
           style={recentList.listHeaderIcon}
           name="more-horiz"
           size={commonStyles.icon.width}
-          color={colors.brand.brandMedium}
+          color={colors.theme[THEME].brandMedium}
         />
       </View>
-      {incomeList.length < 1 && (
-        <Text style={recentList.empty}>Not available</Text>
-      )}
       {incomeList.map((income: IIncome, index: number) => {
         return (
           <Swipeout
@@ -75,7 +73,7 @@ const RecentIncomes = ({limit = 5, navigation}: IRecentIncomes) => {
                     <Icon
                       name="edit"
                       size={commonStyles.icon.width}
-                      color={colors.white}
+                      color={colors.theme[THEME].textLight}
                     />
                   </View>
                 ),
@@ -90,7 +88,7 @@ const RecentIncomes = ({limit = 5, navigation}: IRecentIncomes) => {
                     <Icon
                       name="delete"
                       size={commonStyles.icon.width}
-                      color={colors.white}
+                      color={colors.theme[THEME].textLight}
                     />
                   </View>
                 ),
@@ -124,7 +122,7 @@ const RecentIncomes = ({limit = 5, navigation}: IRecentIncomes) => {
                 <View style={recentList.listItemIconWrapper}>
                   <IconMap
                     iconName={income.incomeCategoryIcon ?? 'payment'}
-                    color={colors.brand.brandMedium}
+                    color={colors.theme[THEME].brandMedium}
                   />
                 </View>
                 <View style={recentList.listItemDescription}>

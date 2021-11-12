@@ -6,6 +6,7 @@ import {getPaymentTypes, IPayment} from '../database/common/PaymentController';
 import {colors, formStyles, utils} from '../styles/theme';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import IconMap from './IconMap';
+import { THEME } from '../utils/Constants';
 
 interface IpaymentDropdown {
   onChange: Function;
@@ -42,7 +43,7 @@ const PaymentsDropdown = ({onChange, defaultValue}: IpaymentDropdown) => {
   }, []);
   return (
     <View style={[formStyles.inputWrapper, formStyles.halfWidth]}>
-      <Text style={formStyles.inputLabel}>Pay type</Text>
+      <Text style={formStyles.inputLabel}>Paid by</Text>
       <Pressable
         style={formStyles.selectBtn}
         onPress={() => {
@@ -86,14 +87,14 @@ const PaymentsDropdown = ({onChange, defaultValue}: IpaymentDropdown) => {
                       {payment.paymentId === paymentId && (
                         <Icon
                           name="check"
-                          color={colors.brand.brandDark}
+                          color={colors.theme[THEME].brandDark}
                           size={28}
                         />
                       )}
                     </View>
                     <IconMap
                       iconName={payment.paymentIcon}
-                      color={colors.brand.brandMedium}
+                      color={colors.theme[THEME].brandMedium}
                     />
                     <Text style={styles.paymentTitle}>{payment.title}</Text>
                   </View>
@@ -120,7 +121,7 @@ const styles = StyleSheet.create({
     borderRadius: utils.inputRadius,
     paddingHorizontal: 20,
     alignItems: 'flex-start',
-    shadowColor: colors.brand.brandMedium,
+    shadowColor: colors.theme[THEME].brandMedium,
     paddingVertical: 10,
     shadowOffset: {
       width: 0,
@@ -143,7 +144,7 @@ const styles = StyleSheet.create({
     width: 30,
   },
   paymentTitle: {
-    color: colors.black,
+    color: colors.theme[THEME].textDark,
     fontFamily: utils.fontFamily.Bold,
     fontSize: utils.fontSize.large,
     marginLeft: 10,

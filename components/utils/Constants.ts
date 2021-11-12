@@ -34,3 +34,10 @@ export const EXPENSE_QUERY_LIMIT = 20;
 export const INCOME_QUERY_LIMIT = 5;
 export const DATE_DB_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 export const DATE_DISPLAY_FORMAT = 'DD MMM YY';
+export let THEME = 'purple';
+
+export const setTheme = () => {
+  THEME = 'purple';
+};
+
+// export THEME;

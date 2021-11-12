@@ -6,6 +6,7 @@ import {useSelector} from 'react-redux';
 import {ISummary} from '../database/common/SummaryController';
 import {numberFormatter} from '../utils/Formatter';
 import {ICurrency} from '../database/common/CurrencyController';
+import { THEME } from '../utils/Constants';
 
 interface ISummaryItem {
   id: number;
@@ -154,12 +155,12 @@ export default SummaryList;
 
 const styles = StyleSheet.create({
   summaryListWrapper: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.theme[THEME].textLight,
     overflow: 'hidden',
   },
   summaryListContainer: {
     // marginBottom: 10,
-    backgroundColor: colors.brand.brandLight,
+    backgroundColor: colors.theme[THEME].brandLight,
     // borderBottomRightRadius: 40,
     overflow: 'hidden',
     paddingBottom: 20,

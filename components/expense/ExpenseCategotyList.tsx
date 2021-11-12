@@ -1,16 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {View, Text, StyleSheet, FlatList, Pressable} from 'react-native';
-import {
-  categoryList,
-  colors,
-  commonStyles,
-  ripple,
-  utils,
-} from '../styles/theme';
+import {View, Text, FlatList, Pressable} from 'react-native';
+import {categoryList, colors, commonStyles} from '../styles/theme';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
-import {IExpense, IExpenseCategory} from '../database/expense/ExpenseTypes';
+import {IExpenseCategory} from '../database/expense/ExpenseTypes';
 import {getExpenseCaetegories} from '../database/expense/ExpenseController';
 import IconMap from '../common/IconMap';
+import {useSelector} from 'react-redux';
+import { THEME } from '../utils/Constants';
 
 const defaultCategory: IExpenseCategory = {
   expenseCategoryId: 0,
@@ -20,31 +16,34 @@ const defaultCategory: IExpenseCategory = {
 };
 
 const ExpenseCategoryList = ({navigation, onChange, defaultValue}) => {
-  const flatListref = useRef<FlatList>(null);
-  const [expenseCategories, setExpenseCategories] = useState<
-    IExpenseCategory[]
-  >([]);
+  const flatList = useRef<FlatList>(null);
   const [activeCategory, setActiveCategory] = useState(defaultValue);
-  const getCategoryList = async () => {
-    const list: IExpenseCategory[] = await getExpenseCaetegories();
+  const expenseCategories = useSelector((state: any) => {
+    const list = [...state.expense.expenseCategoryList];
     list.unshift(defaultCategory);
-    setExpenseCategories(list);
-    // flatListref?.current?.scrollToIndex({
-    //   animated: true,
-    //   index: defaultValue - 1,
-    // });
-    // list.forEach((item: IExpenseCategory, index: number) => {
-    //   if (item.expenseCategoryId === defaultValue) {
-    //     setTimeout(() => {
+    return list;
+  });
 
-    //     });
-    //   }
-    // });
+  const scrollToSeletedCategory = (list: IExpenseCategory[]) => {
+    setTimeout(() => {
+      let scrollIndex = 0;
+      list.forEach((category: IExpenseCategory, index: number) => {
+        console.log(category.expenseCategoryId, activeCategory);
+        if (category.expenseCategoryId === activeCategory) {
+          scrollIndex = index;
+        }
+      });
+      if (scrollIndex !== 0) {
+        flatList?.current?.scrollToIndex({
+          index: scrollIndex,
+          animated: true,
+          viewOffset: 40,
+        });
+      }
+    }, 500);
   };
-
   useEffect(() => {
-    getCategoryList();
-    // flatListref?.current?.scrollToIndex({animated: true, index: 0});
+    scrollToSeletedCategory(expenseCategories);
   }, []);
   return (
     <View style={categoryList.expensitureWrapper}>
@@ -52,7 +51,7 @@ const ExpenseCategoryList = ({navigation, onChange, defaultValue}) => {
       <FlatList
         keyboardDismissMode="interactive"
         keyboardShouldPersistTaps="always"
-        ref={flatListref}
+        ref={flatList}
         initialScrollIndex={0}
         showsHorizontalScrollIndicator={false}
         horizontal
@@ -68,9 +67,13 @@ const ExpenseCategoryList = ({navigation, onChange, defaultValue}) => {
                 <Pressable
                   style={categoryList.categoryAddBtn}
                   onPress={() => {
-                    navigation.navigate('AddEditCategory', {type: 'Expense'});
+                    navigation.navigate('AddEditCategory', {type: 'expense'});
                   }}>
-                  <Icon name="add" size={38} color={colors.grayCardText} />
+                  <Icon
+                    name="add"
+                    size={38}
+                    color={colors.theme[THEME].textCardGray}
+                  />
                 </Pressable>
               </View>
             );
@@ -91,12 +94,12 @@ const ExpenseCategoryList = ({navigation, onChange, defaultValue}) => {
                 <IconMap
                   style={categoryList.activeCategory}
                   iconName={'check-circle'}
-                  color={colors.brand.brandMediumDark}
+                  color={colors.theme[THEME].brandMediumDark}
                 />
               )}
               <IconMap
                 iconName={item.categoryIcon ?? 'cash-minus'}
-                color={colors.white}
+                color={colors.theme[THEME].textLight}
               />
               <Text style={categoryList.categoryTitle}>{item.title}</Text>
             </Pressable>

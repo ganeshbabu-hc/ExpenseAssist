@@ -19,6 +19,7 @@ import {displayDateFormat} from '../utils/Formatter';
 import {ShowSnackBar} from '../common/Util';
 import {getSummary} from '../database/common/SummaryController';
 import ModalContent from '../common/modal/ModalContent';
+import { THEME } from '../utils/Constants';
 
 // Buttons
 
@@ -56,12 +57,9 @@ const RecentExpenses = ({limit = 5, navigation}: IRecentExpenses) => {
           style={recentList.listHeaderIcon}
           name="more-horiz"
           size={commonStyles.icon.width}
-          color={colors.brand.brandMedium}
+          color={colors.theme[THEME].brandMedium}
         />
       </View>
-      {expenseList.length < 1 && (
-        <Text style={recentList.empty}>Not available</Text>
-      )}
       {expenseList.map((expense: IExpense, index: number) => {
         return (
           <Swipeout
@@ -78,7 +76,7 @@ const RecentExpenses = ({limit = 5, navigation}: IRecentExpenses) => {
                     <Icon
                       name="edit"
                       size={commonStyles.icon.width}
-                      color={colors.white}
+                      color={colors.theme[THEME].textLight}
                     />
                   </View>
                 ),
@@ -93,7 +91,7 @@ const RecentExpenses = ({limit = 5, navigation}: IRecentExpenses) => {
                     <Icon
                       name="delete"
                       size={commonStyles.icon.width}
-                      color={colors.white}
+                      color={colors.theme[THEME].textLight}
                     />
                   </View>
                 ),
@@ -117,7 +115,7 @@ const RecentExpenses = ({limit = 5, navigation}: IRecentExpenses) => {
                 <View style={recentList.listItemIconWrapper}>
                   <IconMap
                     iconName={expense.expenseCategoryIcon ?? 'payment'}
-                    color={colors.brand.brandMedium}
+                    color={colors.theme[THEME].brandMedium}
                   />
                 </View>
                 <View style={recentList.listItemDescription}>

@@ -28,6 +28,8 @@ import WeeklyView from '../common/WeeklyView';
 import {ShowSnackBar} from '../common/Util';
 import {getSummary} from '../database/common/SummaryController';
 import {ICurrency} from '../database/common/CurrencyController';
+import ScrollViewWrapper from '../common/ScrollViewWrapper';
+import { THEME } from '../utils/Constants';
 
 interface IAddEditIncome {
   navigation: any;
@@ -118,13 +120,13 @@ const AddEditIncome = ({navigation, route}: IAddEditIncome) => {
     if (editMode) {
       result = await updateIncome(modIncome);
       if (result) {
-        ShowSnackBar(`${modIncome.title} is updated`);
+        ShowSnackBar(`Income: ${modIncome.title} is updated`);
         navigation.goBack();
       }
     } else {
       result = await saveIncome([modIncome]);
       if (result) {
-        ShowSnackBar(`${modIncome.title} is saved`);
+        ShowSnackBar(`Income: ${modIncome.title} is saved`);
         clearInputs();
       }
     }
@@ -138,25 +140,23 @@ const AddEditIncome = ({navigation, route}: IAddEditIncome) => {
   }, [title, amount]);
 
   return (
-    <SafeAreaView>
-      <ScrollView
-        keyboardDismissMode="interactive"
-        keyboardShouldPersistTaps="always"
-        showsVerticalScrollIndicator={false}
-        contentInsetAdjustmentBehavior="automatic">
+    <SafeAreaView style={commonStyles.screen}>
+      <View style={commonStyles.container}>
+        <AppHeader
+          title={`${editMode ? 'Edit' : 'Add'} Income`}
+          navigation={navigation}
+          homeScreen={false}
+          backTo=""
+        />
+      </View>
+      <ScrollViewWrapper>
         <View style={[commonStyles.container, styles.incomeWrapper]}>
-          <AppHeader
-            title={`${editMode ? 'Edit' : 'Add'} Income`}
-            navigation={navigation}
-            homeScreen={false}
-            backTo=""
-          />
           <WeeklyView defaultValue={dateAddedTlm} onChange={setDateAddedTlm} />
           <View>
             <View style={formStyles.inputWrapper}>
               <Text style={formStyles.inputLabel}>Income title</Text>
               <TextInput
-                placeholderTextColor={colors.grayCardText}
+                placeholderTextColor={colors.theme[THEME].textCardGray}
                 placeholder="Eg, Spetember salary"
                 style={formStyles.input}
                 onChangeText={setTitle}
@@ -173,7 +173,7 @@ const AddEditIncome = ({navigation, route}: IAddEditIncome) => {
                 {currency.symbol} Amount
               </Text>
               <TextInput
-                placeholderTextColor={colors.grayCardText}
+                placeholderTextColor={colors.theme[THEME].textCardGray}
                 keyboardType="number-pad"
                 numberOfLines={1}
                 placeholder="Eg, 20,000"
@@ -201,7 +201,7 @@ const AddEditIncome = ({navigation, route}: IAddEditIncome) => {
               <Text style={formStyles.inputLabel}>Note</Text>
               <TextInput
                 multiline
-                placeholderTextColor={colors.grayCardText}
+                placeholderTextColor={colors.theme[THEME].textCardGray}
                 numberOfLines={4}
                 placeholder="Description"
                 style={formStyles.input}
@@ -220,16 +220,16 @@ const AddEditIncome = ({navigation, route}: IAddEditIncome) => {
             </Text>
           </Pressable>
         </View>
-      </ScrollView>
+      </ScrollViewWrapper>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   incomeWrapper: {
-    backgroundColor: colors.brand.brandLight,
+    backgroundColor: colors.theme[THEME].brandLight,
     display: 'flex',
-    overflow: 'scroll',
+    flex: 1,
   },
 });
 

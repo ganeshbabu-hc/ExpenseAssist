@@ -3,7 +3,7 @@ import {View, Text, StyleSheet, Pressable} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {colors, commonStyles, utils} from '../styles/theme';
 import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
-import {DATE_DB_FORMAT, DAYS_SHORT, MONTH_NAMES} from '../utils/Constants';
+import {DATE_DB_FORMAT, DAYS_SHORT, MONTH_NAMES, THEME} from '../utils/Constants';
 import {dateFormatter} from '../utils/Formatter';
 import moment from 'moment';
 
@@ -72,7 +72,7 @@ const WeeklyView = ({onChange, defaultValue}: IWeeklyView) => {
             <Icon
               name="calendar-month"
               size={commonStyles.icon.width}
-              color={colors.brand.brandMedium}
+              color={colors.theme[THEME].brandMedium}
             />
             <Text style={styles.btnText}>{`${
               MONTH_NAMES[date.getMonth()]
@@ -86,7 +86,7 @@ const WeeklyView = ({onChange, defaultValue}: IWeeklyView) => {
               style={styles.timeIon}
               name="clock-time-five"
               size={commonStyles.icon.width}
-              color={colors.brand.brandMedium}
+              color={colors.theme[THEME].brandMedium}
             />
           </Pressable>
         </View>
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
   dateWrapper: {
     display: 'flex',
     overflow: 'scroll',
-    backgroundColor: colors.white,
+    backgroundColor: colors.theme[THEME].textLight,
     borderRadius: utils.inputRadius,
     minHeight: 100,
     marginBottom: 10,
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   btnText: {
-    color: colors.black,
+    color: colors.theme[THEME].textDark,
     fontSize: utils.fontSize.small,
     fontFamily: utils.fontFamily.Bold,
     marginLeft: 10,
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
   dayName: {
     paddingHorizontal: 10,
     fontSize: utils.fontSize.small,
-    color: colors.grayCardText,
+    color: colors.theme[THEME].textCardGray,
     fontFamily: utils.fontFamily.Bold,
   },
   dayNumberWrapper: {
@@ -192,14 +192,14 @@ const styles = StyleSheet.create({
     height: 40,
     marginTop: 10,
     active: {
-      color: colors.white,
-      backgroundColor: colors.brand.brandMedium,
+      color: colors.theme[THEME].textLight,
+      backgroundColor: colors.theme[THEME].brandMedium,
     },
   },
   dayNumber: {
     fontSize: utils.fontSize.small,
     fontFamily: utils.fontFamily.Bold,
-    color: colors.black,
+    color: colors.theme[THEME].textDark,
   },
 });
 

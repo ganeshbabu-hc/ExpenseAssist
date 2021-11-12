@@ -5,6 +5,7 @@ import CommunityIcon from 'react-native-vector-icons/dist/MaterialCommunityIcons
 import FontAwesome from 'react-native-vector-icons/dist/FontAwesome5';
 import {colors, commonStyles} from '../styles/theme';
 import {StyleSheet} from 'react-native';
+import { THEME } from '../utils/Constants';
 interface IconMap {
   iconName: string;
   color?: string;
@@ -20,7 +21,7 @@ const IconMap = ({iconName, color, style}: IconMap) => {
       IconComponent = (
         <FontAwesome
           style={style}
-          color={color ? color : colors.black}
+          color={color ? color : colors.theme[THEME].textDark}
           name={iconName}
           size={commonStyles.icon.width}
         />
@@ -37,7 +38,7 @@ const IconMap = ({iconName, color, style}: IconMap) => {
       IconComponent = (
         <CommunityIcon
           style={style}
-          color={color ? color : colors.black}
+          color={color ? color : colors.theme[THEME].textDark}
           name={iconName}
           size={commonStyles.icon.width}
         />
@@ -47,7 +48,7 @@ const IconMap = ({iconName, color, style}: IconMap) => {
       IconComponent = (
         <IonIcon
           style={style}
-          color={color ? color : colors.black}
+          color={color ? color : colors.theme[THEME].textDark}
           name={iconName}
           size={commonStyles.icon.width}
         />
@@ -57,7 +58,7 @@ const IconMap = ({iconName, color, style}: IconMap) => {
       IconComponent = (
         <Icon
           style={style}
-          color={color ? color : colors.black}
+          color={color ? color : colors.theme[THEME].textDark}
           name={iconName}
           size={commonStyles.icon.width}
         />

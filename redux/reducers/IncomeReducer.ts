@@ -1,9 +1,13 @@
-import {UPDATE_INCOME_LIST} from '../constants/StoreConstants';
+import {
+  UPDATE_INCOME_CATEGORIES_LIST,
+  UPDATE_INCOME_LIST,
+} from '../constants/StoreConstants';
 import {AnyAction} from 'redux';
 import {IIncomeState} from '../Types';
 
 const initialState: IIncomeState = {
   incomeList: [],
+  incomeCategoryList: [],
 };
 
 const IncomeReducer = (
@@ -15,6 +19,11 @@ const IncomeReducer = (
       return {
         ...state,
         incomeList: action.payload,
+      };
+    case UPDATE_INCOME_CATEGORIES_LIST:
+      return {
+        ...state,
+        incomeCategoryList: action.payload,
       };
     default:
       return state;

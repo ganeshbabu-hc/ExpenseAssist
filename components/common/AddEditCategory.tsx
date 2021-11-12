@@ -10,12 +10,10 @@ import {
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
-import {
-  UPDATE_EXPENSE_LIST,
-  UPDATE_SUMMARY,
-} from '../../redux/constants/StoreConstants';
+import {UPDATE_EXPENSE_CATEGORIES_LIST} from '../../redux/constants/StoreConstants';
 import AppHeader from './AppHeader';
 import {
+  getExpenseCaetegories,
   getExpenses,
   saveExpense,
   updateExpense,
@@ -31,6 +29,8 @@ import {
   saveExpenseCategory,
   saveIncomeCategory,
 } from '../database/common/CommonController';
+import {IIncomeCategory} from '../database/income/IncomeTypes';
+import { THEME } from '../utils/Constants';
 
 interface IAddEditCategory {
   navigation: any;
@@ -49,21 +49,25 @@ const defaultErrMsg: IErrorMessages = {
 };
 
 const AddEditCategory = ({navigation, route, type}: IAddEditCategory) => {
-  const {expense}: {expense: IExpense} = route.params;
+  const {expenseCategory}: {expenseCategory: IExpenseCategory} = route.params
+    .expenseCategory ?? {undefined};
+  // const {expense}: {expense: IExpense} = route.params;
+
+  const categoryType = type || route?.params?.type;
 
   const [errMsg, setErrMsg] = useState<IErrorMessages>(defaultErrMsg);
 
   const [title, setTitle] = useState(() => {
-    return expense?.title ?? '';
+    return expenseCategory?.title ?? '';
   });
-  const [categoryId, setCategoryId] = useState(() => {
-    return expense?.paymentId ?? 1;
-  });
+  // const [categoryId, setCategoryId] = useState(() => {
+  //   return expense?.paymentId ?? 1;
+  // });
   const [description, setDescription] = useState(() => {
-    return expense?.description ?? '';
+    return expenseCategory?.description ?? '';
   });
   const [editMode] = useState(() => {
-    return expense ? true : false;
+    return expenseCategory ? true : false;
   });
   const dispatch = useDispatch();
 
@@ -80,27 +84,21 @@ const AddEditCategory = ({navigation, route, type}: IAddEditCategory) => {
 
   const clearInputs = () => {
     setTitle('');
-    setCategoryId(1);
+    // setCategoryId(1);
     setDescription('');
   };
-
-  const saveEditCategoryHandler = async () => {
+  const saveExpenseCategoryHandler = async () => {
+    console.log('save--validateInputs');
     if (!validateInputs()) {
       return;
     }
+    console.log('save--category');
 
     let modCategory: IExpenseCategory = {
-      expenseCategoryId: expense?.expenseId ?? undefined,
+      expenseCategoryId: expenseCategory?.expenseCategoryId ?? undefined,
       title,
       description,
     };
-    if (type === 'income') {
-      // modCategory: IIncomeCategory = {
-      //   incomeCategoryId: expense?.expenseId ?? undefined,
-      //   title,
-      //   description,
-      // };
-    }
     let result = null;
     if (editMode) {
       // result = await updateExpense(modExpense);
@@ -109,21 +107,17 @@ const AddEditCategory = ({navigation, route, type}: IAddEditCategory) => {
       //   navigation.goBack();
       // }
     } else {
-      if (type === 'income') {
-        result = await saveIncomeCategory(modCategory);
-      } else if (type === 'expense') {
-        result = await saveExpenseCategory(modCategory);
-      }
-
+      result = await saveExpenseCategory(modCategory);
       if (result) {
-        ShowSnackBar(`${modCategory.title} is added`);
+        ShowSnackBar(`Category: ${modCategory.title} is added`);
         navigation.goBack();
       }
     }
-    // const savedExpenses = await getExpenses();
-    // dispatch({type: UPDATE_EXPENSE_LIST, payload: savedExpenses});
-    // const summary = await getSummary();
-    // dispatch({type: UPDATE_SUMMARY, payload: summary});
+    const expenseCategories = await getExpenseCaetegories();
+    dispatch({
+      type: UPDATE_EXPENSE_CATEGORIES_LIST,
+      payload: expenseCategories,
+    });
   };
 
   useEffect(() => {
@@ -131,7 +125,7 @@ const AddEditCategory = ({navigation, route, type}: IAddEditCategory) => {
   }, [title]);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={commonStyles.screen}>
       <ScrollView
         keyboardDismissMode="interactive"
         keyboardShouldPersistTaps="always"
@@ -148,7 +142,7 @@ const AddEditCategory = ({navigation, route, type}: IAddEditCategory) => {
             <View style={formStyles.inputWrapper}>
               <Text style={formStyles.inputLabel}>Category name</Text>
               <TextInput
-                placeholderTextColor={colors.grayCardText}
+                placeholderTextColor={colors.theme[THEME].textCardGray}
                 placeholder="Eg, Spetember salary"
                 style={formStyles.input}
                 onChangeText={setTitle}
@@ -166,7 +160,7 @@ const AddEditCategory = ({navigation, route, type}: IAddEditCategory) => {
                 multiline
                 numberOfLines={4}
                 placeholder="Description"
-                placeholderTextColor={colors.grayCardText}
+                placeholderTextColor={colors.theme[THEME].textCardGray}
                 style={formStyles.input}
                 onChangeText={setDescription}
                 value={description}
@@ -176,7 +170,12 @@ const AddEditCategory = ({navigation, route, type}: IAddEditCategory) => {
           <Pressable
             style={[formStyles.button, formStyles.fullWidth]}
             onPress={() => {
-              saveEditCategoryHandler();
+              console.log('save--validateInputs', categoryType);
+              if (categoryType === 'expense') {
+                saveExpenseCategoryHandler();
+              } else {
+                // saveIncomeCategoryHandler();
+              }
             }}>
             <Text style={formStyles.buttonLabel}>
               {editMode ? 'Save' : 'Add'}
@@ -190,7 +189,7 @@ const AddEditCategory = ({navigation, route, type}: IAddEditCategory) => {
 
 const styles = StyleSheet.create({
   categoryWrapper: {
-    backgroundColor: colors.brand.brandLight,
+    backgroundColor: colors.theme[THEME].brandLight,
     display: 'flex',
     overflow: 'scroll',
   },

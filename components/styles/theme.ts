@@ -1,6 +1,7 @@
 import {StyleSheet} from 'react-native';
 import {deepOrange, deepPurple, grey, pink} from 'material-ui-colors';
 import color from 'material-ui-colors/dist/amber';
+import { THEME } from '../utils/Constants';
 
 // https://material.io/design/color/the-color-system.html#tools-for-picking-colors
 
@@ -13,13 +14,60 @@ import color from 'material-ui-colors/dist/amber';
 // export const hue = 49; //#ffd000
 // export const hue = 280; //#a0f
 // export const hue = 297; //#f200ff
-export let colors = {
+
+interface IColorMapping {
+  brandLight: string;
+  brandMedium: string;
+  brandMediumDark: string;
+  brandDark: string;
+  brandDanger: string;
+  textDark: string;
+  textGray: string;
+  textCardGray: string;
+  textLight: string;
+}
+interface ITheme {
+  [key: string]: IColorMapping;
+}
+
+interface IColors {
+  theme: ITheme;
+  brand: any;
+}
+
+export let colors: IColors = {
   //old
   // brandLight: '#F6F4FF',
   // brandMedium: '#8746D6',
   // brandDark: '#3D2C8D',
 
-  //Brand Purple
+  //Brand Purple-current--
+  theme: {
+    purple: {
+      // brandLight: deepPurple[50],
+      brandLight: 'hsla(230, 0%, 98%, 1)',
+      brandMedium: deepPurple.A700,
+      brandMediumDark: deepPurple[200],
+      brandDark: deepPurple[900],
+      brandDanger: pink[600],
+      textDark: '#000',
+      textGray: grey[500],
+      textCardGray: grey[400],
+      textLight: '#fff',
+    },
+    red: {
+      // brandLight: deepPurple[50],
+      brandLight: 'hsla(230, 0%, 98%, 1)',
+      brandMedium: deepPurple.A700,
+      brandMediumDark: deepPurple[200],
+      brandDark: deepPurple[900],
+      brandDanger: pink[600],
+      textDark: '#f45',
+      textGray: grey[500],
+      textCardGray: grey[400],
+      textLight: '#fff',
+    },
+  },
   brand: {
     // brandLight: deepPurple[50],
     brandLight: 'hsla(230, 0%, 98%, 1)',
@@ -27,7 +75,21 @@ export let colors = {
     brandMediumDark: deepPurple[200],
     brandDark: deepPurple[900],
     brandDanger: pink[600],
+    textDark: '#000',
+    textGray: grey[500],
+    textCardGray: grey[400],
+    textLight: '#fff',
   },
+  // brand: {
+  //   // brandLight: deepPurple[50],
+  //   brandLight: '#131d2a',
+  //   brandMedium: '#2e4765',
+  //   brandMediumDark: '#172231',
+  //   brandDark: '#172231',
+  //   brandDanger: pink[600],
+  // },
+
+  // #131d2a
   // brand: {
   //   brandLight: `hsla(${hue}, 100%, 98%, 1)`,
   //   brandMedium: `hsla(${hue}, 100%, 65%, 1)`,
@@ -64,18 +126,18 @@ export let colors = {
   // brandDark: '#03045e',
   // brandDanger: '#E83641',
 
-  black: '#000',
-  white: '#fff',
+  // black: '#000',
+  // white: '#fff',
   // grayText: '#85848B',
   // grayCardText: '#ADADAD',
-  gray50: grey[50],
-  grayText: grey[500],
-  grayCardText: grey[400],
-  transparent: 'rgba(255,255,255,0)',
+  // gray50: grey[50],
+  // grayText: grey[500],
+  // grayCardText: grey[400],
+  // transparent: 'rgba(255,255,255,0)',
 };
 
 // setTimeout(() => {
-//   colors.brand = {
+//   colors.theme[THEME] = {
 //     brandLight: '#f2ffff',
 //     brandMedium: '#00b4d8',
 //     brandMediumDark: '#023e8a',
@@ -135,16 +197,16 @@ export const utils = {
   inputRadius: 15,
   inputElevation: {
     elevation: 10,
-    shadowColor: colors.grayCardText,
+    shadowColor: colors.theme[THEME].textCardGray,
     shadowOpacity: 1,
   },
   bgWhite: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.theme[THEME].textLight,
   },
 };
 
 export const ripple = {
-  color: colors.brand.brandMedium,
+  color: colors.theme[THEME].brandMedium,
 };
 
 export const formStyles = StyleSheet.create({
@@ -158,14 +220,14 @@ export const formStyles = StyleSheet.create({
     marginVertical: 10,
   },
   inputLabel: {
-    color: colors.black,
+    color: colors.theme[THEME].textDark,
     marginBottom: 10,
     fontSize: utils.fontSize.small,
     fontFamily: utils.fontFamily.Bold,
   },
   input: {
-    color: colors.black,
-    backgroundColor: colors.white,
+    color: colors.theme[THEME].textDark,
+    backgroundColor: colors.theme[THEME].textLight,
     borderRadius: utils.inputRadius,
     fontSize: utils.fontSize.medium,
     fontFamily: utils.fontFamily.Bold,
@@ -174,13 +236,13 @@ export const formStyles = StyleSheet.create({
     ...utils.inputElevation,
   },
   inputError: {
-    color: colors.brand.brandDanger,
+    color: colors.theme[THEME].brandDanger,
     paddingVertical: 6,
     fontFamily: utils.fontFamily.Bold,
     fontSize: utils.fontSize.small,
   },
   select: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.theme[THEME].textLight,
     borderRadius: utils.inputRadius,
     fontSize: utils.fontSize.large,
     padding: 5,
@@ -190,17 +252,17 @@ export const formStyles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 16,
     ...utils.inputElevation,
-    backgroundColor: colors.white,
+    backgroundColor: colors.theme[THEME].textLight,
     borderRadius: utils.inputRadius,
   },
   selectBtnLabel: {
-    color: colors.black,
+    color: colors.theme[THEME].textDark,
     fontSize: utils.fontSize.medium,
     fontFamily: utils.fontFamily.Bold,
   },
   pickerItemStyle: {
     fontSize: utils.fontSize.large,
-    color: colors.black,
+    color: colors.theme[THEME].textDark,
     paddingHorizontal: 20,
   },
   inputDivider: {
@@ -216,15 +278,15 @@ export const formStyles = StyleSheet.create({
     marginVertical: 20,
     paddingVertical: 10,
     paddingHorizontal: 20,
-    backgroundColor: colors.brand.brandMedium,
+    backgroundColor: colors.theme[THEME].brandMedium,
     borderRadius: utils.inputRadius,
-    shadowColor: colors.brand.brandMedium,
+    shadowColor: colors.theme[THEME].brandMedium,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
   },
   buttonLabel: {
-    color: colors.white,
+    color: colors.theme[THEME].textLight,
     fontSize: utils.fontSize.medium,
     fontFamily: utils.fontFamily.Bold,
   },
@@ -235,12 +297,12 @@ export const commonStyles = StyleSheet.create({
   screen: {
     flex: 1,
     display: 'flex',
-    backgroundColor: colors.brand.brandLight,
+    backgroundColor: colors.theme[THEME].brandLight,
   },
   container: {
     paddingHorizontal: 20,
     paddingLeft: containerLeftMargin,
-    backgroundColor: colors.brand.brandLight,
+    backgroundColor: colors.theme[THEME].brandLight,
     fontFamily: utils.fontFamily,
   },
   icon: {
@@ -274,47 +336,47 @@ export const commonStyles = StyleSheet.create({
     },
     brandWhite: {
       elevation: 10,
-      shadowColor: colors.grayText,
-      backgroundColor: colors.white,
+      shadowColor: colors.theme[THEME].textGray,
+      backgroundColor: colors.theme[THEME].textLight,
       text: {
         fontSize: utils.fontSize.small,
-        color: colors.grayCardText,
+        color: colors.theme[THEME].textCardGray,
       },
       totalText: {
         fontFamily: utils.fontFamily.Bold,
-        color: colors.black,
+        color: colors.theme[THEME].textDark,
       },
     },
     brandMedium: {
       elevation: 10,
-      shadowColor: colors.brand.brandMedium,
-      backgroundColor: colors.brand.brandMedium,
+      shadowColor: colors.theme[THEME].brandMedium,
+      backgroundColor: colors.theme[THEME].brandMedium,
       text: {
         fontSize: utils.fontSize.small,
-        color: colors.white,
+        color: colors.theme[THEME].textLight,
       },
       totalText: {
         fontFamily: utils.fontFamily.Bold,
-        color: colors.white,
+        color: colors.theme[THEME].textLight,
       },
     },
     brandDark: {
       elevation: 10,
-      shadowColor: colors.brand.brandDark,
-      backgroundColor: colors.brand.brandDark,
+      shadowColor: colors.theme[THEME].brandDark,
+      backgroundColor: colors.theme[THEME].brandDark,
       text: {
         fontSize: utils.fontSize.small,
-        color: colors.white,
+        color: colors.theme[THEME].textLight,
       },
       totalText: {
         fontFamily: utils.fontFamily.Bold,
-        color: colors.white,
+        color: colors.theme[THEME].textLight,
       },
     },
   },
   title: {
     fontSize: utils.fontSize.xlarge,
-    color: colors.black,
+    color: colors.theme[THEME].textDark,
     fontFamily: utils.fontFamily.Bold,
   },
   shadowGray: {
@@ -322,12 +384,38 @@ export const commonStyles = StyleSheet.create({
     shadowColor: '#52006A',
   },
   categoryTitle: {
-    color: colors.black,
+    color: colors.theme[THEME].textDark,
     marginTop: 20,
     fontSize: utils.fontSize.small,
     fontFamily: utils.fontFamily.Bold,
     marginLeft: containerLeftMargin,
   },
+  illustrationWrapper: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    display: 'flex',
+    flex: 1,
+    height: '100%',
+  },
+  illustration: {},
+  illustrationTitle: {
+    color: colors.theme[THEME].brandMedium,
+    fontSize: utils.fontSize.medium,
+    fontFamily: utils.fontFamily.Bold,
+    paddingVertical: 30,
+  },
+  illustrationTitleBtn: {
+    backgroundColor: colors.theme[THEME].brandDark,
+    borderRadius: utils.inputRadius,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10,
+    marginBottom: 20,
+  },
+  // illustrationTitleIcon: {
+
+  // }
 });
 
 export const recentList = StyleSheet.create({
@@ -348,22 +436,22 @@ export const recentList = StyleSheet.create({
     width: '80%',
   },
   swiper: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.theme[THEME].brandLight,
     display: 'flex',
   },
   swipeIcon: {
-    backgroundColor: colors.brand.brandLight,
+    backgroundColor: colors.theme[THEME].brandLight,
     height: '100%',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
   },
   swipeIconEdit: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.theme[THEME].brandLight,
     height: '100%',
   },
   swipeIconDelete: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.theme[THEME].brandLight,
     height: '100%',
   },
   listHeader: {
@@ -376,7 +464,7 @@ export const recentList = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.brand.brandLight,
+    backgroundColor: colors.theme[THEME].brandLight,
     borderRadius: utils.inputRadius,
   },
   listHeaderIcon: {
@@ -386,12 +474,15 @@ export const recentList = StyleSheet.create({
   listTitle: {
     // fontSize: utils.fontSize.large,
     // fontFamily: utils.fontFamily.Bold,
-    color: colors.black,
+    color: colors.theme[THEME].textDark,
     paddingVertical: 16,
   },
   listWrapper: {
-    backgroundColor: colors.white,
+    // backgroundColor: colors.theme[THEME].textLight,
     // paddingHorizontal: 10,
+    display: 'flex',
+    flex: 1,
+    height: '100%',
   },
   listItem: {
     display: 'flex',
@@ -409,7 +500,7 @@ export const recentList = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: colors.brand.brandLight,
+    backgroundColor: colors.theme[THEME].brandLight,
     marginVertical: 10,
     marginRight: 20,
     borderRadius: utils.inputRadius,
@@ -422,10 +513,10 @@ export const recentList = StyleSheet.create({
     flexDirection: 'row',
   },
   listItemTitle: {
-    color: colors.black,
+    color: colors.theme[THEME].textDark,
     fontSize: utils.fontSize.small,
     fontFamily: utils.fontFamily.Bold,
-    maxWidth: '90%',
+    // maxWidth: '90%',
   },
   listItemAmountWrapper: {
     // marginRight: 10,
@@ -435,35 +526,35 @@ export const recentList = StyleSheet.create({
   },
   listItemDate: {
     marginTop: 4,
-    color: colors.grayText,
+    color: colors.theme[THEME].textGray,
     fontSize: utils.fontSize.xsmall,
     fontFamily: utils.fontFamily.SemiBold,
   },
   listItemAmount: {
-    color: colors.black,
+    color: colors.theme[THEME].textDark,
     fontSize: utils.fontSize.small,
     fontFamily: utils.fontFamily.Bold,
   },
   listItemPayment: {
-    color: colors.grayText,
+    color: colors.theme[THEME].textGray,
     fontSize: utils.fontSize.xsmall,
     fontFamily: utils.fontFamily.SemiBold,
     marginTop: 4,
   },
   modalPayment: {
-    color: colors.brand.brandMedium,
+    color: colors.theme[THEME].brandMedium,
   },
   modalDateAdded: {
-    color: colors.brand.brandMedium,
+    color: colors.theme[THEME].brandMedium,
   },
   modalDesc: {
-    color: colors.brand.brandMedium,
+    color: colors.theme[THEME].brandMedium,
   },
 });
 
 export const categoryList = StyleSheet.create({
   expensitureWrapper: {
-    backgroundColor: colors.brand.brandLight,
+    backgroundColor: colors.theme[THEME].brandLight,
     display: 'flex',
     overflow: 'scroll',
     marginLeft: -commonStyles.container.paddingLeft,
@@ -479,7 +570,7 @@ export const categoryList = StyleSheet.create({
   categoryAddBtn: {
     borderRadius: utils.inputRadius,
     borderWidth: 2,
-    borderColor: colors.grayCardText,
+    borderColor: colors.theme[THEME].textCardGray,
     borderStyle: 'dotted',
     width: 80,
     paddingVertical: 2,
@@ -488,7 +579,7 @@ export const categoryList = StyleSheet.create({
     justifyContent: 'center',
   },
   activeCategory: {
-    color: colors.brand.brandLight,
+    color: colors.theme[THEME].brandLight,
     position: 'relative',
     paddingRight: 8,
   },
@@ -500,18 +591,18 @@ export const categoryList = StyleSheet.create({
     marginVertical: 20,
     paddingHorizontal: 10,
     paddingVertical: 10,
-    backgroundColor: colors.brand.brandMedium,
+    backgroundColor: colors.theme[THEME].brandMedium,
     marginHorizontal: 6,
     borderRadius: utils.inputRadius,
     dark: {
-      backgroundColor: colors.brand.brandMedium,
+      backgroundColor: colors.theme[THEME].brandMedium,
     },
     light: {
-      backgroundColor: colors.brand.brandDark,
+      backgroundColor: colors.theme[THEME].brandDark,
     },
   },
   categoryTitle: {
-    color: colors.white,
+    color: colors.theme[THEME].textLight,
     fontSize: utils.fontSize.small,
     fontFamily: utils.fontFamily.Bold,
     marginLeft: 10,

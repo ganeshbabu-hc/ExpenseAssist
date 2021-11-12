@@ -29,7 +29,9 @@ import PaymentsDropdown from '../common/PaymentsDropdown';
 import WeeklyView from '../common/WeeklyView';
 import {ShowSnackBar} from '../common/Util';
 import {getSummary} from '../database/common/SummaryController';
-import { ICurrency } from '../database/common/CurrencyController';
+import {ICurrency} from '../database/common/CurrencyController';
+import ScrollViewWrapper from '../common/ScrollViewWrapper';
+import { THEME } from '../utils/Constants';
 
 interface IAddEditExpense {
   navigation: any;
@@ -122,7 +124,7 @@ const AddEditExpense = ({navigation, route}: IAddEditExpense) => {
     if (editMode) {
       result = await updateExpense(modExpense);
       if (result) {
-        ShowSnackBar(`${modExpense.title} is updated`);
+        ShowSnackBar(`Expense: ${modExpense.title} is updated`);
         navigation.goBack();
       }
     } else {
@@ -143,25 +145,26 @@ const AddEditExpense = ({navigation, route}: IAddEditExpense) => {
   }, [title, amount]);
 
   return (
-    <SafeAreaView>
-      <ScrollView
+    <SafeAreaView style={commonStyles.screen}>
+      <View style={commonStyles.container}>
+        <AppHeader
+          title={`${editMode ? 'Edit' : 'Add'} Expense`}
+          navigation={navigation}
+          homeScreen={false}
+          backTo=""
+        />
+      </View>
+      <ScrollViewWrapper
         keyboardDismissMode="interactive"
         keyboardShouldPersistTaps="always"
-        showsVerticalScrollIndicator={false}
         contentInsetAdjustmentBehavior="automatic">
         <View style={[commonStyles.container, styles.expenseWrapper]}>
-          <AppHeader
-            title={`${editMode ? 'Edit' : 'Add'} Expense`}
-            navigation={navigation}
-            homeScreen={false}
-            backTo=""
-          />
           <WeeklyView defaultValue={dateAddedTlm} onChange={setDateAddedTlm} />
           <View>
             <View style={formStyles.inputWrapper}>
               <Text style={formStyles.inputLabel}>Expense title</Text>
               <TextInput
-                placeholderTextColor={colors.grayCardText}
+                placeholderTextColor={colors.theme[THEME].textCardGray}
                 placeholder="Eg, Spetember salary"
                 style={formStyles.input}
                 onChangeText={setTitle}
@@ -178,7 +181,7 @@ const AddEditExpense = ({navigation, route}: IAddEditExpense) => {
                 {currency.symbol} Amount
               </Text>
               <TextInput
-                placeholderTextColor={colors.grayCardText}
+                placeholderTextColor={colors.theme[THEME].textCardGray}
                 keyboardType="number-pad"
                 numberOfLines={1}
                 placeholder="Eg, 20,000"
@@ -208,7 +211,7 @@ const AddEditExpense = ({navigation, route}: IAddEditExpense) => {
                 multiline
                 numberOfLines={4}
                 placeholder="Description"
-                placeholderTextColor={colors.grayCardText}
+                placeholderTextColor={colors.theme[THEME].textCardGray}
                 style={formStyles.input}
                 onChangeText={setDescription}
                 value={description}
@@ -225,16 +228,16 @@ const AddEditExpense = ({navigation, route}: IAddEditExpense) => {
             </Text>
           </Pressable>
         </View>
-      </ScrollView>
+      </ScrollViewWrapper>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   expenseWrapper: {
-    backgroundColor: colors.brand.brandLight,
+    backgroundColor: colors.theme[THEME].brandLight,
     display: 'flex',
-    overflow: 'scroll',
+    flex: 1,
   },
 });
 

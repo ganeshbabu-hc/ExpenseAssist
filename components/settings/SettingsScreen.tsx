@@ -12,6 +12,8 @@ import AppHeader from '../common/AppHeader';
 import {colors, commonStyles, recentList, utils} from '../styles/theme';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import {useSelector} from 'react-redux';
+import t from '../common/translations/Translation';
+import { THEME } from '../utils/Constants';
 
 export const SettingsScreen = ({navigation}: any) => {
   // const isDarkMode = useColorScheme() === 'dark';
@@ -26,10 +28,6 @@ export const SettingsScreen = ({navigation}: any) => {
 
   return (
     <SafeAreaView style={commonStyles.screen}>
-      <StatusBar
-        backgroundColor={colors.brand.brandLight}
-        barStyle={'dark-content'}
-      />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         keyboardDismissMode="interactive"
@@ -41,12 +39,16 @@ export const SettingsScreen = ({navigation}: any) => {
             homeScreen={false}
             title="Settings"
           />
-          <Pressable style={styles.settingWrapper}>
+          <Pressable
+            style={styles.settingWrapper}
+            onPress={() => {
+              navigation.navigate('ThemeScreen');
+            }}>
             <View style={styles.settingIconWrapper}>
               <Icon
                 name="color-lens"
                 size={28}
-                color={colors.brand.brandMedium}
+                color={colors.theme[THEME].brandMedium}
               />
             </View>
             <View style={styles.settingDesc}>
@@ -56,7 +58,7 @@ export const SettingsScreen = ({navigation}: any) => {
                 <Icon
                   name="chevron-right"
                   size={28}
-                  color={colors.brand.brandMediumDark}
+                  color={colors.theme[THEME].brandMediumDark}
                 />
               </View>
             </View>
@@ -73,7 +75,7 @@ export const SettingsScreen = ({navigation}: any) => {
               <Icon
                 name="attach-money"
                 size={28}
-                color={colors.brand.brandMedium}
+                color={colors.theme[THEME].brandMedium}
               />
             </View>
             <View style={styles.settingDesc}>
@@ -83,7 +85,7 @@ export const SettingsScreen = ({navigation}: any) => {
                 <Icon
                   name="chevron-right"
                   size={28}
-                  color={colors.brand.brandMediumDark}
+                  color={colors.theme[THEME].brandMediumDark}
                 />
               </View>
             </View>
@@ -96,7 +98,7 @@ export const SettingsScreen = ({navigation}: any) => {
               <Icon
                 name="filter-list"
                 size={28}
-                color={colors.brand.brandMedium}
+                color={colors.theme[THEME].brandMedium}
               />
             </View>
             <View style={styles.settingDesc}>
@@ -104,9 +106,8 @@ export const SettingsScreen = ({navigation}: any) => {
               <Icon
                 name="chevron-right"
                 size={28}
-                color={colors.brand.brandMediumDark}
+                color={colors.theme[THEME].brandMediumDark}
               />
-              {/* <Text style={styles.settingValue}>INR</Text> */}
             </View>
           </Pressable>
           <View style={[recentList.dividerWrapper, styles.divider]}>
@@ -114,16 +115,15 @@ export const SettingsScreen = ({navigation}: any) => {
           </View>
           <Pressable style={styles.settingWrapper}>
             <View style={styles.settingIconWrapper}>
-              <Icon name="payment" size={28} color={colors.brand.brandMedium} />
+              <Icon name="payment" size={28} color={colors.theme[THEME].brandMedium} />
             </View>
             <View style={styles.settingDesc}>
               <Text style={styles.settingName}>Payments</Text>
               <Icon
                 name="chevron-right"
                 size={28}
-                color={colors.brand.brandMediumDark}
+                color={colors.theme[THEME].brandMediumDark}
               />
-              {/* <Text style={styles.settingValue}>INR</Text> */}
             </View>
           </Pressable>
           <View style={[recentList.dividerWrapper, styles.divider]}>
@@ -131,16 +131,15 @@ export const SettingsScreen = ({navigation}: any) => {
           </View>
           <Pressable style={styles.settingWrapper}>
             <View style={styles.settingIconWrapper}>
-              <Icon name="alarm" size={28} color={colors.brand.brandMedium} />
+              <Icon name="alarm" size={28} color={colors.theme[THEME].brandMedium} />
             </View>
             <View style={styles.settingDesc}>
               <Text style={styles.settingName}>Remainders</Text>
               <Icon
                 name="chevron-right"
                 size={28}
-                color={colors.brand.brandMediumDark}
+                color={colors.theme[THEME].brandMediumDark}
               />
-              {/* <Text style={styles.settingValue}>INR</Text> */}
             </View>
           </Pressable>
           <View style={[recentList.dividerWrapper, styles.divider]}>
@@ -151,7 +150,7 @@ export const SettingsScreen = ({navigation}: any) => {
               <Icon
                 name="language"
                 size={28}
-                color={colors.brand.brandMedium}
+                color={colors.theme[THEME].brandMedium}
               />
             </View>
             <View style={styles.settingDesc}>
@@ -159,9 +158,8 @@ export const SettingsScreen = ({navigation}: any) => {
               <Icon
                 name="chevron-right"
                 size={28}
-                color={colors.brand.brandMediumDark}
+                color={colors.theme[THEME].brandMediumDark}
               />
-              {/* <Text style={styles.settingValue}>INR</Text> */}
             </View>
           </Pressable>
           <View style={[recentList.dividerWrapper, styles.divider]}>
@@ -172,7 +170,7 @@ export const SettingsScreen = ({navigation}: any) => {
               <Icon
                 name="help-outline"
                 size={28}
-                color={colors.brand.brandMedium}
+                color={colors.theme[THEME].brandMedium}
               />
             </View>
             <View style={styles.settingDesc}>
@@ -180,12 +178,10 @@ export const SettingsScreen = ({navigation}: any) => {
               <Icon
                 name="chevron-right"
                 size={28}
-                color={colors.brand.brandMediumDark}
+                color={colors.theme[THEME].brandMediumDark}
               />
-              {/* <Text style={styles.settingValue}>INR</Text> */}
             </View>
           </Pressable>
-
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -194,7 +190,7 @@ export const SettingsScreen = ({navigation}: any) => {
 
 const styles = StyleSheet.create({
   quickMenuContainer: {
-    // backgroundColor: colors.brand.brandLight,
+    // backgroundColor: colors.theme[THEME].brandLight,
   },
   divider: {
     marginVertical: 0,
@@ -217,7 +213,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   settingName: {
-    color: colors.black,
+    color: colors.theme[THEME].textDark,
     fontSize: utils.fontSize.medium,
     fontFamily: utils.fontFamily.Bold,
   },
@@ -227,7 +223,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   settingValue: {
-    color: colors.black,
+    color: colors.theme[THEME].textDark,
     fontSize: utils.fontSize.medium,
     fontFamily: utils.fontFamily.Bold,
   },

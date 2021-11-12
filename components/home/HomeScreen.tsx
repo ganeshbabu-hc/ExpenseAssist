@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {
   SafeAreaView,
-  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -21,6 +20,8 @@ import RecentIncomes from '../income/RecentIncomes';
 import NeuMorph from '../common/NeuMorph';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import RecentList from '../common/RecentList';
+import ScrollViewWrapper from '../common/ScrollViewWrapper';
+import { THEME } from '../utils/Constants';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -46,28 +47,20 @@ export const HomeScreen = ({navigation}: any) => {
 
   return (
     <SafeAreaView style={commonStyles.screen}>
-      <StatusBar
-        backgroundColor={colors.brand.brandLight}
-        barStyle={'dark-content'}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        keyboardDismissMode="interactive"
-        keyboardShouldPersistTaps="always"
-        style={styles.quickMenuContainer}>
-        <View style={commonStyles.container}>
-          <AppHeader navigation={navigation} />
-        </View>
+      <View style={commonStyles.container}>
+        <AppHeader navigation={navigation} />
+      </View>
+      <ScrollViewWrapper style={styles.quickMenuContainer}>
         <SummaryList navigation={navigation} />
         <QuickMenu navigation={navigation} />
         <RecentList navigation={navigation} />
-      </ScrollView>
+      </ScrollViewWrapper>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   quickMenuContainer: {
-    backgroundColor: colors.brand.brandLight,
+    backgroundColor: colors.theme[THEME].brandLight,
   },
 });

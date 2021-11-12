@@ -3,7 +3,8 @@ import React, {useEffect, useState} from 'react';
 import {Text, View, Dimensions, Pressable, StyleSheet} from 'react-native';
 import {PieChart} from 'react-native-svg-charts';
 import {getMonthlyStats} from '../database/common/StatsController';
-import {colors, utils} from '../styles/theme';
+import {colors, commonStyles, utils} from '../styles/theme';
+import { THEME } from '../utils/Constants';
 
 const StatsScreen1 = () => {
   const [slice, setSlice] = useState({
@@ -74,7 +75,7 @@ const StatsScreen1 = () => {
   const deviceWidth = Dimensions.get('window').width;
 
   return (
-    <View style={{justifyContent: 'center', flex: 1}}>
+    <View style={commonStyles.screen}>
       <PieChart
         style={{height: 300}}
         outerRadius={'80%'}
@@ -123,11 +124,11 @@ const styles = StyleSheet.create({
     overflow: 'scroll',
   },
   typeBtnText: {
-    color: colors.white,
+    color: colors.theme[THEME].textLight,
   },
   typeBtn: {
     padding: 20,
-    backgroundColor: colors.brand.brandMedium,
+    backgroundColor: colors.theme[THEME].brandMedium,
     borderRadius: utils.inputRadius,
     marginHorizontal: 20,
   },

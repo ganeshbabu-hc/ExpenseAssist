@@ -5,6 +5,7 @@ import {
   HIDE_MODAL,
   UPDATE_CURRENCY,
   UPDATE_CONFIGURATIONS,
+  UPDATE_SCROLLX,
 } from '../constants/StoreConstants';
 
 export interface ICommonState {
@@ -13,11 +14,13 @@ export interface ICommonState {
   configuration: {
     currency: IConfiguration;
   };
+  scrollX: number;
 }
 
 const initialState: ICommonState = {
   showModal: false,
   modalContent: null,
+  scrollX: 0,
   configuration: {
     currency: {
       name: 'currency',
@@ -42,16 +45,19 @@ export const CommonReducer = (state = initialState, action: any) => {
         showModal: false,
       };
     case UPDATE_CURRENCY:
-      console.log('updating the  UPDATE_CURRENCY');
       let config: ICommonState = {...state};
       console.log(config);
       config.configuration.currency.value = action.payload;
       return config;
     case UPDATE_CONFIGURATIONS:
-      // console.log('--UPDATE_CONFIGURATIONS--');
       return {
         ...state,
         configuration: action.payload,
+      };
+    case UPDATE_SCROLLX:
+      return {
+        ...state,
+        scrollX: action.payload,
       };
     default:
       return state;

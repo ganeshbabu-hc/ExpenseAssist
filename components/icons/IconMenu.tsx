@@ -1,11 +1,12 @@
 import React from 'react';
 import Svg, {Path} from 'react-native-svg';
 import {colors} from '../styles/theme';
+import { THEME } from '../utils/Constants';
 import {IconType} from './IconTypes';
 // import PropTypes from 'prop-types';
 
 const IconMenu = ({color}: IconType) => {
-  const fillColor = color ?? colors.brand.brandMedium;
+  const fillColor = color ?? colors.theme[THEME].brandMedium;
   return (
     <Svg width="28" height="28" viewBox="0 0 24 24" fill="none">
       <Path

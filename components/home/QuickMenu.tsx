@@ -2,7 +2,8 @@ import React from 'react';
 import {FlatList, Pressable, Image, StyleSheet, Text, View} from 'react-native';
 import {colors, commonStyles, utils} from '../styles/theme';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
-import { deepPurple } from 'material-ui-colors';
+import {deepPurple} from 'material-ui-colors';
+import { THEME } from '../utils/Constants';
 
 interface ITypeItem {
   id: number;
@@ -57,7 +58,11 @@ const QuickMenu = ({navigation}) => {
             ]}>
             <Icon
               name={item.icon}
-              color={index % 2 === 0 ? colors.white : colors.brand.brandDark}
+              color={
+                index % 2 === 0
+                  ? colors.theme[THEME].textLight
+                  : colors.theme[THEME].brandDark
+              }
               size={commonStyles.icon.width}
             />
           </View>
@@ -78,24 +83,23 @@ const QuickMenu = ({navigation}) => {
           source={require('../../assets/img/wave.png')}
         />
       </View> */}
-    
-      <View style={[utils.bgWhite]}>
-     
-        <View style={styles.typeListContainer}>
+
+      {/* <View style={[utils.bgWhite]}> */}
+      <View style={styles.typeListContainer}>
         <Text style={[commonStyles.title, commonStyles.card.firstCard]}>
-        Quick Menu
-      </Text>
-          <FlatList
-            style={styles.list}
-            showsHorizontalScrollIndicator={false}
-            horizontal
-            scrollEnabled
-            data={summaryList}
-            renderItem={({item, index}) => _renderItem(item, index)}
-            keyExtractor={_keyExtractor}
-          />
-        </View>
+          Quick Menu
+        </Text>
+        <FlatList
+          style={styles.list}
+          showsHorizontalScrollIndicator={false}
+          horizontal
+          scrollEnabled
+          data={summaryList}
+          renderItem={({item, index}) => _renderItem(item, index)}
+          keyExtractor={_keyExtractor}
+        />
       </View>
+      {/* </View> */}
     </View>
   );
 };
@@ -104,7 +108,7 @@ export default QuickMenu;
 
 const styles = StyleSheet.create({
   quickMenuContainer: {
-    backgroundColor: colors.brand.brandLight,
+    backgroundColor: colors.theme[THEME].brandLight,
     // borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     overflow: 'hidden',
@@ -116,7 +120,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   img: {
-    backgroundColor: colors.brand.brandLight,
+    backgroundColor: colors.theme[THEME].brandLight,
     width: '100%',
     height: 29,
   },
@@ -137,7 +141,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(225,225,225,0.3)',
   },
   darKbg: {
-    backgroundColor: colors.brand.brandLight,
+    backgroundColor: colors.theme[THEME].brandLight,
   },
   typeCard: {
     display: 'flex',
@@ -164,7 +168,7 @@ const styles = StyleSheet.create({
   addBtn: {
     borderRadius: utils.inputRadius,
     borderWidth: 2,
-    borderColor: colors.grayCardText,
+    borderColor: colors.theme[THEME].textCardGray,
     borderStyle: 'dotted',
   },
 });

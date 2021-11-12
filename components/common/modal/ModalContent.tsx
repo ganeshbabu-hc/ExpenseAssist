@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {HIDE_MODAL} from '../../../redux/constants/StoreConstants';
 import {ICommonState} from '../../../redux/reducers/CommonReducer';
 import {colors, utils} from '../../styles/theme';
+import { THEME } from '../../utils/Constants';
 
 interface IModalContent {
   navigation?: any;
@@ -59,7 +60,7 @@ const styles = StyleSheet.create({
     borderRadius: utils.inputRadius,
     alignItems: 'center',
     justifyContent: 'space-between',
-    shadowColor: colors.brand.brandMedium,
+    shadowColor: colors.theme[THEME].brandMedium,
     shadowOffset: {
       width: 0,
       height: 0,
@@ -76,19 +77,19 @@ const styles = StyleSheet.create({
   footerCloseBtn: {
     padding: 10,
     paddingHorizontal: 20,
-    backgroundColor: colors.brand.brandMedium,
+    backgroundColor: colors.theme[THEME].brandMedium,
     borderRadius: utils.inputRadius,
     marginVertical: 20,
   },
   headerLabel: {
-    color: colors.brand.brandDark,
+    color: colors.theme[THEME].brandDark,
     fontFamily: utils.fontFamily.Bold,
     fontSize: utils.fontSize.medium,
   },
   btnLabel: {
     fontFamily: utils.fontFamily.Bold,
     fontSize: utils.fontSize.medium,
-    color: colors.white,
+    color: colors.theme[THEME].textLight,
   },
 });
 export default ModalContent;

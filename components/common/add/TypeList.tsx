@@ -2,6 +2,7 @@ import React from 'react';
 import {FlatList, Pressable, StyleSheet, Text, View} from 'react-native';
 import {commonStyles, colors, utils, ripple} from '../../styles/theme';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
+import {THEME} from '../../utils/Constants';
 
 interface ITypeItem {
   id: number;
@@ -44,7 +45,11 @@ const TypeList = ({navigation}: any) => {
             onPress={() => {
               navigation.navigate(item.route);
             }}>
-            <Icon name="add" size={48} color={colors.grayCardText} />
+            <Icon
+              name="add"
+              size={48}
+              color={colors.theme[THEME].textCardGray}
+            />
           </Pressable>
         </View>
       );
@@ -98,10 +103,10 @@ export default TypeList;
 
 const styles = StyleSheet.create({
   typeListWrapper: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.theme[THEME].textLight,
   },
   typeListContainer: {
-    backgroundColor: colors.brand.brandLight,
+    backgroundColor: colors.theme[THEME].brandLight,
     overflow: 'hidden',
     paddingBottom: 20,
     borderBottomRightRadius: 40,
@@ -132,7 +137,7 @@ const styles = StyleSheet.create({
   addBtn: {
     borderRadius: utils.inputRadius,
     borderWidth: 2,
-    borderColor: colors.grayCardText,
+    borderColor: colors.theme[THEME].textCardGray,
     borderStyle: 'dotted',
   },
 });

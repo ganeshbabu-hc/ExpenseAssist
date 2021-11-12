@@ -4,6 +4,7 @@ import {Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {getMonthlyStats} from '../database/common/StatsController';
 import {colors, commonStyles, utils} from '../styles/theme';
+import { THEME } from '../utils/Constants';
 // import PieChart from 'react-native-d3-charts';
 
 const chartData = [
@@ -100,7 +101,7 @@ const StatsScreen = ({route}: any) => {
           <Text style={styles.typeBtnText}>Income</Text>
         </Pressable>
       </View>
-    </Safe>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
@@ -110,11 +111,11 @@ const styles = StyleSheet.create({
     overflow: 'scroll',
   },
   typeBtnText: {
-    color: colors.white,
+    color: colors.theme[THEME].textLight,
   },
   typeBtn: {
     padding: 20,
-    backgroundColor: colors.brand.brandMedium,
+    backgroundColor: colors.theme[THEME].brandMedium,
     borderRadius: utils.inputRadius,
     marginHorizontal: 20,
   },

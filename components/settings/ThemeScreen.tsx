@@ -3,7 +3,6 @@ import {
   FlatList,
   Pressable,
   SafeAreaView,
-  StatusBar,
   StyleSheet,
   Text,
   TextInput,
@@ -28,7 +27,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {UPDATE_CURRENCY} from '../../redux/constants/StoreConstants';
 import {ShowSnackBar} from '../common/Util';
 import { THEME } from '../utils/Constants';
-const CurrencyScreen = ({navigation}: any) => {
+const ThemeScreen = ({navigation}: any) => {
   // const isDarkMode = useColorScheme() === 'dark';
   const dispatch = useDispatch();
   const [title, setTitle] = useState('');
@@ -61,8 +60,6 @@ const CurrencyScreen = ({navigation}: any) => {
     setFilteredList(curList);
     // scrollToSeletedCategory(curList);
   };
-  const _keyExtractor = (item: ICurrency, index: number) =>
-    item.currencyId ? item.currencyId.toString() : `currency-${index}`;
 
   const updateCurrency = async (currency: ICurrency) => {
     const result = await setCurrency(currency);
@@ -72,45 +69,6 @@ const CurrencyScreen = ({navigation}: any) => {
     }
   };
 
-  const _renderItem = (item: ICurrency, index: number) => {
-    return (
-      <React.Fragment>
-        {index !== 0 && (
-          <View style={recentList.dividerWrapper}>
-            <Text style={recentList.divider} />
-          </View>
-        )}
-        <Pressable
-          onPress={() => {
-            updateCurrency(item);
-          }}
-          style={styles.listWrapper}>
-          <View style={styles.iconWrapper}>
-            {userCurrency.currencyId === item.currencyId ? (
-              <Icon
-                color={colors.theme[THEME].brandMedium}
-                name={'radio-button-checked'}
-                size={commonStyles.icon.width}
-              />
-            ) : (
-              <Icon
-                color={colors.theme[THEME].textCardGray}
-                name={'radio-button-unchecked'}
-                size={commonStyles.icon.width}
-              />
-            )}
-          </View>
-          <View style={styles.currencyDescWrapper}>
-            <View style={styles.currencyDesc}>
-              <Text style={styles.currencyName}>{item.name}</Text>
-              <Text style={styles.currencyCode}>{item.code}</Text>
-            </View>
-            <Text style={styles.currencySymbol}>{item.symbol}</Text>
-          </View>
-        </Pressable>
-      </React.Fragment>
-    );
-  };
 
   const updateFilteredList = async () => {
     const query = title.trim().toLocaleLowerCase();
@@ -138,33 +96,10 @@ const CurrencyScreen = ({navigation}: any) => {
   return (
     <SafeAreaView>
       <View style={commonStyles.container}>
-        <AppHeader
-          navigation={navigation}
-          homeScreen={false}
-          title="Currency"
-        />
-        <View style={styles.inputWrapper}>
-          <TextInput
-            placeholderTextColor={colors.theme[THEME].textCardGray}
-            placeholder="Eg, Dollars"
-            style={formStyles.input}
-            onChangeText={setTitle}
-            value={title}
-          />
-        </View>
+        <AppHeader navigation={navigation} homeScreen={false} title="Theme" />
+        <View>
 
-        <FlatList
-          ref={flatList}
-          contentInsetAdjustmentBehavior="automatic"
-          keyboardDismissMode="interactive"
-          keyboardShouldPersistTaps="always"
-          style={styles.currencyList}
-          showsHorizontalScrollIndicator={false}
-          scrollEnabled
-          data={filteredList}
-          renderItem={({item, index}) => _renderItem(item, index)}
-          keyExtractor={_keyExtractor}
-        />
+        </View>
       </View>
       {/* </ScrollView> */}
     </SafeAreaView>
@@ -172,18 +107,15 @@ const CurrencyScreen = ({navigation}: any) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    // backgroundColor: colors.theme[THEME].brandLight,
-  },
   iconWrapper: {},
-  currencyList: {},
+  themeList: {},
   listWrapper: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'center',
   },
-  currencyDescWrapper: {
+  themeDescWrapper: {
     flex: 1,
     display: 'flex',
     flexDirection: 'row',
@@ -191,16 +123,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginLeft: 14,
   },
-  currencyDesc: {},
-  currencyName: {
+  themeDesc: {},
+  themeName: {
     fontFamily: utils.fontFamily.Bold,
     color: colors.theme[THEME].textCardGray,
   },
-  currencyCode: {
+  themeCode: {
     fontFamily: utils.fontFamily.Bold,
     color: colors.theme[THEME].textDark,
   },
-  currencySymbol: {
+  themeSymbol: {
     fontFamily: utils.fontFamily.Black,
     color: colors.theme[THEME].textDark,
   },
@@ -209,4 +141,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CurrencyScreen;
+export default ThemeScreen;

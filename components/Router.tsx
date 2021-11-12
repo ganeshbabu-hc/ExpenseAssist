@@ -14,17 +14,25 @@ import {colors} from './styles/theme';
 import AddType from './common/add/AddType';
 import {useEffect} from 'react';
 import {useDispatch} from 'react-redux';
-import {getExpenses} from './database/expense/ExpenseController';
+import {
+  getExpenseCaetegories,
+  getExpenses,
+} from './database/expense/ExpenseController';
 import {
   UPDATE_CONFIGURATIONS,
   UPDATE_CURRENCY_TYPES,
+  UPDATE_EXPENSE_CATEGORIES_LIST,
   UPDATE_EXPENSE_LIST,
+  UPDATE_INCOME_CATEGORIES_LIST,
   UPDATE_INCOME_LIST,
   UPDATE_SUMMARY,
 } from '../redux/constants/StoreConstants';
 import {getCurrncyTypes} from './database/common/CurrencyController';
 import AddEditIncome from './income/AddEditIncome';
-import {getIncomes} from './database/income/IncomeController';
+import {
+  getIncomeCaetegories,
+  getIncomes,
+} from './database/income/IncomeController';
 import {getSummary} from './database/common/SummaryController';
 import StatsScreen from './home/StatsScreen';
 import AddEditCategory from './common/AddEditCategory';
@@ -34,6 +42,8 @@ import RecentList from './common/RecentList';
 import {SettingsScreen} from './settings/SettingsScreen';
 import CurrencyScreen from './settings/CurrencyScreen';
 import {getConfigurations} from './database/common/CommonController';
+import ThemeScreen from './settings/ThemeScreen';
+import {THEME} from './utils/Constants';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -57,12 +67,20 @@ const Home = ({navigation}) => {
     <View style={styles.appContainer}>
       <Tab.Navigator
         screenOptions={({route}) => ({
+          gestureEnabled: true,
+          gestureDirection: 'horizontal',
           lazy: true,
           headerShown: false,
           tabBarStyle: {
-            height: 60,
+            height: 64,
             borderTopWidth: 0,
-            shadowColor: colors.brand.brandLight,
+            shadowColor: colors.theme[THEME].brandMedium,
+            elevation: 20,
+            shadowOffset: {
+              width: 20,
+              height: 20,
+            },
+            shadowOpacity: 1,
           },
           tabBarShowLabel: false,
           tabBarIcon: ({focused, color, size}) => {
@@ -74,7 +92,9 @@ const Home = ({navigation}) => {
                   <CommunityIcon
                     name={'home-outline'}
                     color={
-                      focused ? colors.brand.brandDark : colors.grayCardText
+                      focused
+                        ? colors.theme[THEME].brandDark
+                        : colors.theme[THEME].textCardGray
                     }
                     size={28}
                   />
@@ -85,7 +105,9 @@ const Home = ({navigation}) => {
                   <CommunityIcon
                     name={'chart-arc'}
                     color={
-                      focused ? colors.brand.brandDark : colors.grayCardText
+                      focused
+                        ? colors.theme[THEME].brandDark
+                        : colors.theme[THEME].textCardGray
                     }
                     size={28}
                   />
@@ -99,7 +121,9 @@ const Home = ({navigation}) => {
                   <CommunityIcon
                     name={'bank-outline'}
                     color={
-                      focused ? colors.brand.brandDark : colors.grayCardText
+                      focused
+                        ? colors.theme[THEME].brandDark
+                        : colors.theme[THEME].textCardGray
                     }
                     size={28}
                   />
@@ -110,7 +134,9 @@ const Home = ({navigation}) => {
                   <Icon
                     name={'settings'}
                     color={
-                      focused ? colors.brand.brandDark : colors.grayCardText
+                      focused
+                        ? colors.theme[THEME].brandDark
+                        : colors.theme[THEME].textCardGray
                     }
                     size={28}
                   />
@@ -143,6 +169,18 @@ const Home = ({navigation}) => {
   );
 };
 
+const config = {
+  animation: 'spring',
+  config: {
+    stiffness: 1000,
+    damping: 50,
+    mass: 3,
+    overshootClamping: false,
+    restDisplacementThreshold: 0.01,
+    restSpeedThreshold: 0.01,
+  },
+};
+
 const Router = () => {
   const dispatch = useDispatch();
   const intializeStore = async () => {
@@ -154,6 +192,16 @@ const Router = () => {
     dispatch({type: UPDATE_INCOME_LIST, payload: incomeList});
     const configs = await getConfigurations();
     dispatch({type: UPDATE_CONFIGURATIONS, payload: configs});
+    const expenseCategories = await getExpenseCaetegories();
+    dispatch({
+      type: UPDATE_EXPENSE_CATEGORIES_LIST,
+      payload: expenseCategories,
+    });
+    const incomeCategories = await getIncomeCaetegories();
+    dispatch({
+      type: UPDATE_INCOME_CATEGORIES_LIST,
+      payload: incomeCategories,
+    });
     // const currencyList = await getConfigurations();
     // dispatch({type: UPDATE_CURRENCY_TYPES, payload: configs});
   };
@@ -164,15 +212,26 @@ const Router = () => {
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={({route}) => ({
+          gestureEnabled: true,
+          gestureDirection: 'horizontal',
           headerShown: false,
-          headerBackButtonMenuEnabled: true,
+          // headerBackButtonMenuEnabled: true,
         })}>
         <Stack.Screen
           name="Home"
           component={Home}
           options={{title: 'Welcome'}}
         />
-        <Stack.Screen name="AddType" component={AddType} />
+        <Stack.Screen
+          // options={{
+          //   transitionSpec: {
+          //     open: config,
+          //     close: config,
+          //   },
+          // }}
+          name="AddType"
+          component={AddType}
+        />
         <Stack.Screen
           name="AddExpense"
           component={AddEditExpense}
@@ -193,11 +252,18 @@ const Router = () => {
           component={RecentList}
           initialParams={{}}
         />
-        <Stack.Screen
-          name="CurrencyScreen"
-          component={CurrencyScreen}
-          initialParams={{}}
-        />
+        <Stack.Group>
+          <Stack.Screen
+            name="CurrencyScreen"
+            component={CurrencyScreen}
+            initialParams={{}}
+          />
+          <Stack.Screen
+            name="ThemeScreen"
+            component={ThemeScreen}
+            initialParams={{}}
+          />
+        </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>
   );

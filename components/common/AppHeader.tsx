@@ -1,36 +1,87 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
-
-import React from 'react';
-// import VectorImage from 'react-native-vector-image';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import React, {useRef} from 'react';
+import {Animated, Image, StatusBar, StyleSheet, Text, View} from 'react-native';
 import {colors, commonStyles, utils} from '../styles/theme';
-import IconMenu from '../icons/IconMenu';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
-import color from 'material-ui-colors/dist/amber';
+import {useSelector} from 'react-redux';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import { THEME } from '../utils/Constants';
 
 interface IAppHeader {
   navigation?: any;
   homeScreen?: boolean;
   backTo?: string;
   title?: string;
+  // headerStyle?: any;
+  // imageStyle?: any;
+  // titleStyle?: any;
+  // scrollY: Animated.Value;
 }
+
+const HEADER_HEIGHT = 150;
 
 const AppHeader = ({
   homeScreen = true,
   backTo = '',
   navigation,
   title = '',
-}: IAppHeader) => {
+}: // headerStyle,
+// imageStyle,
+// titleStyle,
+// scrollY,
+IAppHeader) => {
+  // const maxHeight = 100;
+  // const minHeight = 50;
+  // const scrollX = useSelector((state: any) => {
+  //   animatedHeaderValue.setValue(state.common.scrollX);
+  //   return state.common.scrollX;
+  // });
+  // const scrollY = useRef(new Animated.Value(scrollX)).current;
+
+  // const animatedHeaderHeight = scrollY.interpolate({
+  //   inputRange: [0, maxHeight - minHeight],
+  //   outputRange: [maxHeight, minHeight],
+  //   extrapolate: 'clamp',
+  // });
+
+  // let animatedHeaderValue = new Animated.Value(0);
+  // const maxHeight = 150;
+  // const minHeight = 50;
+  // const scrollX = useSelector((state: any) => {
+  //   animatedHeaderValue.setValue(state.common.scrollX);
+  //   return state.common.scrollX;
+  // });
+  // // const scrollY = useRef(new Animated.Value(scrollX)).current;
+
+  // const animatedHeaderHeight = animatedHeaderValue.interpolate({
+  //   inputRange: [0, maxHeight - minHeight],
+  //   outputRange: [maxHeight, minHeight],
+  //   extrapolate: 'clamp',
+  // });
+  // const animatedImgHeight = animatedHeaderValue.interpolate({
+  //   inputRange: [0, maxHeight - minHeight],
+  //   outputRange: [90, 50],
+  //   extrapolate: 'clamp',
+  // });
+
+  // const offset = useRef(new Animated.Value(0)).current;
+  // const insets = useSafeAreaInsets();
+
+  // console.log(insets);
+
+  // const headerHeight = offset.interpolate({
+  //   inputRange: [0, HEADER_HEIGHT + insets.top],
+  //   outputRange: [HEADER_HEIGHT + insets.top, insets.top + 44],
+  //   extrapolate: 'clamp',
+  // });
+
+  // animatedHeaderValue.setValue(scrollX);
+
   return (
-    <View style={styles.headerContainer}>
+    <Animated.View style={[styles.headerContainer]}>
+      <StatusBar
+        backgroundColor={colors.theme[THEME].brandLight}
+        barStyle={'dark-content'}
+      />
       {homeScreen ? (
         <View style={styles.headerDesc}>
           <Text style={styles.headerDescTitle}>MoneyAssist</Text>
@@ -40,7 +91,7 @@ const AppHeader = ({
         </View>
       ) : (
         <Icon
-          color={colors.brand.brandMedium}
+          color={colors.theme[THEME].brandMedium}
           onPress={() => {
             if (backTo === '') {
               navigation.goBack();
@@ -55,11 +106,16 @@ const AppHeader = ({
         />
       )}
       {title !== '' && <Text style={styles.appTitle}>{title}</Text>}
-      <Image
-        style={styles.headerContainer.img}
+      <Animated.Image
+        style={[
+          styles.headerContainer.img,
+          {
+            // height: animatedImgHeight,
+          },
+        ]}
         source={require('../../assets/img/dp.jpeg')}
       />
-    </View>
+    </Animated.View>
   );
 };
 
@@ -72,7 +128,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginVertical: 20,
+    paddingVertical: 20,
     img: {
       width: 50,
       height: 90,
@@ -82,18 +138,18 @@ const styles = StyleSheet.create({
   appTitle: {
     fontSize: utils.fontSize.large,
     fontFamily: utils.fontFamily.Bold,
-    color: colors.black,
+    color: colors.theme[THEME].textDark,
   },
   headerDesc: {
     paddingVertical: 20,
   },
   headerDescTitle: {
-    color: colors.black,
+    color: colors.theme[THEME].textDark,
     fontSize: utils.fontSize.xxlarge,
     fontFamily: utils.fontFamily.Bold,
   },
   headerDescSubTitle: {
-    color: colors.grayCardText,
+    color: colors.theme[THEME].textCardGray,
     fontSize: utils.fontSize.xsmall,
     fontFamily: utils.fontFamily.Regular,
   },

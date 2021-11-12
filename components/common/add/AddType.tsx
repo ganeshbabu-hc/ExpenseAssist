@@ -6,33 +6,31 @@ import {colors, commonStyles} from '../../styles/theme';
 import AppHeader from '../AppHeader';
 import TypeList from './TypeList';
 import RecentList from '../RecentList';
+import ScrollViewWrapper from '../ScrollViewWrapper';
 
 const AddType = ({navigation}) => {
   return (
-    <SafeAreaView style={styles.typeWrapper}>
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        keyboardDismissMode="interactive"
-        keyboardShouldPersistTaps="always">
-        <View style={commonStyles.container}>
-          <AppHeader
-            homeScreen={false}
-            navigation={navigation}
-            title="Add"
-            backTo="Home"
-          />
-        </View>
+    <SafeAreaView style={commonStyles.screen}>
+      <View style={commonStyles.container}>
+        <AppHeader
+          homeScreen={false}
+          navigation={navigation}
+          title="Add"
+          backTo="Home"
+        />
+      </View>
+      <ScrollViewWrapper>
         <TypeList navigation={navigation} />
         <RecentList navigation={navigation} />
-      </ScrollView>
+      </ScrollViewWrapper>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  typeWrapper: {
-    backgroundColor: colors.white,
-  },
+  // typeWrapper: {
+  //   backgroundColor: colors.theme[THEME].textLight,
+  // },
 });
 
 export default AddType;

@@ -35,7 +35,12 @@ import {IIncome} from '../database/income/IncomeTypes';
 import {removeIncomes, getIncomes} from '../database/income/IncomeController';
 import {FadeInFlatList} from '@ja-ka/react-native-fade-in-flatlist';
 import AppHeader from './AppHeader';
-import { ICurrency } from '../database/common/CurrencyController';
+import {ICurrency} from '../database/common/CurrencyController';
+import PiggyBank from '../illustrations/PiggyBank';
+import AddInfo from '../illustrations/AddInfo';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import ScrollViewWrapper from './ScrollViewWrapper';
+import {THEME} from '../utils/Constants';
 
 interface IRecentList {
   limit?: number;
@@ -107,7 +112,7 @@ const RecentListItem = ({item, navigation, type, index}: IRecentListItem) => {
           {
             translateY: fadeAnim.interpolate({
               inputRange: [0, 1],
-              outputRange: [100, 0], // 0 : 150, 0.5 : 75, 1 : 0
+              outputRange: [100, 0],
             }),
           },
         ],
@@ -129,7 +134,7 @@ const RecentListItem = ({item, navigation, type, index}: IRecentListItem) => {
                 <FeatherIcon
                   name="trash-2"
                   size={commonStyles.icon.width}
-                  color={colors.brand.brandMedium}
+                  color={colors.theme[THEME].brandMedium}
                 />
               </View>
             ),
@@ -147,7 +152,7 @@ const RecentListItem = ({item, navigation, type, index}: IRecentListItem) => {
                 <FeatherIcon
                   name="edit"
                   size={commonStyles.icon.width}
-                  color={colors.brand.brandMedium}
+                  color={colors.theme[THEME].brandMedium}
                 />
               </View>
             ),
@@ -179,8 +184,8 @@ const RecentListItem = ({item, navigation, type, index}: IRecentListItem) => {
                 {
                   backgroundColor:
                     index % 2 === 0
-                      ? colors.brand.brandMedium
-                      : colors.brand.brandMediumDark,
+                      ? colors.theme[THEME].brandMedium
+                      : colors.theme[THEME].brandMediumDark,
                 },
               ]}>
               <IconMap
@@ -189,7 +194,7 @@ const RecentListItem = ({item, navigation, type, index}: IRecentListItem) => {
                     ? item.incomeCategoryIcon ?? 'payment'
                     : item.expenseCategoryIcon ?? 'payment'
                 }
-                color={colors.white}
+                color={colors.theme[THEME].textLight}
               />
             </View>
             <View>
@@ -207,10 +212,6 @@ const RecentListItem = ({item, navigation, type, index}: IRecentListItem) => {
               </Text>
             </View>
           </View>
-          {/* <View style={recentList.listItemAmountWrapper}>
-            <Text style={recentList.listItemAmount}>{item.amount}</Text>
-            <Text style={recentList.listItemPayment}>{item.paymentTitle}</Text>
-          </View> */}
         </Pressable>
       </Swipeout>
     </Animated.View>
@@ -228,7 +229,14 @@ const RecentList = ({
   type = route?.params?.type || type;
   // const {header = false, routeLimit = 5, routeType} = route.params;
   const renderItem = ({item, index}: any) => {
-    return <RecentListItem item={item} index={index} navigation={navigation} />;
+    return (
+      <RecentListItem
+        item={item}
+        index={index}
+        navigation={navigation}
+        type={type}
+      />
+    );
   };
 
   const recentsList = useSelector((state: any) => {
@@ -238,56 +246,84 @@ const RecentList = ({
     return state.expense.expenseList;
   });
   return (
-    <ScrollView>
-      <View style={[commonStyles.container, recentList.listWrapper]}>
+    <SafeAreaView style={commonStyles.screen}>
+      <View style={commonStyles.container}>
         {header && <AppHeader navigation={navigation} homeScreen={false} />}
-        <View style={recentList.listHeader}>
-          <Text style={[commonStyles.title, recentList.listTitle]}>
-            Recent {header ? (type === 'income' ? 'incomes' : 'expenses') : ''}
-          </Text>
-          {!header && (
-            <Pressable
-              onPress={() => {
-                navigation.navigate('RecentList', {
-                  type,
-                  limit: 10,
-                  header: true,
-                });
-              }}
-              style={recentList.listHeaderIconWrapper}>
-              <Icon
-                style={recentList.listHeaderIcon}
-                name="more-horiz"
-                size={commonStyles.icon.width}
-                color={colors.brand.brandMedium}
-              />
-            </Pressable>
-          )}
-          {header && (
-            <Pressable
-              onPress={() => {
-                if (type === 'expense') {
-                  navigation.navigate('AddExpense');
-                } else {
-                  navigation.navigate('AddIncome');
-                }
-              }}
-              style={recentList.listHeaderIconWrapper}>
-              <Icon
-                style={recentList.listHeaderIcon}
-                name="add"
-                size={commonStyles.icon.width}
-                color={colors.brand.brandMedium}
-              />
-            </Pressable>
+      </View>
+      <ScrollViewWrapper>
+        <View style={[commonStyles.container, recentList.listWrapper]}>
+          <View style={recentList.listHeader}>
+            <Text style={[commonStyles.title, recentList.listTitle]}>
+              {header
+                ? type === 'income'
+                  ? 'Incomes Transactions'
+                  : 'Expense Transactions'
+                : 'Transactions'}
+            </Text>
+            {!header && (
+              <Pressable
+                onPress={() => {
+                  navigation.navigate('RecentList', {
+                    type,
+                    limit: 10,
+                    header: true,
+                  });
+                }}
+                style={recentList.listHeaderIconWrapper}>
+                <Icon
+                  style={recentList.listHeaderIcon}
+                  name="more-horiz"
+                  size={commonStyles.icon.width}
+                  color={colors.theme[THEME].brandMedium}
+                />
+              </Pressable>
+            )}
+            {header && (
+              <Pressable
+                onPress={() => {
+                  if (type === 'expense') {
+                    navigation.navigate('AddExpense');
+                  } else {
+                    navigation.navigate('AddIncome');
+                  }
+                }}
+                style={recentList.listHeaderIconWrapper}>
+                <Icon
+                  style={recentList.listHeaderIcon}
+                  name="add"
+                  size={commonStyles.icon.width}
+                  color={colors.theme[THEME].brandMedium}
+                />
+              </Pressable>
+            )}
+          </View>
+          <FlatList data={recentsList} renderItem={renderItem} />
+          {recentsList.length < 1 && (
+            <View style={commonStyles.illustrationWrapper}>
+              <AddInfo style={commonStyles.illustration} />
+              <Text style={commonStyles.illustrationTitle}>
+                {`Start by adding ${type}`}
+              </Text>
+              <Pressable
+                onPress={() => {
+                  if (type === 'expense') {
+                    navigation.navigate('AddExpense');
+                  } else {
+                    navigation.navigate('AddIncome');
+                  }
+                }}
+                style={commonStyles.illustrationTitleBtn}>
+                <FeatherIcon
+                  name="plus"
+                  color={colors.theme[THEME].textLight}
+                  size={32}
+                />
+              </Pressable>
+            </View>
           )}
         </View>
-        {recentsList.length < 1 && (
-          <Text style={recentList.empty}>Not available</Text>
-        )}
-        <FlatList data={recentsList} renderItem={renderItem} />
-      </View>
-    </ScrollView>
+      </ScrollViewWrapper>
+    </SafeAreaView>
   );
 };
 

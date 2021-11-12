@@ -1,8 +1,8 @@
 import {createStore, combineReducers} from 'redux';
 import {CommonReducer} from '../reducers/CommonReducer';
 import CurrencyReducer from '../reducers/CurrencyReducer';
-import ExpenseReducer from '../reducers/ExpenseReeducer';
-import IncomeReducer from '../reducers/IncomeReeducer';
+import ExpenseReducer from '../reducers/ExpenseReducer';
+import IncomeReducer from '../reducers/IncomeReducer';
 import SummaryReducer from '../reducers/SummaryReducer';
 const rootReducer = combineReducers({
   common: CommonReducer,

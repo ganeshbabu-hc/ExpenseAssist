@@ -1,10 +1,17 @@
 import {ICurrency} from '../components/database/common/CurrencyController';
 import {ISummary} from '../components/database/common/SummaryController';
-import {IExpense} from '../components/database/expense/ExpenseTypes';
-import {IIncome} from '../components/database/income/IncomeTypes';
+import {
+  IExpense,
+  IExpenseCategory,
+} from '../components/database/expense/ExpenseTypes';
+import {
+  IIncome,
+  IIncomeCategory,
+} from '../components/database/income/IncomeTypes';
 
 export interface IExpenseState {
   expenseList: IExpense[];
+  expenseCategoryList: IExpenseCategory[];
 }
 
 export interface ICurrencyTypeState {
@@ -12,6 +19,7 @@ export interface ICurrencyTypeState {
 }
 export interface IIncomeState {
   incomeList: IIncome[];
+  incomeCategoryList: IIncomeCategory[];
 }
 
 export interface ISummaryState {
