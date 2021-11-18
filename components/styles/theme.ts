@@ -1,7 +1,7 @@
-import {StyleSheet} from 'react-native';
+import {ColorSchemeName, StyleSheet} from 'react-native';
 import {deepOrange, deepPurple, grey, pink} from 'material-ui-colors';
 import color from 'material-ui-colors/dist/amber';
-import { THEME } from '../utils/Constants';
+import {THEME} from '../utils/Constants';
 
 // https://material.io/design/color/the-color-system.html#tools-for-picking-colors
 
@@ -25,6 +25,10 @@ interface IColorMapping {
   textGray: string;
   textCardGray: string;
   textLight: string;
+  bgLight: string;
+  graphColorScheme: string[];
+  textBrandMedium: string;
+  textBrandDark: string;
 }
 interface ITheme {
   [key: string]: IColorMapping;
@@ -54,86 +58,142 @@ export let colors: IColors = {
       textGray: grey[500],
       textCardGray: grey[400],
       textLight: '#fff',
+      bgLight: '#fff',
+      textBrandMedium: deepPurple.A700,
+      textBrandDark: deepPurple[900],
+      graphColorScheme: [
+        // deepPurple[900],
+        // deepPurple[800],
+        deepPurple[900],
+        deepPurple[700],
+        deepPurple[500],
+        deepPurple[300],
+        deepPurple[100],
+        deepPurple[600],
+        deepPurple[700],
+      ],
     },
-    red: {
-      // brandLight: deepPurple[50],
-      brandLight: 'hsla(230, 0%, 98%, 1)',
-      brandMedium: deepPurple.A700,
-      brandMediumDark: deepPurple[200],
-      brandDark: deepPurple[900],
-      brandDanger: pink[600],
-      textDark: '#f45',
-      textGray: grey[500],
-      textCardGray: grey[400],
-      textLight: '#fff',
-    },
+    //   red: {
+    //     // brandLight: deepPurple[50],
+    //     brandLight: 'hsla(230, 0%, 98%, 1)',
+    //     brandMedium: deepPurple.A700,
+    //     brandMediumDark: deepPurple[200],
+    //     brandDark: deepPurple[900],
+    //     brandDanger: pink[600],
+    //     textDark: '#f45',
+    //     textGray: grey[500],
+    //     textCardGray: grey[400],
+    //     textLight: '#fff',
+    //     bgLight: '#fff',
+    //     graphColorScheme: [
+    //       'hsla(251, 69%, 5%, 1)',
+    //       'hsla(251, 69%, 10%, 1)',
+    //       'hsla(251, 69%, 15%, 1)',
+    //       'hsla(251, 69%, 20%, 1)',
+    //       'hsla(251, 69%, 25%, 1)',
+    //       'hsla(251, 69%, 23%, 1)',
+    //       'hsla(251, 69%, 35%, 1)',
+    //       'hsla(251, 69%, 40%, 1)',
+    //       'hsla(251, 69%, 45%, 1)',
+    //       'hsla(251, 69%, 50%, 1)',
+    //       'hsla(251, 69%, 55%, 1)',
+    //       'hsla(251, 69%, 60%, 1)',
+    //       'hsla(251, 69%, 65%, 1)',
+    //       'hsla(251, 69%, 70%, 1)',
+    //       'hsla(251, 69%, 75%, 1)',
+    //       'hsla(251, 69%, 80%, 1)',
+    //       'hsla(251, 69%, 85%, 1)',
+    //       'hsla(251, 69%, 90%, 1)',
+    //     ],
+    //   },
+    // },
+    // brand: {
+    //   // brandLight: deepPurple[50],
+    //   brandLight: 'hsla(230, 0%, 98%, 1)',
+    //   brandMedium: deepPurple.A700,
+    //   brandMediumDark: deepPurple[200],
+    //   brandDark: deepPurple[900],
+    //   brandDanger: pink[600],
+    //   textDark: '#000',
+    //   textGray: grey[500],
+    //   textCardGray: grey[400],
+    //   textLight: '#fff',
+    //   graphColorScheme: [
+    //     'hsla(251, 69%, 5%, 1)',
+    //     'hsla(251, 69%, 10%, 1)',
+    //     'hsla(251, 69%, 15%, 1)',
+    //     'hsla(251, 69%, 20%, 1)',
+    //     'hsla(251, 69%, 25%, 1)',
+    //     'hsla(251, 69%, 23%, 1)',
+    //     'hsla(251, 69%, 35%, 1)',
+    //     'hsla(251, 69%, 40%, 1)',
+    //     'hsla(251, 69%, 45%, 1)',
+    //     'hsla(251, 69%, 50%, 1)',
+    //     'hsla(251, 69%, 55%, 1)',
+    //     'hsla(251, 69%, 60%, 1)',
+    //     'hsla(251, 69%, 65%, 1)',
+    //     'hsla(251, 69%, 70%, 1)',
+    //     'hsla(251, 69%, 75%, 1)',
+    //     'hsla(251, 69%, 80%, 1)',
+    //     'hsla(251, 69%, 85%, 1)',
+    //     'hsla(251, 69%, 90%, 1)',
+    //   ],
+    // },
+    // brand: {
+    //   // brandLight: deepPurple[50],
+    //   brandLight: '#131d2a',
+    //   brandMedium: '#2e4765',
+    //   brandMediumDark: '#172231',
+    //   brandDark: '#172231',
+    //   brandDanger: pink[600],
+    // },
+
+    // #131d2a
+    // brand: {
+    //   brandLight: `hsla(${hue}, 100%, 98%, 1)`,
+    //   brandMedium: `hsla(${hue}, 100%, 65%, 1)`,
+    //   brandMediumDark: `hsla(${hue}, 100%, 45%, 1)`,
+    //   brandDark: `hsla(${hue}, 100%, 30%, 1)`,
+    //   brandDanger: pink[600],
+    // },
+    // hsla(267, 100%, 50%, 1)
+    //Brand Orance
+    // brandLight: deepOrange[50],
+    // brandMedium: deepOrange.A700,
+    // brandMediumDark: deepOrange[200],
+    // brandDark: deepOrange[900],
+    // brandDanger: pink[600],
+
+    //Brand Orance
+    // brandLight: '#e5e5e5',
+    // brandMedium: '#fca311',
+    // brandMediumDark: '#14213d',
+    // brandDark: '#000000',
+    // brandDanger: '#E83641',
+
+    //Brand violet
+    // brandLight: '#EEF9EC',
+    // brandMedium: '#3B6E91',
+    // brandMediumDark: '#9BD4D6',
+    // brandDark: '#1C2D4C',
+    // brandDanger: '#E83641',
+
+    //Sky blue
+    // brandLight: '#f2ffff',
+    // brandMedium: '#00b4d8',
+    // brandMediumDark: '#023e8a',
+    // brandDark: '#03045e',
+    // brandDanger: '#E83641',
+
+    // black: '#000',
+    // white: '#fff',
+    // grayText: '#85848B',
+    // grayCardText: '#ADADAD',
+    // gray50: grey[50],
+    // grayText: grey[500],
+    // grayCardText: grey[400],
+    // transparent: 'rgba(255,255,255,0)',
   },
-  brand: {
-    // brandLight: deepPurple[50],
-    brandLight: 'hsla(230, 0%, 98%, 1)',
-    brandMedium: deepPurple.A700,
-    brandMediumDark: deepPurple[200],
-    brandDark: deepPurple[900],
-    brandDanger: pink[600],
-    textDark: '#000',
-    textGray: grey[500],
-    textCardGray: grey[400],
-    textLight: '#fff',
-  },
-  // brand: {
-  //   // brandLight: deepPurple[50],
-  //   brandLight: '#131d2a',
-  //   brandMedium: '#2e4765',
-  //   brandMediumDark: '#172231',
-  //   brandDark: '#172231',
-  //   brandDanger: pink[600],
-  // },
-
-  // #131d2a
-  // brand: {
-  //   brandLight: `hsla(${hue}, 100%, 98%, 1)`,
-  //   brandMedium: `hsla(${hue}, 100%, 65%, 1)`,
-  //   brandMediumDark: `hsla(${hue}, 100%, 45%, 1)`,
-  //   brandDark: `hsla(${hue}, 100%, 30%, 1)`,
-  //   brandDanger: pink[600],
-  // },
-  // hsla(267, 100%, 50%, 1)
-  //Brand Orance
-  // brandLight: deepOrange[50],
-  // brandMedium: deepOrange.A700,
-  // brandMediumDark: deepOrange[200],
-  // brandDark: deepOrange[900],
-  // brandDanger: pink[600],
-
-  //Brand Orance
-  // brandLight: '#e5e5e5',
-  // brandMedium: '#fca311',
-  // brandMediumDark: '#14213d',
-  // brandDark: '#000000',
-  // brandDanger: '#E83641',
-
-  //Brand violet
-  // brandLight: '#EEF9EC',
-  // brandMedium: '#3B6E91',
-  // brandMediumDark: '#9BD4D6',
-  // brandDark: '#1C2D4C',
-  // brandDanger: '#E83641',
-
-  //Sky blue
-  // brandLight: '#f2ffff',
-  // brandMedium: '#00b4d8',
-  // brandMediumDark: '#023e8a',
-  // brandDark: '#03045e',
-  // brandDanger: '#E83641',
-
-  // black: '#000',
-  // white: '#fff',
-  // grayText: '#85848B',
-  // grayCardText: '#ADADAD',
-  // gray50: grey[50],
-  // grayText: grey[500],
-  // grayCardText: grey[400],
-  // transparent: 'rgba(255,255,255,0)',
 };
 
 // setTimeout(() => {
@@ -156,6 +216,8 @@ export const utils = {
     xlarge: 20,
     xxlarge: 24,
     xxxlarge: 28,
+    heroSubTitle: 32,
+    heroTitle: 40,
   },
   // fontFamily: {
   //   ExtraLight: 'Nunito-ExtraLight',
@@ -206,7 +268,7 @@ export const utils = {
 };
 
 export const ripple = {
-  color: colors.theme[THEME].brandMedium,
+  color: colors.theme[THEME].textBrandMedium,
 };
 
 export const formStyles = StyleSheet.create({
@@ -340,7 +402,7 @@ export const commonStyles = StyleSheet.create({
       backgroundColor: colors.theme[THEME].textLight,
       text: {
         fontSize: utils.fontSize.small,
-        color: colors.theme[THEME].textCardGray,
+        color: colors.theme[THEME].textGray,
       },
       totalText: {
         fontFamily: utils.fontFamily.Bold,
@@ -349,7 +411,7 @@ export const commonStyles = StyleSheet.create({
     },
     brandMedium: {
       elevation: 10,
-      shadowColor: colors.theme[THEME].brandMedium,
+      shadowcolor: colors.theme[THEME].textBrandMedium,
       backgroundColor: colors.theme[THEME].brandMedium,
       text: {
         fontSize: utils.fontSize.small,
@@ -399,7 +461,7 @@ export const commonStyles = StyleSheet.create({
   },
   illustration: {},
   illustrationTitle: {
-    color: colors.theme[THEME].brandMedium,
+    color: colors.theme[THEME].textBrandMedium,
     fontSize: utils.fontSize.medium,
     fontFamily: utils.fontFamily.Bold,
     paddingVertical: 30,
@@ -413,9 +475,35 @@ export const commonStyles = StyleSheet.create({
     padding: 10,
     marginBottom: 20,
   },
-  // illustrationTitleIcon: {
-
-  // }
+  bottomTabContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    elevation: 10,
+    shadowcolor: colors.theme[THEME].textBrandMedium,
+    // paddingTop: 10,
+    shadowOffset: {
+      width: 10,
+      height: 10,
+    },
+  },
+  bottomTab: {
+    padding: 14,
+  },
+  bottomTabTextActive: {
+    fontSize: utils.fontSize.medium,
+    color: colors.theme[THEME].textBrandMedium,
+    fontFamily: utils.fontFamily.Bold,
+  },
+  bottomTabText: {
+    fontSize: utils.fontSize.medium,
+    color: colors.theme[THEME].textGray,
+    fontFamily: utils.fontFamily.Bold,
+  },
+  contentContainerStyle: {
+    paddingBottom: 20,
+  },
 });
 
 export const recentList = StyleSheet.create({
@@ -480,6 +568,7 @@ export const recentList = StyleSheet.create({
   listWrapper: {
     // backgroundColor: colors.theme[THEME].textLight,
     // paddingHorizontal: 10,
+    marginTop: 10,
     display: 'flex',
     flex: 1,
     height: '100%',
@@ -518,6 +607,18 @@ export const recentList = StyleSheet.create({
     fontFamily: utils.fontFamily.Bold,
     // maxWidth: '90%',
   },
+  listItemInfoWrapper: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
+    flex: 1,
+  },
+  listItemInfoIcon: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   listItemAmountWrapper: {
     // marginRight: 10,
     display: 'flex',
@@ -542,13 +643,13 @@ export const recentList = StyleSheet.create({
     marginTop: 4,
   },
   modalPayment: {
-    color: colors.theme[THEME].brandMedium,
+    color: colors.theme[THEME].textBrandMedium,
   },
   modalDateAdded: {
-    color: colors.theme[THEME].brandMedium,
+    color: colors.theme[THEME].textBrandMedium,
   },
   modalDesc: {
-    color: colors.theme[THEME].brandMedium,
+    color: colors.theme[THEME].textBrandMedium,
   },
 });
 
@@ -581,7 +682,7 @@ export const categoryList = StyleSheet.create({
   activeCategory: {
     color: colors.theme[THEME].brandLight,
     position: 'relative',
-    paddingRight: 8,
+    marginRight: 8,
   },
   categoryItem: {
     display: 'flex',

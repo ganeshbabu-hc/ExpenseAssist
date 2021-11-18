@@ -3,6 +3,8 @@ import {FlatList, Pressable, StyleSheet, Text, View} from 'react-native';
 import {commonStyles, colors, utils, ripple} from '../../styles/theme';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import {THEME} from '../../utils/Constants';
+import IconMap from '../IconMap';
+import t from '../translations/Translation';
 
 interface ITypeItem {
   id: number;
@@ -13,16 +15,16 @@ interface ITypeItem {
 
 const typeList: ITypeItem[] = [
   // {id: 0, title: '', icon: 'add', route: ''},
-  {id: 1, title: 'Add \nExpense', icon: 'payments', route: 'AddExpense'},
+  {id: 1, title: t('addExpense'), icon: 'payments', route: 'AddExpense'},
   {
     id: 2,
-    title: 'Add \nIncome',
+    title: t('addIncome'),
     icon: 'account-balance-wallet',
     route: 'AddIncome',
   },
   {
     id: 3,
-    title: 'Add \nReminder',
+    title: t('addReminder'),
     icon: 'alarm',
     route: 'AddReminder',
   },
@@ -68,9 +70,9 @@ const TypeList = ({navigation}: any) => {
           navigation.navigate(item.route, {});
         }}>
         <View style={styles.typeCard}>
-          <Icon
+          <IconMap
             style={styles.typeCard.icon}
-            name={item.icon}
+            iconName={item.icon}
             color={cardType.text.color}
             size={commonStyles.icon.width}
           />
@@ -83,18 +85,16 @@ const TypeList = ({navigation}: any) => {
   };
 
   return (
-    <View style={styles.typeListWrapper}>
-      <View style={styles.typeListContainer}>
-        <FlatList
-          style={styles.list}
-          showsHorizontalScrollIndicator={false}
-          horizontal
-          scrollEnabled
-          data={typeList}
-          renderItem={({item, index}) => _renderItem(item, index)}
-          keyExtractor={_keyExtractor}
-        />
-      </View>
+    <View style={styles.typeListContainer}>
+      <FlatList
+        style={styles.list}
+        showsHorizontalScrollIndicator={false}
+        horizontal
+        scrollEnabled
+        data={typeList}
+        renderItem={({item, index}) => _renderItem(item, index)}
+        keyExtractor={_keyExtractor}
+      />
     </View>
   );
 };
@@ -102,14 +102,9 @@ const TypeList = ({navigation}: any) => {
 export default TypeList;
 
 const styles = StyleSheet.create({
-  typeListWrapper: {
-    backgroundColor: colors.theme[THEME].textLight,
-  },
   typeListContainer: {
     backgroundColor: colors.theme[THEME].brandLight,
     overflow: 'hidden',
-    paddingBottom: 20,
-    borderBottomRightRadius: 40,
   },
   typeCard: {
     display: 'flex',
@@ -123,7 +118,7 @@ const styles = StyleSheet.create({
     },
   },
   list: {
-    marginTop: 20,
+    marginTop: 10,
   },
   title: {
     marginTop: 20,

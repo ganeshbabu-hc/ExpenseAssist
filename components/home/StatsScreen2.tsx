@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {getMonthlyStats} from '../database/common/StatsController';
+import { TransactionType } from '../database/transaction/TransactionTypes';
 import {colors, commonStyles, utils} from '../styles/theme';
 import { THEME } from '../utils/Constants';
 // import PieChart from 'react-native-d3-charts';
@@ -53,7 +54,7 @@ const chartData = [
 ];
 
 const StatsScreen = ({route}: any) => {
-  const [type, setType] = useState('expense');
+  const [type, setType] = useState(TransactionType.EXPENSE);
   const [data, setData] = useState([]);
   const getStats = async () => {
     const statList = await getMonthlyStats(type);
@@ -61,7 +62,7 @@ const StatsScreen = ({route}: any) => {
     statList.forEach((category: any, index: number) => {
       newData.push({
         amount: category.amount,
-        name: category.expenseCategoryTitle,
+        name: category.transactionCategoryTitle,
         color: deepPurple[(index + 1) * 100],
         legendFontSize: 15,
         legendFontColor: deepPurple[(index + 1) * 100],
@@ -89,14 +90,14 @@ const StatsScreen = ({route}: any) => {
         <Pressable
           style={styles.typeBtn}
           onPress={() => {
-            setType('expense');
+            setType(TransactionType.EXPENSE);
           }}>
           <Text style={styles.typeBtnText}>Expense</Text>
         </Pressable>
         <Pressable
           style={styles.typeBtn}
           onPress={() => {
-            setType('income');
+            setType(TransactionType.INCOME);
           }}>
           <Text style={styles.typeBtnText}>Income</Text>
         </Pressable>

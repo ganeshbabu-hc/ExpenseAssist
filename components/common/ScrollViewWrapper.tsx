@@ -1,33 +1,25 @@
 import React from 'react';
-import {
-  Animated,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-  SafeAreaView,
-  ScrollView,
-  View,
-} from 'react-native';
-import {useDispatch} from 'react-redux';
-import {UPDATE_SCROLLX} from '../../redux/constants/StoreConstants';
-import {commonStyles} from '../styles/theme';
-import AppHeader from './AppHeader';
-const ScrollViewWrapper = (props: any) => {
-  const dispatch = useDispatch();
+import {Animated, ScrollView, ScrollViewProps} from 'react-native';
+interface IScrollViewWrapper extends ScrollViewProps {
+  scrollY: Animated.Value;
+}
 
-  // const scrollY = new Animated.Value(0);
-
+const ScrollViewWrapper = (props: IScrollViewWrapper) => {
   return (
-    <ScrollView
-      // onScroll={Animated.event(
-      //   [{nativeEvent: {contentOffset: {y: scrollY}}}],
-      //   {useNativeDriver: false},
-      // )}
+    <Animated.ScrollView
+      bounces={false}
       contentInsetAdjustmentBehavior="automatic"
       keyboardDismissMode="interactive"
       keyboardShouldPersistTaps="always"
+      // scrollEventThrottle={16}
+      onScroll={Animated.event(
+        [{nativeEvent: {contentOffset: {y: props.scrollY}}}],
+        {useNativeDriver: false},
+      )}
       {...props}>
       {props.children}
-    </ScrollView>
+      <ScrollView></ScrollView>
+    </Animated.ScrollView>
   );
 };
 

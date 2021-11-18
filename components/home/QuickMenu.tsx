@@ -3,7 +3,9 @@ import {FlatList, Pressable, Image, StyleSheet, Text, View} from 'react-native';
 import {colors, commonStyles, utils} from '../styles/theme';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import {deepPurple} from 'material-ui-colors';
-import { THEME } from '../utils/Constants';
+import {THEME} from '../utils/Constants';
+import IconMap from '../common/IconMap';
+import t from '../common/translations/Translation';
 
 interface ITypeItem {
   id: number;
@@ -13,19 +15,20 @@ interface ITypeItem {
 }
 
 const summaryList: ITypeItem[] = [
-  {id: 1, title: 'Remainers', icon: 'payments', route: 'AddExpense'},
+  {
+    id: 1,
+    title: t('pinned'),
+    icon: 'paper-clip',
+    route: 'AddIncome',
+  },
+
   {
     id: 2,
-    title: 'Savings',
-    icon: 'account-balance-wallet',
+    title: t('savings'),
+    icon: 'payments',
     route: 'AddIncome',
   },
-  {
-    id: 3,
-    title: 'Alerts',
-    icon: 'account-balance-wallet',
-    route: 'AddIncome',
-  },
+  {id: 3, title: t('reminders'), icon: 'alarm', route: 'AddExpense'},
 ];
 
 const QuickMenu = ({navigation}) => {
@@ -56,12 +59,12 @@ const QuickMenu = ({navigation}) => {
               styles.iconWrapper,
               index % 2 === 0 ? styles.lightBg : styles.darKbg,
             ]}>
-            <Icon
-              name={item.icon}
+            <IconMap
+              iconName={item.icon}
               color={
                 index % 2 === 0
                   ? colors.theme[THEME].textLight
-                  : colors.theme[THEME].brandDark
+                  : colors.theme[THEME].textBrandDark
               }
               size={commonStyles.icon.width}
             />

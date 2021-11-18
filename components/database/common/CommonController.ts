@@ -1,10 +1,11 @@
 import {
   TNAME_CONFIGURATION,
-  TNAME_EXPENSE_CATEGORIES,
+  TNAME_TRANSACTION_CATEGORIES,
   TNAME_INCOME_CATEGORIES,
+  TNAME_TRANSACTIONS,
 } from '../../utils/Constants';
 import {getDBConnection} from '../DBController';
-import {IExpenseCategory} from '../expense/ExpenseTypes';
+import {ITransactionCategory} from '../transaction/TransactionTypes';
 import {IIncomeCategory} from '../income/IncomeTypes';
 
 export interface IConfiguration {
@@ -37,32 +38,35 @@ export const getConfigurations = async () => {
   return configs;
 };
 
-export const saveExpenseCategory = async (category: IExpenseCategory) => {
+export const saveTransactionCategory = async (
+  category: ITransactionCategory,
+) => {
+  console.log('category---', category);
   const insertQuery =
-    `INSERT OR REPLACE INTO ${TNAME_EXPENSE_CATEGORIES}(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM) values` +
-    `('${category.title}', '${category.description}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)`;
+    `INSERT OR REPLACE INTO ${TNAME_TRANSACTION_CATEGORIES}(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_TYPE) values` +
+    `('${category.title}', '${category.description}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '${category.transactionType}')`;
   const db = await getDBConnection();
   return db.executeSql(insertQuery);
 };
 
-export const saveIncomeCategory = async (category: IIncomeCategory) => {
-  const insertQuery =
-    `INSERT OR REPLACE INTO ${TNAME_INCOME_CATEGORIES}(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM) values` +
-    `('${category.title}', '${category.description}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)`;
+export const trucateTable = async () => {
+  // console.log('In trucateTable table');
+  const insertQuery = `DELETE FROM ${TNAME_TRANSACTIONS}`;
   const db = await getDBConnection();
-  return db.executeSql(insertQuery);
+  const result = await db.executeSql(insertQuery);
+  // console.log('trucateTable', result);
 };
 
 export const dropTables = async () => {
-  console.log('In dropTables table');
+  // console.log('In dropTables table');
   const insertQuery = `DROP TABLE ${TNAME_CONFIGURATION}`;
   const db = await getDBConnection();
   const result = await db.executeSql(insertQuery);
-  console.log('dropTables', result);
+  // console.log('dropTables', result);
 };
 
 export const createConfigTable = async () => {
-  console.log('In creating the config table');
+  // console.log('In creating the config table');
   const insertQuery = `CREATE TABLE CONFIGURATION (
       CONFIGURATION_ID INTEGER PRIMARY KEY AUTOINCREMENT,
       NAME text NOT NULL,
@@ -74,20 +78,27 @@ export const createConfigTable = async () => {
     )`;
   const db = await getDBConnection();
   const result = await db.executeSql(insertQuery);
-  console.log('createConfigTable', result);
+  // console.log('createConfigTable', result);
 };
 
+export const addColumn = async () => {
+  const query = `ALTER TABLE TRANSACTIONS  ADD COLUMN PINNED NUMBER DEFAULT 0;`;
+  const db = await getDBConnection();
+  const result = await db.executeSql(query);
+  console.log(result);
+}
+
 export const insertStatements = async () => {
-  console.log('In insertStatements config table');
+  // console.log('In insertStatements config table');
   const insertQuery =
     'INSERT OR REPLACE INTO CONFIGURATION(NAME, DESCRIPTION, TYPE, VALUE, DATE_ADDED_TLM, DATE_UPDATED_TLM) VALUES (\'currency\', \'\',\'json\', \'{"code":"INR","currencyId":47,"name":"Rupees","symbol":"₹"}\',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);';
   const db = await getDBConnection();
   const result = await db.executeSql(insertQuery);
-  console.log('insertStatements', result);
+  // console.log('insertStatements', result);
 };
 
 export const resetDatabase = async () => {
-  console.log('In resetting DB table');
+  // console.log('In resetting DB table');
   const query = `
   
 DROP TABLE IF EXISTS EXPENSE_ASSIST.CURRENCY_TYPES;
@@ -131,18 +142,18 @@ CREATE TABLE EXPENSE (
 	TITLE text NOT NULL,
 	AMOUNT UNSIGNED BIG INT NOT NULL,
 	PAYMENT_ID INTEGER NOT NULL,
-	EXPENSE_CATEGORY_ID INTEGER NOT NULL,
+	TRANSACTION_CATEGORY_ID INTEGER NOT NULL,
 	DESCRIPTION text,
   	CURRENCY_ID INTEGER NOT NULL,
 	DATE_ADDED_TLM DATE NOT NULL,
 	DATE_UPDATED_TLM DATE NOT NULL,
-	FOREIGN KEY(EXPENSE_CATEGORY_ID) REFERENCES EXPENSE_CATEGORIES(EXPENSE_CATEGORY_ID),
+	FOREIGN KEY(TRANSACTION_CATEGORY_ID) REFERENCES EXPENSE_CATEGORIES(TRANSACTION_CATEGORY_ID),
 	FOREIGN KEY(PAYMENT_ID) REFERENCES PAYMENT_TYPES(PAYMENT_ID),
 	FOREIGN KEY(CURRENCY_ID) REFERENCES CURRENCY_TYPES(CURRENCY_ID)
 );
 
 CREATE TABLE EXPENSE_CATEGORIES (
-	EXPENSE_CATEGORY_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+	TRANSACTION_CATEGORY_ID INTEGER PRIMARY KEY AUTOINCREMENT,
 	TITLE text NOT NULL,
 	DESCRIPTION text,
 	EDITABLE INTEGER NOT NULL DEFAULT 0,
@@ -156,19 +167,19 @@ CREATE TABLE INCOME (
 	TITLE text NOT NULL,
 	AMOUNT UNSIGNED BIG INT NOT NULL,
 	PAYMENT_ID INTEGER NOT NULL,
-	INCOME_CATEGORY_ID INTEGER NOT NULL,
+	TRANSACTION_CATEGORY_ID INTEGER NOT NULL,
 	DESCRIPTION text,
   	CURRENCY_ID INTEGER NOT NULL,
 	DATE_ADDED_TLM DATE NOT NULL,
 	DATE_UPDATED_TLM DATE NOT NULL,
-	FOREIGN KEY(INCOME_CATEGORY_ID) REFERENCES INCOME_CATEGORIES(INCOME_CATEGORY_ID),
+	FOREIGN KEY(TRANSACTION_CATEGORY_ID) REFERENCES INCOME_CATEGORIES(TRANSACTION_CATEGORY_ID),
 	FOREIGN KEY(PAYMENT_ID) REFERENCES PAYMENT_TYPES(PAYMENT_ID),
 	FOREIGN KEY(CURRENCY_ID) REFERENCES CURRENCY_TYPES(CURRENCY_ID)
 );
 
 
 CREATE TABLE INCOME_CATEGORIES (
-	INCOME_CATEGORY_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+	TRANSACTION_CATEGORY_ID INTEGER PRIMARY KEY AUTOINCREMENT,
 	TITLE text NOT NULL,
 	DESCRIPTION text,
 	EDITABLE INTEGER NOT NULL DEFAULT 0,
@@ -378,16 +389,16 @@ INSERT INTO CURRENCY_TYPES (NAME, CODE, SYMBOL, DATE_ADDED_TLM) VALUES ('Zimbabw
 `;
   const db = await getDBConnection();
   const result = await db.executeSql(query);
-  console.log('reset Databse', result);
+  // console.log('reset Databse', result);
 };
 
 // export const saveIncomeCategory = async (category: IExpense[]) => {
 //   const insertQuery =
-//     `INSERT OR REPLACE INTO ${TNAME_EXPENSE_CATEGORIES}(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM) values` +
+//     `INSERT OR REPLACE INTO ${TNAME_TRANSACTION_CATEGORIES}(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM) values` +
 //     expense
 //       .map(
 //         i =>
-//           `('${i.title}', ${i.amount}, ${i.paymentId}, ${i.currencyId},${i.expenseCategoryId}, '${i.description}', '${i.dateAddedTlm}', CURRENT_TIMESTAMP)`,
+//           `('${i.title}', ${i.amount}, ${i.paymentId}, ${i.currencyId},${i.transactionCategoryId}, '${i.description}', '${i.dateAddedTlm}', CURRENT_TIMESTAMP)`,
 //       )
 //       .join(',');
 //   const db = await getDBConnection();
@@ -400,7 +411,7 @@ INSERT INTO CURRENCY_TYPES (NAME, CODE, SYMBOL, DATE_ADDED_TLM) VALUES ('Zimbabw
 //   AMOUNT=${expense.amount},
 //   PAYMENT_ID=${expense.paymentId},
 //   CURRENCY_ID=${expense.currencyId},
-//   EXPENSE_CATEGORY_ID=${expense.expenseCategoryId},
+//   TRANSACTION_CATEGORY_ID=${expense.transactionCategoryId},
 //   DESCRIPTION='${expense.description}',
 //   DATE_ADDED_TLM='${expense.dateAddedTlm}',
 //   DATE_UPDATED_TLM=CURRENT_TIMESTAMP
@@ -409,7 +420,7 @@ INSERT INTO CURRENCY_TYPES (NAME, CODE, SYMBOL, DATE_ADDED_TLM) VALUES ('Zimbabw
 //   return db.executeSql(insertQuery);
 // };
 
-// export const getExpenses = async (limit?: number): Promise<IExpense[]> => {
+// export const getTransactions = async (limit?: number): Promise<IExpense[]> => {
 //   try {
 //     const expenses: IExpense[] = [];
 //     const db = await getDBConnection();
@@ -420,18 +431,18 @@ INSERT INTO CURRENCY_TYPES (NAME, CODE, SYMBOL, DATE_ADDED_TLM) VALUES ('Zimbabw
 //       ex.PAYMENT_ID as paymentId,
 //       ex.TITLE as title,
 //       ex.DESCRIPTION as description,
-//       ex.EXPENSE_CATEGORY_ID as expenseCategoryId,
+//       ex.TRANSACTION_CATEGORY_ID as transactionCategoryId,
 //       ex.AMOUNT as amount,
 //       ex.CURRENCY_ID as currencyId,
 //       ex.DATE_ADDED_TLM as dateAddedTlm,
 //       ex.DATE_UPDATED_TLM as dateUpdatedTlm,
-//       ec.TITLE as expenseCategoryTitle,
-//       ec.CATEGORY_ICON as expenseCategoryIcon,
+//       ec.TITLE as transactionCategoryTitle,
+//       ec.CATEGORY_ICON as transactionCategoryIcon,
 //       pt.TITLE as paymentTitle,
 //       ct.SYMBOL as currencySumbol
 //       FROM ${TNAME_EXPENSE} ex
 //       LEFT JOIN ${TNAME_PAYMENT_TYPES} pt ON ex.PAYMENT_ID = pt.PAYMENT_ID
-//       LEFT JOIN ${TNAME_EXPENSE_CATEGORIES} ec ON ex.EXPENSE_CATEGORY_ID = ec.EXPENSE_CATEGORY_ID
+//       LEFT JOIN ${TNAME_TRANSACTION_CATEGORIES} ec ON ex.TRANSACTION_CATEGORY_ID = ec.TRANSACTION_CATEGORY_ID
 //       LEFT JOIN ${TNAME_CURRENCY_TYPES} ct ON ct.CURRENCY_ID = ex.CURRENCY_ID
 //       ORDER BY ex.DATE_ADDED_TLM DESC
 //       LIMIT ${dataLimit}`,

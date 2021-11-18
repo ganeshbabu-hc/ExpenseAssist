@@ -4,20 +4,13 @@ import AppModal from './components/common/modal/AppModal';
 import {getDBConnection} from './components/database/DBController';
 import Router from './components/Router';
 import configureStore from './redux/store/ConfigureStore';
-import Notifications from './services/Notification';
 // import PushNotificationIOS from '@react-native-community/push-notification-ios';
-import Reminders from '@wiicamp/react-native-reminders';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {
-  createConfigTable,
-  dropTables,
-  getConfigurations,
-  insertStatements,
-  resetDatabase,
-} from './components/database/common/CommonController';
 import {LogBox} from 'react-native';
-import * as Constants from './components/utils/Constants';
-import { setTheme } from './components/utils/Constants';
+import Notification from './components/common/ToastNotification';
+import { addColumn, trucateTable } from './components/database/common/CommonController';
+
+// import {enableFreeze} from 'react-native-screens';
+// enableFreeze(true);
 // TODO: Remove when fixed
 LogBox.ignoreLogs([
   'VirtualizedLists should never be nested inside plain ScrollViews with the same orientation because it can break windowing and other functionality - use another VirtualizedList-backed container instead',
@@ -27,10 +20,11 @@ const store = configureStore();
 
 const App = () => {
   getDBConnection();
-  setTheme();
+  // setTheme();
 
   useEffect(() => {
-    setTheme();
+    // addColumn();
+    // setTheme();
     // resetDatabase();
     // Reminders.requestPermission();
 
@@ -66,10 +60,12 @@ const App = () => {
       // resetDatabase();
       // const result = await getConfigurations();
       // console.log(result);
+      // trucateTable();
     }, 1000);
   }, []);
   return (
     <Provider store={store}>
+      <Notification />
       <Router />
       <AppModal />
     </Provider>

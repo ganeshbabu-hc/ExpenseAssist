@@ -1,97 +1,106 @@
-import React, {useRef} from 'react';
-import {Animated, Image, StatusBar, StyleSheet, Text, View} from 'react-native';
-import {colors, commonStyles, utils} from '../styles/theme';
+import React, {useEffect, useState} from 'react';
+import {Animated, Dimensions, StatusBar, StyleSheet, View} from 'react-native';
+import {
+  colors,
+  commonStyles,
+  containerLeftMargin,
+  utils,
+} from '../styles/theme';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
-import {useSelector} from 'react-redux';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import { THEME } from '../utils/Constants';
+import {THEME} from '../utils/Constants';
+import {useRef} from 'react';
+import t from './translations/Translation';
 
 interface IAppHeader {
   navigation?: any;
   homeScreen?: boolean;
   backTo?: string;
   title?: string;
-  // headerStyle?: any;
-  // imageStyle?: any;
-  // titleStyle?: any;
-  // scrollY: Animated.Value;
+  scrollY?: Animated.Value;
 }
 
-const HEADER_HEIGHT = 150;
+const MIN_HEIGHT = 200;
+const MAX_HEIGHT = 0;
 
 const AppHeader = ({
   homeScreen = true,
   backTo = '',
   navigation,
   title = '',
-}: // headerStyle,
-// imageStyle,
-// titleStyle,
-// scrollY,
-IAppHeader) => {
-  // const maxHeight = 100;
-  // const minHeight = 50;
-  // const scrollX = useSelector((state: any) => {
-  //   animatedHeaderValue.setValue(state.common.scrollX);
-  //   return state.common.scrollX;
-  // });
-  // const scrollY = useRef(new Animated.Value(scrollX)).current;
+  scrollY = new Animated.Value(0),
+}: IAppHeader) => {
+  const backArrow = useRef();
+  const [width, setWidth] = useState(Dimensions.get('window').width);
 
-  // const animatedHeaderHeight = scrollY.interpolate({
-  //   inputRange: [0, maxHeight - minHeight],
-  //   outputRange: [maxHeight, minHeight],
-  //   extrapolate: 'clamp',
-  // });
+  const animatedImgHeight = scrollY?.interpolate({
+    inputRange: [0, MIN_HEIGHT - MAX_HEIGHT],
+    outputRange: [90, 50],
+    extrapolate: 'clamp',
+  });
+  // const windowWidth = Dimensions.get('window').width;
+  // (containerLeftMargin - commonStyles.icon.width * 2)
+  const titleLeftTranslate = scrollY?.interpolate({
+    inputRange: [0, MIN_HEIGHT - MAX_HEIGHT],
+    outputRange: [
+      0,
+      -width / 2 + (containerLeftMargin + commonStyles.icon.width * 2.5),
+    ],
+    extrapolate: 'clamp',
+  });
 
-  // let animatedHeaderValue = new Animated.Value(0);
-  // const maxHeight = 150;
-  // const minHeight = 50;
-  // const scrollX = useSelector((state: any) => {
-  //   animatedHeaderValue.setValue(state.common.scrollX);
-  //   return state.common.scrollX;
-  // });
-  // // const scrollY = useRef(new Animated.Value(scrollX)).current;
+  const fontSizingSubTitle = scrollY?.interpolate({
+    inputRange: [0, MIN_HEIGHT - MAX_HEIGHT],
+    outputRange: [utils.fontSize.xlarge, utils.fontSize.medium],
+    extrapolate: 'clamp',
+  });
 
-  // const animatedHeaderHeight = animatedHeaderValue.interpolate({
-  //   inputRange: [0, maxHeight - minHeight],
-  //   outputRange: [maxHeight, minHeight],
-  //   extrapolate: 'clamp',
-  // });
-  // const animatedImgHeight = animatedHeaderValue.interpolate({
-  //   inputRange: [0, maxHeight - minHeight],
-  //   outputRange: [90, 50],
-  //   extrapolate: 'clamp',
-  // });
+  const fontSizing = scrollY?.interpolate({
+    inputRange: [0, MIN_HEIGHT - MAX_HEIGHT],
+    outputRange: [utils.fontSize.xxlarge, utils.fontSize.large],
+    extrapolate: 'clamp',
+  });
 
-  // const offset = useRef(new Animated.Value(0)).current;
-  // const insets = useSafeAreaInsets();
+  const headerElevation = scrollY?.interpolate({
+    inputRange: [0, MIN_HEIGHT - MAX_HEIGHT],
+    outputRange: [10, 0],
+    extrapolate: 'clamp',
+  });
 
-  // console.log(insets);
-
-  // const headerHeight = offset.interpolate({
-  //   inputRange: [0, HEADER_HEIGHT + insets.top],
-  //   outputRange: [HEADER_HEIGHT + insets.top, insets.top + 44],
-  //   extrapolate: 'clamp',
-  // });
-
-  // animatedHeaderValue.setValue(scrollX);
-
+  useEffect(() => {
+    const dimentionCHange = Dimensions.addEventListener('change', () => {
+      setWidth(Dimensions.get('window').width);
+    });
+    return () => {
+      dimentionCHange.remove();
+    };
+  }, []);
   return (
-    <Animated.View style={[styles.headerContainer]}>
+    <Animated.View
+      style={[
+        styles.headerContainer,
+        {
+          // elevation: headerElevation,
+        },
+      ]}>
       <StatusBar
         backgroundColor={colors.theme[THEME].brandLight}
         barStyle={'dark-content'}
       />
       {homeScreen ? (
         <View style={styles.headerDesc}>
-          <Text style={styles.headerDescTitle}>MoneyAssist</Text>
-          <Text style={styles.headerDescSubTitle}>
-            Your expense manging partner
-          </Text>
+          <Animated.Text
+            style={[styles.headerDescTitle, {fontSize: fontSizing}]}>
+            {t('title')}
+          </Animated.Text>
+          <Animated.Text style={styles.headerDescSubTitle}>
+            {t('subTitle')}
+          </Animated.Text>
         </View>
       ) : (
         <Icon
-          color={colors.theme[THEME].brandMedium}
+          style={styles.icon}
+          ref={backArrow}
+          color={colors.theme[THEME].textBrandMedium}
           onPress={() => {
             if (backTo === '') {
               navigation.goBack();
@@ -105,12 +114,23 @@ IAppHeader) => {
           name="keyboard-backspace"
         />
       )}
-      {title !== '' && <Text style={styles.appTitle}>{title}</Text>}
+      {title !== '' && (
+        <Animated.Text
+          style={[
+            styles.appTitle,
+            {
+              transform: [{translateX: titleLeftTranslate}],
+              fontSize: fontSizingSubTitle,
+            },
+          ]}>
+          {title}
+        </Animated.Text>
+      )}
       <Animated.Image
         style={[
           styles.headerContainer.img,
           {
-            // height: animatedImgHeight,
+            height: animatedImgHeight,
           },
         ]}
         source={require('../../assets/img/dp.jpeg')}
@@ -123,12 +143,25 @@ const styles = StyleSheet.create({
   homeMenuIcon: {
     transform: [{rotateZ: '90deg'}],
   },
+  icon: {
+    paddingVertical: 10,
+    paddingRight: 10,
+  },
   headerContainer: {
+    zIndex: 1,
+    position: 'relative',
+    elevation: 10,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 20,
+    marginTop: 20,
+    marginBottom: 10,
+    shadowcolor: colors.theme[THEME].textBrandMedium,
+    shadowOffset: {
+      width: 20,
+      height: 20,
+    },
     img: {
       width: 50,
       height: 90,
@@ -136,7 +169,7 @@ const styles = StyleSheet.create({
     },
   },
   appTitle: {
-    fontSize: utils.fontSize.large,
+    fontSize: utils.fontSize.xlarge,
     fontFamily: utils.fontFamily.Bold,
     color: colors.theme[THEME].textDark,
   },

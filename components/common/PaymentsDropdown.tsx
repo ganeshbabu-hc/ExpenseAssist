@@ -1,12 +1,11 @@
-import {Picker} from '@react-native-community/picker';
 import React, {useEffect, useState} from 'react';
 import {View, Text, Modal, StyleSheet, Pressable} from 'react-native';
-import {HIDE_MODAL} from '../../redux/constants/StoreConstants';
 import {getPaymentTypes, IPayment} from '../database/common/PaymentController';
 import {colors, formStyles, utils} from '../styles/theme';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import IconMap from './IconMap';
-import { THEME } from '../utils/Constants';
+import {THEME} from '../utils/Constants';
+import t from './translations/Translation';
 
 interface IpaymentDropdown {
   onChange: Function;
@@ -50,21 +49,6 @@ const PaymentsDropdown = ({onChange, defaultValue}: IpaymentDropdown) => {
           setShowModal(true);
         }}>
         <Text style={formStyles.selectBtnLabel}>{getLabel()}</Text>
-        {/* <Picker
-          selectedValue={paymentId}
-          style={formStyles.pickerItemStyle}
-          itemStyle={formStyles.pickerItemStyle}
-          onValueChange={itemValue => onChangeHandle(itemValue)}>
-          {paymentList.map(payment => {
-            return (
-              <Picker.Item
-                key={payment.paymentId}
-                label={payment.title}
-                value={payment.paymentId}
-              />
-            );
-          })}
-        </Picker> */}
       </Pressable>
       <Modal
         hardwareAccelerated
@@ -94,9 +78,9 @@ const PaymentsDropdown = ({onChange, defaultValue}: IpaymentDropdown) => {
                     </View>
                     <IconMap
                       iconName={payment.paymentIcon}
-                      color={colors.theme[THEME].brandMedium}
+                      color={colors.theme[THEME].textBrandMedium}
                     />
-                    <Text style={styles.paymentTitle}>{payment.title}</Text>
+                    <Text style={styles.paymentTitle}>{t(payment.title)}</Text>
                   </View>
                 </Pressable>
               );

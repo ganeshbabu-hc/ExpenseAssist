@@ -1,17 +1,20 @@
-import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
-import {View, Text, FlatList, Pressable, FlatListProps} from 'react-native';
-import {categoryList, colors, commonStyles, utils} from '../styles/theme';
+import React, {useEffect, useRef, useState} from 'react';
+import {View, Text, FlatList, Pressable} from 'react-native';
+import {categoryList, colors, commonStyles} from '../styles/theme';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
-import {IIncomeCategory} from '../database/income/IncomeTypes';
-import {getIncomeCaetegories} from '../database/income/IncomeController';
 import IconMap from '../common/IconMap';
 import CustomPressable from '../common/CustomPressable';
 import {useSelector} from 'react-redux';
 import {THEME} from '../utils/Constants';
+import {
+  ITransactionCategory,
+  TransactionType,
+} from '../database/transaction/TransactionTypes';
 
-const defaultCategory: IIncomeCategory = {
-  incomeCategoryId: 0,
+const defaultCategory: ITransactionCategory = {
+  transactionCategoryId: 0,
   title: '',
+  transactionType: TransactionType.EXPENSE,
   description: '',
   categoryIcon: 'plus',
 };
@@ -22,17 +25,16 @@ const IncomeCategoryList = ({navigation, onChange, defaultValue}) => {
 
   const incomeCategories = useSelector((state: any) => {
     const list = [...state.income.incomeCategoryList];
-    console.log(list);
     list.unshift(defaultCategory);
     return list;
   });
 
-  const scrollToSeletedCategory = (list: IIncomeCategory[]) => {
+  const scrollToSeletedCategory = (list: ITransactionCategory[]) => {
     setTimeout(() => {
       let scrollIndex = 0;
-      list.forEach((category: IIncomeCategory, index: number) => {
-        console.log(category.incomeCategoryId, activeCategory);
-        if (category.incomeCategoryId === activeCategory) {
+      list.forEach((category: ITransactionCategory, index: number) => {
+        // console.log(category.transactionCategoryId, activeCategory);
+        if (category.transactionCategoryId === activeCategory) {
           scrollIndex = index;
         }
       });
@@ -60,7 +62,8 @@ const IncomeCategoryList = ({navigation, onChange, defaultValue}) => {
         horizontal
         data={incomeCategories}
         renderItem={({item, index}) => {
-          if (item.incomeCategoryId === 0) {
+          console.log(item.categoryIcon);
+          if (item.transactionCategoryId === 0) {
             return (
               <View
                 style={[
@@ -70,7 +73,9 @@ const IncomeCategoryList = ({navigation, onChange, defaultValue}) => {
                 <Pressable
                   style={categoryList.categoryAddBtn}
                   onPress={() => {
-                    navigation.navigate('AddEditCategory', {type: 'income'});
+                    navigation.navigate('AddEditCategory', {
+                      type: TransactionType.INCOME,
+                    });
                   }}>
                   <Icon
                     name="add"
@@ -90,14 +95,14 @@ const IncomeCategoryList = ({navigation, onChange, defaultValue}) => {
                   : categoryList.categoryItem.dark,
               ]}
               onPress={() => {
-                setActiveCategory(item.incomeCategoryId);
-                onChange(item.incomeCategoryId);
+                setActiveCategory(item.transactionCategoryId);
+                onChange(item.transactionCategoryId);
               }}>
-              {activeCategory === item.incomeCategoryId && (
+              {activeCategory === item.transactionCategoryId && (
                 <IconMap
                   style={categoryList.activeCategory}
                   iconName={'check-circle'}
-                  color={colors.theme[THEME].brandMediumDark}
+                  color={colors.theme[THEME].textLight}
                 />
               )}
               <IconMap
@@ -108,8 +113,8 @@ const IncomeCategoryList = ({navigation, onChange, defaultValue}) => {
             </Pressable>
           );
         }}
-        keyExtractor={(category: IIncomeCategory) =>
-          category.incomeCategoryId.toString()
+        keyExtractor={(category: ITransactionCategory) =>
+          category.transactionCategoryId.toString()
         }
       />
       <CustomPressable />

@@ -9,11 +9,10 @@ import Swipeout from 'react-native-swipeout';
 import {getIncomes, removeIncomes} from '../database/income/IncomeController';
 import {
   SHOW_MODAL,
-  UPDATE_INCOME_LIST,
+  UPDATE_TRANSACTION_LIST,
   UPDATE_SUMMARY,
 } from '../../redux/constants/StoreConstants';
 import {displayDateFormat} from '../utils/Formatter';
-import {ShowSnackBar} from '../common/Util';
 import {getSummary} from '../database/common/SummaryController';
 import ModalContent from '../common/modal/ModalContent';
 import { THEME } from '../utils/Constants';
@@ -23,6 +22,7 @@ interface IRecentIncomes {
   navigation: any;
   limit?: number;
 }
+
 const RecentIncomes = ({limit = 5, navigation}: IRecentIncomes) => {
   const dispatch = useDispatch();
 
@@ -33,9 +33,9 @@ const RecentIncomes = ({limit = 5, navigation}: IRecentIncomes) => {
   const removeIncome = async (removableIncomes: IIncome) => {
     const result = await removeIncomes(removableIncomes.incomeId);
     if (result) {
-      ShowSnackBar(`${removableIncomes.title} has been removed`);
+      // ShowSnackBar(`${removableIncomes.title} has been removed`);
       const savedIncomes = await getIncomes();
-      dispatch({type: UPDATE_INCOME_LIST, payload: savedIncomes});
+      dispatch({type: UPDATE_TRANSACTION_LIST, payload: savedIncomes});
       const summary = await getSummary();
       dispatch({type: UPDATE_SUMMARY, payload: summary});
     }
@@ -53,7 +53,7 @@ const RecentIncomes = ({limit = 5, navigation}: IRecentIncomes) => {
           style={recentList.listHeaderIcon}
           name="more-horiz"
           size={commonStyles.icon.width}
-          color={colors.theme[THEME].brandMedium}
+          color={colors.theme[THEME].textBrandMedium}
         />
       </View>
       {incomeList.map((income: IIncome, index: number) => {
@@ -121,8 +121,8 @@ const RecentIncomes = ({limit = 5, navigation}: IRecentIncomes) => {
               <View style={recentList.listItemInfo}>
                 <View style={recentList.listItemIconWrapper}>
                   <IconMap
-                    iconName={income.incomeCategoryIcon ?? 'payment'}
-                    color={colors.theme[THEME].brandMedium}
+                    iconName={income.transactionCategoryIcon ?? 'payment'}
+                    color={colors.theme[THEME].textBrandMedium}
                   />
                 </View>
                 <View style={recentList.listItemDescription}>

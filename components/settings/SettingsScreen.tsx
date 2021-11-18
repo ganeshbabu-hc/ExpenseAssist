@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {
+  Animated,
   Pressable,
   SafeAreaView,
   ScrollView,
@@ -13,9 +14,13 @@ import {colors, commonStyles, recentList, utils} from '../styles/theme';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import {useSelector} from 'react-redux';
 import t from '../common/translations/Translation';
-import { THEME } from '../utils/Constants';
+import {THEME} from '../utils/Constants';
+import ScrollViewWrapper from '../common/ScrollViewWrapper';
+import {useRef} from 'react';
+import IconMap from '../common/IconMap';
 
 export const SettingsScreen = ({navigation}: any) => {
+  const scrollY = useRef(new Animated.Value(0)).current;
   // const isDarkMode = useColorScheme() === 'dark';
 
   // const userConfiguration: any = useSelector((state: any) => {
@@ -28,25 +33,24 @@ export const SettingsScreen = ({navigation}: any) => {
 
   return (
     <SafeAreaView style={commonStyles.screen}>
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        keyboardDismissMode="interactive"
-        keyboardShouldPersistTaps="always"
-        style={styles.quickMenuContainer}>
+      <View style={commonStyles.container}>
+        <AppHeader
+          navigation={navigation}
+          homeScreen={false}
+          title="Settings"
+          scrollY={scrollY}
+        />
+      </View>
+      <ScrollViewWrapper scrollY={scrollY} style={styles.quickMenuContainer}>
         <View style={commonStyles.container}>
-          <AppHeader
-            navigation={navigation}
-            homeScreen={false}
-            title="Settings"
-          />
           <Pressable
             style={styles.settingWrapper}
             onPress={() => {
               navigation.navigate('ThemeScreen');
             }}>
             <View style={styles.settingIconWrapper}>
-              <Icon
-                name="color-lens"
+              <IconMap
+                iconName="swatch-book"
                 size={28}
                 color={colors.theme[THEME].brandMedium}
               />
@@ -55,8 +59,8 @@ export const SettingsScreen = ({navigation}: any) => {
               <Text style={styles.settingName}>Theme</Text>
               <View style={styles.settingValueWrapper}>
                 <Text style={styles.settingValue}>Light</Text>
-                <Icon
-                  name="chevron-right"
+                <IconMap
+                  iconName="angle-right"
                   size={28}
                   color={colors.theme[THEME].brandMediumDark}
                 />
@@ -72,8 +76,8 @@ export const SettingsScreen = ({navigation}: any) => {
               navigation.navigate('CurrencyScreen');
             }}>
             <View style={styles.settingIconWrapper}>
-              <Icon
-                name="attach-money"
+              <IconMap
+                iconName="usd-circle"
                 size={28}
                 color={colors.theme[THEME].brandMedium}
               />
@@ -82,8 +86,8 @@ export const SettingsScreen = ({navigation}: any) => {
               <Text style={styles.settingName}>Currency</Text>
               <View style={styles.settingValueWrapper}>
                 <Text style={styles.settingValue}>{currency.code}</Text>
-                <Icon
-                  name="chevron-right"
+                <IconMap
+                  iconName="angle-right"
                   size={28}
                   color={colors.theme[THEME].brandMediumDark}
                 />
@@ -95,68 +99,16 @@ export const SettingsScreen = ({navigation}: any) => {
           </View>
           <Pressable style={styles.settingWrapper}>
             <View style={styles.settingIconWrapper}>
-              <Icon
-                name="filter-list"
-                size={28}
-                color={colors.theme[THEME].brandMedium}
-              />
-            </View>
-            <View style={styles.settingDesc}>
-              <Text style={styles.settingName}>Categories</Text>
-              <Icon
-                name="chevron-right"
-                size={28}
-                color={colors.theme[THEME].brandMediumDark}
-              />
-            </View>
-          </Pressable>
-          <View style={[recentList.dividerWrapper, styles.divider]}>
-            <Text style={recentList.divider} />
-          </View>
-          <Pressable style={styles.settingWrapper}>
-            <View style={styles.settingIconWrapper}>
-              <Icon name="payment" size={28} color={colors.theme[THEME].brandMedium} />
-            </View>
-            <View style={styles.settingDesc}>
-              <Text style={styles.settingName}>Payments</Text>
-              <Icon
-                name="chevron-right"
-                size={28}
-                color={colors.theme[THEME].brandMediumDark}
-              />
-            </View>
-          </Pressable>
-          <View style={[recentList.dividerWrapper, styles.divider]}>
-            <Text style={recentList.divider} />
-          </View>
-          <Pressable style={styles.settingWrapper}>
-            <View style={styles.settingIconWrapper}>
-              <Icon name="alarm" size={28} color={colors.theme[THEME].brandMedium} />
-            </View>
-            <View style={styles.settingDesc}>
-              <Text style={styles.settingName}>Remainders</Text>
-              <Icon
-                name="chevron-right"
-                size={28}
-                color={colors.theme[THEME].brandMediumDark}
-              />
-            </View>
-          </Pressable>
-          <View style={[recentList.dividerWrapper, styles.divider]}>
-            <Text style={recentList.divider} />
-          </View>
-          <Pressable style={styles.settingWrapper}>
-            <View style={styles.settingIconWrapper}>
-              <Icon
-                name="language"
+              <IconMap
+                iconName="language"
                 size={28}
                 color={colors.theme[THEME].brandMedium}
               />
             </View>
             <View style={styles.settingDesc}>
               <Text style={styles.settingName}>Language</Text>
-              <Icon
-                name="chevron-right"
+              <IconMap
+                iconName="angle-right"
                 size={28}
                 color={colors.theme[THEME].brandMediumDark}
               />
@@ -167,30 +119,31 @@ export const SettingsScreen = ({navigation}: any) => {
           </View>
           <Pressable style={styles.settingWrapper}>
             <View style={styles.settingIconWrapper}>
-              <Icon
-                name="help-outline"
+              <IconMap
+                iconName="help-circle"
                 size={28}
                 color={colors.theme[THEME].brandMedium}
               />
             </View>
             <View style={styles.settingDesc}>
               <Text style={styles.settingName}>Help</Text>
-              <Icon
-                name="chevron-right"
+              <IconMap
+                iconName="angle-right"
                 size={28}
                 color={colors.theme[THEME].brandMediumDark}
               />
             </View>
           </Pressable>
         </View>
-      </ScrollView>
+      </ScrollViewWrapper>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   quickMenuContainer: {
-    // backgroundColor: colors.theme[THEME].brandLight,
+    backgroundColor: colors.theme[THEME].brandLight,
+    marginTop: 10,
   },
   divider: {
     marginVertical: 0,

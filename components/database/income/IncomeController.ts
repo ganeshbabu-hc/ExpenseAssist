@@ -1,71 +1,71 @@
-import {IIncome, IIncomeCategory} from './IncomeTypes';
 import {
   INCOME_QUERY_LIMIT,
   TNAME_CURRENCY_TYPES,
-  TNAME_INCOME,
-  TNAME_INCOME_CATEGORIES,
+  TNAME_TRANSACTIONS,
   TNAME_PAYMENT_TYPES,
+  TNAME_TRANSACTION_CATEGORIES,
 } from '../../utils/Constants';
 import {getDBConnection} from '../DBController';
+import {ITransaction} from '../transaction/TransactionTypes';
 
-export const saveIncome = async (income: IIncome[]) => {
+export const saveIncome = async (income: ITransaction[]) => {
   const insertQuery =
-    `INSERT OR REPLACE INTO ${TNAME_INCOME}(TITLE, AMOUNT, PAYMENT_ID, CURRENCY_ID, INCOME_CATEGORY_ID, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM) values` +
+    `INSERT OR REPLACE INTO ${TNAME_TRANSACTIONS}(TITLE, AMOUNT, PAYMENT_ID, CURRENCY_ID, TRANSACTION_CATEGORY_ID, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, TRANSACTION_TYPE) values` +
     income
       .map(
         i =>
-          `('${i.title}', ${i.amount}, ${i.paymentId}, ${i.currencyId},${i.incomeCategoryId}, '${i.description}', '${i.dateAddedTlm}', CURRENT_TIMESTAMP)`,
+          `('${i.title}', ${i.amount}, ${i.paymentId}, ${i.currencyId},${i.transactionCategoryId}, '${i.description}', '${i.dateAddedTlm}', CURRENT_TIMESTAMP, '${i.transactionType}')`,
       )
       .join(',');
   const db = await getDBConnection();
   return db.executeSql(insertQuery);
 };
 
-export const updateIncome = async (income: IIncome) => {
-  const insertQuery = `UPDATE ${TNAME_INCOME} 
+export const updateIncome = async (income: ITransaction) => {
+  const insertQuery = `UPDATE ${TNAME_TRANSACTIONS} 
   SET TITLE='${income.title}',
   AMOUNT=${income.amount},
   PAYMENT_ID=${income.paymentId},
   CURRENCY_ID=${income.currencyId},
-  INCOME_CATEGORY_ID=${income.incomeCategoryId},
+  TRANSACTION_CATEGORY_ID=${income.transactionCategoryId},
   DESCRIPTION='${income.description}',
   DATE_ADDED_TLM='${income.dateAddedTlm}',
   DATE_UPDATED_TLM=CURRENT_TIMESTAMP
-  WHERE INCOME_ID=${income.incomeId}`;
+  WHERE TRANSACTION_ID=${income.transactionId}`;
   const db = await getDBConnection();
   return db.executeSql(insertQuery);
 };
 
-export const getIncomes = async (limit?: number): Promise<IIncome[]> => {
+export const getIncomes = async (limit?: number): Promise<ITransaction[]> => {
   try {
-    const incomes: IIncome[] = [];
+    const incomes: ITransaction[] = [];
     const db = await getDBConnection();
     const dataLimit = limit ?? INCOME_QUERY_LIMIT;
     const results = await db.executeSql(
       `SELECT 
-      ex.INCOME_ID as incomeId,
+      ex.TRANSACTION_ID as transactionId,
       ex.PAYMENT_ID as paymentId,
       ex.TITLE as title,
       ex.DESCRIPTION as description,
-      ex.INCOME_CATEGORY_ID as incomeCategoryId,
+      ex.TRANSACTION_CATEGORY_ID as transactionCategoryId,
       ex.AMOUNT as amount,
       ex.CURRENCY_ID as currencyId,
       ex.DATE_ADDED_TLM as dateAddedTlm,
       ex.DATE_UPDATED_TLM as dateUpdatedTlm,
-      ec.TITLE as incomeCategoryTitle,
-      ec.CATEGORY_ICON as incomeCategoryIcon,
+      ec.TITLE as transactionCategoryTitle,
+      ec.CATEGORY_ICON as transactionCategoryIcon,
       pt.TITLE as paymentTitle,
       ct.SYMBOL as currencySumbol
-      FROM ${TNAME_INCOME} ex 
+      FROM ${TNAME_TRANSACTIONS} ex 
       LEFT JOIN ${TNAME_PAYMENT_TYPES} pt ON ex.PAYMENT_ID = pt.PAYMENT_ID 
-      LEFT JOIN ${TNAME_INCOME_CATEGORIES} ec ON ex.INCOME_CATEGORY_ID = ec.INCOME_CATEGORY_ID 
+      LEFT JOIN ${TNAME_TRANSACTION_CATEGORIES} ec ON ex.TRANSACTION_CATEGORY_ID = ex.TRANSACTION_CATEGORY_ID 
       LEFT JOIN ${TNAME_CURRENCY_TYPES} ct ON ct.CURRENCY_ID = ex.CURRENCY_ID 
       ORDER BY ex.DATE_ADDED_TLM DESC 
       LIMIT ${dataLimit}`,
     );
     results.forEach((result: any) => {
       for (let index = 0; index < result.rows.length; index++) {
-        const income: IIncome = result.rows.item(index) as IIncome;
+        const income: ITransaction = result.rows.item(index) as ITransaction;
         incomes.push(income);
       }
     });
@@ -76,29 +76,10 @@ export const getIncomes = async (limit?: number): Promise<IIncome[]> => {
   }
 };
 
-export const getIncomeCaetegories = async (): Promise<IIncomeCategory[]> => {
-  try {
-    const categories: IIncomeCategory[] = [];
-    const db = await getDBConnection();
-    const results = await db.executeSql(
-      `SELECT TITLE as title, DESCRIPTION as decsription, INCOME_CATEGORY_ID as incomeCategoryId, DATE_ADDED_TLM as dateAddedTlm, DATE_UPDATED_TLM as dateUpdatedTlm, CATEGORY_ICON as categoryIcon FROM ${TNAME_INCOME_CATEGORIES}`,
-    );
-    results.forEach((result: any) => {
-      for (let index = 0; index < result.rows.length; index++) {
-        categories.push(result.rows.item(index));
-      }
-    });
-    return categories;
-  } catch (error) {
-    console.error(error);
-    throw Error('Failed to get categories !!!');
-  }
-};
-
 export const removeIncomes = async (incomeIds?: number): Promise<any> => {
   try {
     const db = await getDBConnection();
-    const deleteQuery = `DELETE from ${TNAME_INCOME} where INCOME_ID = ${incomeIds}`;
+    const deleteQuery = `DELETE from ${TNAME_TRANSACTIONS} where TRANSACTION_ID = ${incomeIds}`;
     const results = await db.executeSql(deleteQuery);
     return results;
   } catch (error) {

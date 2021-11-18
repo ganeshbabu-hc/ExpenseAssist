@@ -1,6 +1,6 @@
 import {
   UPDATE_INCOME_CATEGORIES_LIST,
-  UPDATE_INCOME_LIST,
+  UPDATE_TRANSACTION_LIST,
 } from '../constants/StoreConstants';
 import {AnyAction} from 'redux';
 import {IIncomeState} from '../Types';
@@ -15,7 +15,7 @@ const IncomeReducer = (
   action: AnyAction,
 ) => {
   switch (action.type) {
-    case UPDATE_INCOME_LIST:
+    case UPDATE_TRANSACTION_LIST:
       return {
         ...state,
         incomeList: action.payload,

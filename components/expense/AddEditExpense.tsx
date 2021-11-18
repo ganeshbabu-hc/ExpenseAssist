@@ -1,37 +1,36 @@
-import {Picker} from '@react-native-community/picker';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
   TextInput,
   StyleSheet,
   Pressable,
-  ScrollView,
-  TouchableHighlight,
+  Animated,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-  UPDATE_EXPENSE_LIST,
+  SHOW_TOAST,
+  UPDATE_TRANSACTION_LIST,
   UPDATE_SUMMARY,
 } from '../../redux/constants/StoreConstants';
 import AppHeader from '../common/AppHeader';
 import {
-  getExpenses,
-  saveExpense,
-  updateExpense,
-} from '../database/expense/ExpenseController';
-import {IExpense} from '../database/expense/ExpenseTypes';
-import {colors, commonStyles, formStyles, ripple} from '../styles/theme';
+  getTransactions,
+  saveTransaction,
+  updateTransaction,
+} from '../database/transaction/TransactionController';
+import {ITransaction, TransactionType} from '../database/transaction/TransactionTypes';
+import {colors, commonStyles, formStyles} from '../styles/theme';
 import {dateFormatter} from '../utils/Formatter';
 import ExpenseCategoryList from './ExpenseCategotyList';
 import PaymentsDropdown from '../common/PaymentsDropdown';
 import WeeklyView from '../common/WeeklyView';
-import {ShowSnackBar} from '../common/Util';
 import {getSummary} from '../database/common/SummaryController';
 import {ICurrency} from '../database/common/CurrencyController';
 import ScrollViewWrapper from '../common/ScrollViewWrapper';
-import { THEME } from '../utils/Constants';
+import {THEME} from '../utils/Constants';
+import t from '../common/translations/Translation';
 
 interface IAddEditExpense {
   navigation: any;
@@ -41,19 +40,23 @@ interface IAddEditExpense {
 interface IErrorMessages {
   title?: string;
   amount?: string;
+  transactionCategoryId?: string;
 }
 
 const defaultErrMsg: IErrorMessages = {
   title: '',
   amount: '',
+  transactionCategoryId: '',
 };
 
 const AddEditExpense = ({navigation, route}: IAddEditExpense) => {
+  const scrollY = useRef(new Animated.Value(0)).current;
+
   const currency: ICurrency = useSelector((state: any) => {
     return state.common.configuration.currency.value;
   });
 
-  const {expense}: {expense: IExpense} = route.params;
+  const {expense}: {expense: ITransaction} = route.params;
 
   const [errMsg, setErrMsg] = useState<IErrorMessages>(defaultErrMsg);
 
@@ -69,8 +72,10 @@ const AddEditExpense = ({navigation, route}: IAddEditExpense) => {
   const [description, setDescription] = useState(() => {
     return expense?.description ?? '';
   });
-  const [expenseCategoryId, setExpenseCategoryId] = useState(() => {
-    return expense?.expenseCategoryId ?? 1;
+  const [transactionCategoryId, setTransactionCategoryId] = useState<
+    number | null
+  >(() => {
+    return expense?.transactionCategoryId ?? null;
   });
   const [editMode] = useState(() => {
     return expense ? true : false;
@@ -85,13 +90,19 @@ const AddEditExpense = ({navigation, route}: IAddEditExpense) => {
     const msg: IErrorMessages = {...defaultErrMsg};
     let isValid = true;
     if (!title.trim()) {
-      msg.title = 'Income title is needed';
+      msg.title = t('invalidExpenseTitle');
       isValid = false;
     }
     if (!amount.trim()) {
-      msg.amount = 'Enter a valid amount';
+      msg.amount = t('invalidAmount');
       isValid = false;
     }
+
+    if (transactionCategoryId == null) {
+      msg.transactionCategoryId = t('invalidtransactionCatgoeryId');
+      isValid = false;
+    }
+
     setErrMsg(msg);
     return isValid;
   };
@@ -101,7 +112,7 @@ const AddEditExpense = ({navigation, route}: IAddEditExpense) => {
     setAmount('');
     setPaymentId(1);
     setDescription('');
-    setExpenseCategoryId(1);
+    // setTransactionCategoryId(null);
     setDateAddedTlm(dateFormatter(new Date()));
   };
 
@@ -110,32 +121,47 @@ const AddEditExpense = ({navigation, route}: IAddEditExpense) => {
       return;
     }
 
-    const modExpense: IExpense = {
-      expenseId: expense?.expenseId ?? undefined,
+    const modExpense: ITransaction = {
+      transactionId: expense?.transactionId ?? undefined,
       title,
       amount: Number(amount),
       paymentId: Number(paymentId),
+      transactionType: TransactionType.EXPENSE,
       description,
-      expenseCategoryId: Number(expenseCategoryId),
+      transactionCategoryId: Number(transactionCategoryId),
       currencyId: 47,
       dateAddedTlm,
     };
     let result = null;
     if (editMode) {
-      result = await updateExpense(modExpense);
+      result = await updateTransaction(modExpense);
       if (result) {
-        ShowSnackBar(`Expense: ${modExpense.title} is updated`);
+        dispatch({
+          type: SHOW_TOAST,
+          payload: [
+            {
+              title: t('expenseUpdated', {name: modExpense.title}),
+            },
+          ],
+        });
         navigation.goBack();
       }
     } else {
-      result = await saveExpense([modExpense]);
+      result = await saveTransaction([modExpense]);
       if (result) {
-        ShowSnackBar(`${modExpense.title} is saved`);
+        dispatch({
+          type: SHOW_TOAST,
+          payload: [
+            {
+              title: t('expenseSaved', {name: modExpense.title}),
+            },
+          ],
+        });
         clearInputs();
       }
     }
-    const savedExpenses = await getExpenses();
-    dispatch({type: UPDATE_EXPENSE_LIST, payload: savedExpenses});
+    const savedExpenses = await getTransactions(10, TransactionType.EXPENSE);
+    dispatch({type: UPDATE_TRANSACTION_LIST, payload: savedExpenses});
     const summary = await getSummary();
     dispatch({type: UPDATE_SUMMARY, payload: summary});
   };
@@ -152,12 +178,10 @@ const AddEditExpense = ({navigation, route}: IAddEditExpense) => {
           navigation={navigation}
           homeScreen={false}
           backTo=""
+          scrollY={scrollY}
         />
       </View>
-      <ScrollViewWrapper
-        keyboardDismissMode="interactive"
-        keyboardShouldPersistTaps="always"
-        contentInsetAdjustmentBehavior="automatic">
+      <ScrollViewWrapper scrollY={scrollY}>
         <View style={[commonStyles.container, styles.expenseWrapper]}>
           <WeeklyView defaultValue={dateAddedTlm} onChange={setDateAddedTlm} />
           <View>
@@ -201,9 +225,14 @@ const AddEditExpense = ({navigation, route}: IAddEditExpense) => {
           </View>
           <ExpenseCategoryList
             navigation={navigation}
-            defaultValue={expenseCategoryId}
-            onChange={setExpenseCategoryId}
+            defaultValue={transactionCategoryId}
+            onChange={setTransactionCategoryId}
           />
+          {errMsg.transactionCategoryId !== '' && (
+            <Text style={formStyles.inputError}>
+              {errMsg.transactionCategoryId}
+            </Text>
+          )}
           <View>
             <View style={formStyles.inputWrapper}>
               <Text style={formStyles.inputLabel}>Note</Text>
@@ -224,7 +253,7 @@ const AddEditExpense = ({navigation, route}: IAddEditExpense) => {
               saveEditExpenseHandler();
             }}>
             <Text style={formStyles.buttonLabel}>
-              {editMode ? 'Save' : 'Add'}
+              {editMode ? 'Update' : 'Add'}
             </Text>
           </Pressable>
         </View>
@@ -238,6 +267,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.theme[THEME].brandLight,
     display: 'flex',
     flex: 1,
+    marginTop: 30,
+    marginVertical: 40,
   },
 });
 

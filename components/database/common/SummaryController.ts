@@ -1,5 +1,6 @@
-import {TNAME_EXPENSE, TNAME_INCOME} from '../../utils/Constants';
+import {TNAME_TRANSACTIONS} from '../../utils/Constants';
 import {getDBConnection} from '../DBController';
+import { TransactionType } from '../transaction/TransactionTypes';
 export interface ISummary {
   totalExpense?: number;
   totalIncome?: number;
@@ -7,19 +8,22 @@ export interface ISummary {
   monthlyIncome?: number;
 }
 
-export const getSummary = async (): Promise<ISummary> => {
+export const getSummary = async (): Promise<ISummary | undefined> => {
   try {
     let meta: ISummary = {};
     try {
       const db = await getDBConnection();
       const query = `SELECT * from 
-      (SELECT IFNULL(SUM(AMOUNT), 0) as totalExpense from ${TNAME_EXPENSE}) e 
-      LEFT JOIN (SELECT IFNULL(SUM(AMOUNT), 0) as totalIncome from ${TNAME_INCOME}) i 
-      LEFT JOIN (SELECT IFNULL(SUM(AMOUNT), 0) as monthlyExpense from ${TNAME_EXPENSE} where strftime('%Y-%m', DATE_ADDED_TLM)=strftime('%Y-%m','now')) em 
-      LEFT JOIN (SELECT IFNULL(SUM(AMOUNT), 0) as monthlyIncome from ${TNAME_INCOME} where strftime('%Y-%m', DATE_ADDED_TLM)=strftime('%Y-%m','now')) im `;
+      (SELECT IFNULL(SUM(AMOUNT), 0) as totalExpense from ${TNAME_TRANSACTIONS} WHERE TRANSACTION_TYPE='${TransactionType.EXPENSE}' ) e 
+      LEFT JOIN (SELECT IFNULL(SUM(AMOUNT), 0) as totalIncome from ${TNAME_TRANSACTIONS} WHERE TRANSACTION_TYPE='${TransactionType.INCOME}' ) i 
+      LEFT JOIN (SELECT IFNULL(SUM(AMOUNT), 0) as monthlyExpense from ${TNAME_TRANSACTIONS} where strftime('%Y-%m', DATE_ADDED_TLM)=strftime('%Y-%m','now') AND TRANSACTION_TYPE='${TransactionType.EXPENSE}' ) em 
+      LEFT JOIN (SELECT IFNULL(SUM(AMOUNT), 0) as monthlyIncome from ${TNAME_TRANSACTIONS} where strftime('%Y-%m', DATE_ADDED_TLM)=strftime('%Y-%m','now') AND TRANSACTION_TYPE='${TransactionType.INCOME}' ) im `;
+      // console.log(query);
       const results = await db.executeSql(query);
+      // console.log(results);
       results.forEach((result: any) => {
         for (let index = 0; index < result.rows.length; index++) {
+          // console.log(result.rows.item(index));
           meta = result.rows.item(index) as ISummary;
         }
       });

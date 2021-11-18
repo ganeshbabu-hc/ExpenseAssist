@@ -1,4 +1,3 @@
-import {Picker} from '@react-native-community/picker';
 import React, {useEffect, useState} from 'react';
 import {
   View,
@@ -10,32 +9,29 @@ import {
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
-import {UPDATE_EXPENSE_CATEGORIES_LIST} from '../../redux/constants/StoreConstants';
-import AppHeader from './AppHeader';
 import {
-  getExpenseCaetegories,
-  getExpenses,
-  saveExpense,
-  updateExpense,
-} from '../database/expense/ExpenseController';
-import {IExpense, IExpenseCategory} from '../database/expense/ExpenseTypes';
+  SHOW_TOAST,
+  UPDATE_EXPENSE_CATEGORIES_LIST,
+} from '../../redux/constants/StoreConstants';
+import AppHeader from './AppHeader';
+import {getTransactionCategories} from '../database/transaction/TransactionController';
 import {colors, commonStyles, formStyles} from '../styles/theme';
-import {dateFormatter} from '../utils/Formatter';
-import PaymentsDropdown from './PaymentsDropdown';
-import WeeklyView from './WeeklyView';
-import {ShowSnackBar} from './Util';
-import {getSummary} from '../database/common/SummaryController';
+// import {ShowSnackBar} from './Util';
 import {
   saveExpenseCategory,
-  saveIncomeCategory,
+  saveTransactionCategory,
 } from '../database/common/CommonController';
-import {IIncomeCategory} from '../database/income/IncomeTypes';
-import { THEME } from '../utils/Constants';
+import {THEME} from '../utils/Constants';
+import t from './translations/Translation';
+import {
+  ITransactionCategory,
+  TransactionType,
+} from '../database/transaction/TransactionTypes';
 
 interface IAddEditCategory {
   navigation: any;
   route?: any;
-  type?: 'income' | 'expense';
+  type?: TransactionType;
 }
 
 interface IErrorMessages {
@@ -49,25 +45,25 @@ const defaultErrMsg: IErrorMessages = {
 };
 
 const AddEditCategory = ({navigation, route, type}: IAddEditCategory) => {
-  const {expenseCategory}: {expenseCategory: IExpenseCategory} = route.params
-    .expenseCategory ?? {undefined};
+  const {transactionCategory}: {transactionCategory: ITransactionCategory} =
+    route.params.transactionCategory ?? {undefined};
   // const {expense}: {expense: IExpense} = route.params;
 
-  const categoryType = type || route?.params?.type;
+  const categoryType: TransactionType = route?.params?.type || type;
 
   const [errMsg, setErrMsg] = useState<IErrorMessages>(defaultErrMsg);
 
   const [title, setTitle] = useState(() => {
-    return expenseCategory?.title ?? '';
+    return transactionCategory?.title ?? '';
   });
   // const [categoryId, setCategoryId] = useState(() => {
   //   return expense?.paymentId ?? 1;
   // });
   const [description, setDescription] = useState(() => {
-    return expenseCategory?.description ?? '';
+    return transactionCategory?.description ?? '';
   });
   const [editMode] = useState(() => {
-    return expenseCategory ? true : false;
+    return transactionCategory ? true : false;
   });
   const dispatch = useDispatch();
 
@@ -87,33 +83,44 @@ const AddEditCategory = ({navigation, route, type}: IAddEditCategory) => {
     // setCategoryId(1);
     setDescription('');
   };
-  const saveExpenseCategoryHandler = async () => {
-    console.log('save--validateInputs');
+  const saveTransactionCategoryHandler = async () => {
+    // console.log('save--validateInputs');
     if (!validateInputs()) {
       return;
     }
-    console.log('save--category');
+    // console.log('save--category');
 
-    let modCategory: IExpenseCategory = {
-      expenseCategoryId: expenseCategory?.expenseCategoryId ?? undefined,
+    let modCategory: ITransactionCategory = {
+      transactionCategoryId:
+        transactionCategory?.transactionCategoryId ?? undefined,
       title,
+      transactionType: categoryType,
       description,
     };
     let result = null;
     if (editMode) {
-      // result = await updateExpense(modExpense);
+      // result = await updateTransaction(modExpense);
       // if (result) {
       //   ShowSnackBar(`${modExpense.title} is updated`);
       //   navigation.goBack();
       // }
     } else {
-      result = await saveExpenseCategory(modCategory);
+      result = await saveTransactionCategory(modCategory);
       if (result) {
-        ShowSnackBar(`Category: ${modCategory.title} is added`);
+        dispatch({
+          type: SHOW_TOAST,
+          payload: [
+            {
+              title: t('categoryAdded', {name: modCategory.title}),
+            },
+          ],
+        });
         navigation.goBack();
       }
     }
-    const expenseCategories = await getExpenseCaetegories();
+    const expenseCategories = await getTransactionCategories(
+      TransactionType.EXPENSE,
+    );
     dispatch({
       type: UPDATE_EXPENSE_CATEGORIES_LIST,
       payload: expenseCategories,
@@ -171,11 +178,7 @@ const AddEditCategory = ({navigation, route, type}: IAddEditCategory) => {
             style={[formStyles.button, formStyles.fullWidth]}
             onPress={() => {
               console.log('save--validateInputs', categoryType);
-              if (categoryType === 'expense') {
-                saveExpenseCategoryHandler();
-              } else {
-                // saveIncomeCategoryHandler();
-              }
+              saveTransactionCategoryHandler();
             }}>
             <Text style={formStyles.buttonLabel}>
               {editMode ? 'Save' : 'Add'}

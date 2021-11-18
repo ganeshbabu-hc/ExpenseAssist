@@ -25,8 +25,7 @@ import {
 } from '../database/common/CurrencyController';
 import {useDispatch, useSelector} from 'react-redux';
 import {UPDATE_CURRENCY} from '../../redux/constants/StoreConstants';
-import {ShowSnackBar} from '../common/Util';
-import { THEME } from '../utils/Constants';
+import {THEME} from '../utils/Constants';
 const ThemeScreen = ({navigation}: any) => {
   // const isDarkMode = useColorScheme() === 'dark';
   const dispatch = useDispatch();
@@ -65,10 +64,9 @@ const ThemeScreen = ({navigation}: any) => {
     const result = await setCurrency(currency);
     if (result) {
       dispatch({type: UPDATE_CURRENCY, payload: currency});
-      ShowSnackBar(`Currency is set to ${currency.code}: ${currency.symbol}`);
+      // ShowSnackBar(`Currency is set to ${currency.code}: ${currency.symbol}`);
     }
   };
-
 
   const updateFilteredList = async () => {
     const query = title.trim().toLocaleLowerCase();
@@ -94,12 +92,10 @@ const ThemeScreen = ({navigation}: any) => {
   }, [title]);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={commonStyles.screen}>
       <View style={commonStyles.container}>
         <AppHeader navigation={navigation} homeScreen={false} title="Theme" />
-        <View>
-
-        </View>
+        <View />
       </View>
       {/* </ScrollView> */}
     </SafeAreaView>

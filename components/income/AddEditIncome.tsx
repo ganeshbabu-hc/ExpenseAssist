@@ -5,31 +5,36 @@ import {
   TextInput,
   StyleSheet,
   Pressable,
-  ScrollView,
+  Animated,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-  UPDATE_INCOME_LIST,
+  SHOW_TOAST,
+  UPDATE_TRANSACTION_LIST,
   UPDATE_SUMMARY,
 } from '../../redux/constants/StoreConstants';
 import AppHeader from '../common/AppHeader';
-import {
-  getIncomes,
-  saveIncome,
-  updateIncome,
-} from '../database/income/IncomeController';
-import {IIncome} from '../database/income/IncomeTypes';
 import {colors, commonStyles, formStyles} from '../styles/theme';
 import {dateFormatter} from '../utils/Formatter';
 import IncomeCategoryList from './IncomeCategoryList';
 import PaymentsDropdown from '../common/PaymentsDropdown';
 import WeeklyView from '../common/WeeklyView';
-import {ShowSnackBar} from '../common/Util';
 import {getSummary} from '../database/common/SummaryController';
 import {ICurrency} from '../database/common/CurrencyController';
 import ScrollViewWrapper from '../common/ScrollViewWrapper';
-import { THEME } from '../utils/Constants';
+import {THEME} from '../utils/Constants';
+import t from '../common/translations/Translation';
+import {useRef} from 'react';
+import {
+  ITransaction,
+  TransactionType,
+} from '../database/transaction/TransactionTypes';
+import {
+  getTransactions,
+  saveTransaction,
+  updateTransaction,
+} from '../database/transaction/TransactionController';
 
 interface IAddEditIncome {
   navigation: any;
@@ -39,18 +44,21 @@ interface IAddEditIncome {
 interface IErrorMessages {
   title?: string;
   amount?: string;
+  transactionCategoryId?: string;
 }
 
 const defaultErrMsg: IErrorMessages = {
   title: '',
   amount: '',
+  transactionCategoryId: '',
 };
 
 const AddEditIncome = ({navigation, route}: IAddEditIncome) => {
+  const scrollY = useRef(new Animated.Value(0)).current;
   const currency: ICurrency = useSelector((state: any) => {
     return state.common.configuration.currency.value;
   });
-  const {income}: {income: IIncome} = route.params;
+  const {income}: {income: ITransaction} = route.params;
 
   const [errMsg, setErrMsg] = useState<IErrorMessages>(defaultErrMsg);
 
@@ -66,8 +74,10 @@ const AddEditIncome = ({navigation, route}: IAddEditIncome) => {
   const [description, setDescription] = useState(() => {
     return income?.description ?? '';
   });
-  const [incomeCategoryId, setIncomeCategoryId] = useState(() => {
-    return income?.incomeCategoryId ?? 1;
+  const [transactionCategoryId, setTransactionCategoryId] = useState<
+    number | null
+  >(() => {
+    return income?.transactionCategoryId ?? null;
   });
   const [editMode] = useState(() => {
     return income ? true : false;
@@ -82,11 +92,16 @@ const AddEditIncome = ({navigation, route}: IAddEditIncome) => {
     const msg: IErrorMessages = {...defaultErrMsg};
     let isValid = true;
     if (!title.trim()) {
-      msg.title = 'Income title is needed';
+      msg.title = t('invalidIncomeTitle');
       isValid = false;
     }
     if (!amount.trim()) {
-      msg.amount = 'Enter a valid amount';
+      msg.amount = t('invalidAmount');
+      isValid = false;
+    }
+
+    if (transactionCategoryId == null) {
+      msg.transactionCategoryId = t('invalidtransactionCatgoeryId');
       isValid = false;
     }
     setErrMsg(msg);
@@ -98,7 +113,7 @@ const AddEditIncome = ({navigation, route}: IAddEditIncome) => {
     setAmount('');
     setPaymentId(1);
     setDescription('');
-    setIncomeCategoryId(1);
+    // setTransactionCategoryId(null);
     setDateAddedTlm(dateFormatter(new Date()));
   };
 
@@ -106,32 +121,47 @@ const AddEditIncome = ({navigation, route}: IAddEditIncome) => {
     if (!validateInputs()) {
       return;
     }
-    const modIncome: IIncome = {
-      incomeId: income?.incomeId ?? undefined,
+    const modIncome: ITransaction = {
+      transactionId: income?.transactionId ?? undefined,
       title,
       amount: Number(amount),
       paymentId: Number(paymentId),
       description,
-      incomeCategoryId: Number(incomeCategoryId),
+      transactionType: TransactionType.INCOME,
+      transactionCategoryId: Number(transactionCategoryId),
       currencyId: 47,
       dateAddedTlm,
     };
     let result = null;
     if (editMode) {
-      result = await updateIncome(modIncome);
+      result = await updateTransaction(modIncome);
       if (result) {
-        ShowSnackBar(`Income: ${modIncome.title} is updated`);
+        dispatch({
+          type: SHOW_TOAST,
+          payload: [
+            {
+              title: t('incomeUpdated', {name: modIncome.title}),
+            },
+          ],
+        });
         navigation.goBack();
       }
     } else {
-      result = await saveIncome([modIncome]);
+      result = await saveTransaction([modIncome]);
       if (result) {
-        ShowSnackBar(`Income: ${modIncome.title} is saved`);
+        dispatch({
+          type: SHOW_TOAST,
+          payload: [
+            {
+              title: t('incomeSaved', {name: modIncome.title}),
+            },
+          ],
+        });
         clearInputs();
       }
     }
-    const savedIncomes = await getIncomes();
-    dispatch({type: UPDATE_INCOME_LIST, payload: savedIncomes});
+    const savedIncomes = await getTransactions(10, TransactionType.INCOME);
+    dispatch({type: UPDATE_TRANSACTION_LIST, payload: savedIncomes});
     const summary = await getSummary();
     dispatch({type: UPDATE_SUMMARY, payload: summary});
   };
@@ -147,9 +177,10 @@ const AddEditIncome = ({navigation, route}: IAddEditIncome) => {
           navigation={navigation}
           homeScreen={false}
           backTo=""
+          scrollY={scrollY}
         />
       </View>
-      <ScrollViewWrapper>
+      <ScrollViewWrapper scrollY={scrollY}>
         <View style={[commonStyles.container, styles.incomeWrapper]}>
           <WeeklyView defaultValue={dateAddedTlm} onChange={setDateAddedTlm} />
           <View>
@@ -193,9 +224,14 @@ const AddEditIncome = ({navigation, route}: IAddEditIncome) => {
           </View>
           <IncomeCategoryList
             navigation={navigation}
-            defaultValue={incomeCategoryId}
-            onChange={setIncomeCategoryId}
+            defaultValue={transactionCategoryId}
+            onChange={setTransactionCategoryId}
           />
+          {errMsg.transactionCategoryId !== '' && (
+            <Text style={formStyles.inputError}>
+              {errMsg.transactionCategoryId}
+            </Text>
+          )}
           <View>
             <View style={formStyles.inputWrapper}>
               <Text style={formStyles.inputLabel}>Note</Text>
@@ -230,6 +266,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.theme[THEME].brandLight,
     display: 'flex',
     flex: 1,
+    marginTop: 30,
+    marginVertical: 40,
   },
 });
 

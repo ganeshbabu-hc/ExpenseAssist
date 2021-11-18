@@ -1,14 +1,13 @@
 import React from 'react';
-import {SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
-import RecentExpenses from '../../expense/RecentExpenses';
-import Wave from '../Wave';
-import {colors, commonStyles} from '../../styles/theme';
+import {Animated, SafeAreaView, StyleSheet, View} from 'react-native';
+import {commonStyles} from '../../styles/theme';
 import AppHeader from '../AppHeader';
 import TypeList from './TypeList';
-import RecentList from '../RecentList';
-import ScrollViewWrapper from '../ScrollViewWrapper';
+import TransactionList from '../../database/transaction/TransactionList';
+import {useRef} from 'react';
 
 const AddType = ({navigation}) => {
+  const scrollY = useRef(new Animated.Value(0)).current;
   return (
     <SafeAreaView style={commonStyles.screen}>
       <View style={commonStyles.container}>
@@ -17,12 +16,11 @@ const AddType = ({navigation}) => {
           navigation={navigation}
           title="Add"
           backTo="Home"
+          scrollY={scrollY}
         />
       </View>
-      <ScrollViewWrapper>
-        <TypeList navigation={navigation} />
-        <RecentList navigation={navigation} />
-      </ScrollViewWrapper>
+      <TypeList navigation={navigation} />
+      <TransactionList scrollY={scrollY} navigation={navigation} />
     </SafeAreaView>
   );
 };

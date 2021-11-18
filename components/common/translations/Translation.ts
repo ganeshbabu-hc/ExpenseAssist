@@ -1,40 +1,39 @@
 import I18n from 'react-native-i18n';
+import en from './languages/en';
+// import en-IN from './languages/en-IN';
+
 I18n.fallbacks = true;
+I18n.defaultLocale = 'en';
+// const locale = I18n.currentLocale();
+//TODO enable for prod
+// I18n.missingBehaviour = 'guess';
+
 I18n.translations = {
-  kn: {
-    currency: 'ಕರೆನ್ಸಿ',
-    theme: 'ಥೀಮ್',
-    categories: 'ವರ್ಗಗಳು',
-    payments: 'ಪಾವತಿಗಳು',
-  },
-  hi: {
-    currency: 'मुद्रा',
-    theme: 'थीम',
-    categories: 'श्रेणियाँ',
-    payments: 'भुगतान',
-  },
-  ta: {
-    currency: 'நாணயம்',
-    theme: 'தீம்',
-    categories: 'வகைகள்',
-    payments: 'கட்டணங்கள்',
-  },
-  fr: {
-    currency: 'Devise',
-    theme: 'Thème',
-    categories: 'Catégories',
-    payments: 'paiements',
-  },
-  ml: {
-    currency: 'കറൻസി',
-    theme: 'തീം',
-    categories: 'വിഭാഗങ്ങൾ',
-    payments: 'പേയ്‌മെന്റുകൾ',
-  },
+  en,
+  'en-IN': en,
 };
-const t = (name: string, defaultValue?: string) => {
-  const translation = I18n.t(name);
-  return translation ?? defaultValue;
+
+/**
+ * FUnction to create and send the translation Value
+ * @param name transalation name
+ * @param params dynamic values
+ * @returns translation string
+ */
+const t = (name: string, ...params: any): string => {
+  // const tokens: string[] = name.split(' ');
+  // let newName: string = name;
+  // // let newName: string = name.toUpperCase();
+  // if (tokens.length > 1) {
+  //   tokens.forEach((token: string, index: number) => {
+  //     if (index === 0) {
+  //       newName += token.toLowerCase();
+  //     } else {
+  //       newName += token;
+  //     }
+  //   });
+  // }
+  const translation = I18n.t(name, ...params);
+  return translation;
 };
 
 export default t;

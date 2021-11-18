@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {
+  Animated,
   FlatList,
   Pressable,
   SafeAreaView,
@@ -25,11 +26,17 @@ import {
   setCurrency,
 } from '../database/common/CurrencyController';
 import {useDispatch, useSelector} from 'react-redux';
-import {UPDATE_CURRENCY} from '../../redux/constants/StoreConstants';
-import {ShowSnackBar} from '../common/Util';
-import { THEME } from '../utils/Constants';
+import {
+  SHOW_TOAST,
+  UPDATE_CURRENCY,
+} from '../../redux/constants/StoreConstants';
+import {THEME} from '../utils/Constants';
+import t from '../common/translations/Translation';
+import ScrollViewWrapper from '../common/ScrollViewWrapper';
+import IconMap from '../common/IconMap';
 const CurrencyScreen = ({navigation}: any) => {
   // const isDarkMode = useColorScheme() === 'dark';
+  const scrollY = useRef(new Animated.Value(0)).current;
   const dispatch = useDispatch();
   const [title, setTitle] = useState('');
   const [currencyList, setCurrencyList] = useState<ICurrency[]>([]);
@@ -68,7 +75,14 @@ const CurrencyScreen = ({navigation}: any) => {
     const result = await setCurrency(currency);
     if (result) {
       dispatch({type: UPDATE_CURRENCY, payload: currency});
-      ShowSnackBar(`Currency is set to ${currency.code}: ${currency.symbol}`);
+      dispatch({
+        type: SHOW_TOAST,
+        payload: [
+          {
+            title: t('currencySet', {name: currency.name}),
+          },
+        ],
+      });
     }
   };
 
@@ -87,15 +101,15 @@ const CurrencyScreen = ({navigation}: any) => {
           style={styles.listWrapper}>
           <View style={styles.iconWrapper}>
             {userCurrency.currencyId === item.currencyId ? (
-              <Icon
-                color={colors.theme[THEME].brandMedium}
-                name={'radio-button-checked'}
+              <IconMap
+                color={colors.theme[THEME].textBrandMedium}
+                iconName={'check-circle'}
                 size={commonStyles.icon.width}
               />
             ) : (
-              <Icon
+              <IconMap
                 color={colors.theme[THEME].textCardGray}
-                name={'radio-button-unchecked'}
+                iconName={'circle'}
                 size={commonStyles.icon.width}
               />
             )}
@@ -136,13 +150,16 @@ const CurrencyScreen = ({navigation}: any) => {
   }, [title]);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={commonStyles.screen}>
       <View style={commonStyles.container}>
         <AppHeader
           navigation={navigation}
           homeScreen={false}
           title="Currency"
+          scrollY={scrollY}
         />
+      </View>
+      <View style={commonStyles.container}>
         <View style={styles.inputWrapper}>
           <TextInput
             placeholderTextColor={colors.theme[THEME].textCardGray}
@@ -152,31 +169,30 @@ const CurrencyScreen = ({navigation}: any) => {
             value={title}
           />
         </View>
-
         <FlatList
           ref={flatList}
           contentInsetAdjustmentBehavior="automatic"
           keyboardDismissMode="interactive"
           keyboardShouldPersistTaps="always"
           style={styles.currencyList}
-          showsHorizontalScrollIndicator={false}
-          scrollEnabled
           data={filteredList}
           renderItem={({item, index}) => _renderItem(item, index)}
           keyExtractor={_keyExtractor}
+          onScroll={Animated.event(
+            [{nativeEvent: {contentOffset: {y: scrollY}}}],
+            {useNativeDriver: false},
+          )}
         />
       </View>
-      {/* </ScrollView> */}
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    // backgroundColor: colors.theme[THEME].brandLight,
-  },
   iconWrapper: {},
-  currencyList: {},
+  currencyList: {
+    backgroundColor: colors.theme[THEME].brandLight,
+  },
   listWrapper: {
     display: 'flex',
     flexDirection: 'row',
@@ -205,7 +221,7 @@ const styles = StyleSheet.create({
     color: colors.theme[THEME].textDark,
   },
   inputWrapper: {
-    marginBottom: 30,
+    marginVertical: 30,
   },
 });
 

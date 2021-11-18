@@ -1,4 +1,5 @@
 import React from 'react';
+import {IToast} from '../../components/common/ToastNotification';
 import {IConfiguration} from '../../components/database/common/CommonController';
 import {
   SHOW_MODAL,
@@ -6,6 +7,7 @@ import {
   UPDATE_CURRENCY,
   UPDATE_CONFIGURATIONS,
   UPDATE_SCROLLX,
+  SHOW_TOAST,
 } from '../constants/StoreConstants';
 
 export interface ICommonState {
@@ -15,6 +17,7 @@ export interface ICommonState {
     currency: IConfiguration;
   };
   scrollX: number;
+  toast: IToast[];
 }
 
 const initialState: ICommonState = {
@@ -28,6 +31,7 @@ const initialState: ICommonState = {
       value: {code: 'INR', currencyId: 47, name: 'Rupees', symbol: '₹'},
     },
   },
+  toast: [],
 };
 export const CommonReducer = (state = initialState, action: any) => {
   // console.log(action);
@@ -46,7 +50,7 @@ export const CommonReducer = (state = initialState, action: any) => {
       };
     case UPDATE_CURRENCY:
       let config: ICommonState = {...state};
-      console.log(config);
+      // console.log(config);
       config.configuration.currency.value = action.payload;
       return config;
     case UPDATE_CONFIGURATIONS:
@@ -61,5 +65,10 @@ export const CommonReducer = (state = initialState, action: any) => {
       };
     default:
       return state;
+    case SHOW_TOAST:
+      return {
+        ...state,
+        toast: action.payload,
+      };
   }
 };

@@ -2,15 +2,15 @@ import React, {useEffect, useRef, useState} from 'react';
 import {View, Text, FlatList, Pressable} from 'react-native';
 import {categoryList, colors, commonStyles} from '../styles/theme';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
-import {IExpenseCategory} from '../database/expense/ExpenseTypes';
-import {getExpenseCaetegories} from '../database/expense/ExpenseController';
 import IconMap from '../common/IconMap';
 import {useSelector} from 'react-redux';
-import { THEME } from '../utils/Constants';
+import {THEME} from '../utils/Constants';
+import {ITransactionCategory, TransactionType} from '../database/transaction/TransactionTypes';
 
-const defaultCategory: IExpenseCategory = {
-  expenseCategoryId: 0,
+const defaultCategory: ITransactionCategory = {
+  transactionCategoryId: 0,
   title: '',
+  transactionType: TransactionType.EXPENSE,
   description: '',
   categoryIcon: 'plus',
 };
@@ -24,12 +24,12 @@ const ExpenseCategoryList = ({navigation, onChange, defaultValue}) => {
     return list;
   });
 
-  const scrollToSeletedCategory = (list: IExpenseCategory[]) => {
+  const scrollToSeletedCategory = (list: ITransactionCategory[]) => {
     setTimeout(() => {
       let scrollIndex = 0;
-      list.forEach((category: IExpenseCategory, index: number) => {
-        console.log(category.expenseCategoryId, activeCategory);
-        if (category.expenseCategoryId === activeCategory) {
+      list.forEach((category: ITransactionCategory, index: number) => {
+        // console.log(category.transactionCategoryId, activeCategory);
+        if (category.transactionCategoryId === activeCategory) {
           scrollIndex = index;
         }
       });
@@ -57,7 +57,8 @@ const ExpenseCategoryList = ({navigation, onChange, defaultValue}) => {
         horizontal
         data={expenseCategories}
         renderItem={({item, index}) => {
-          if (item.expenseCategoryId === 0) {
+          // console.log(item.categoryIcon);
+          if (item.transactionCategoryId === 0) {
             return (
               <View
                 style={[
@@ -67,7 +68,9 @@ const ExpenseCategoryList = ({navigation, onChange, defaultValue}) => {
                 <Pressable
                   style={categoryList.categoryAddBtn}
                   onPress={() => {
-                    navigation.navigate('AddEditCategory', {type: 'expense'});
+                    navigation.navigate('AddEditCategory', {
+                      type: TransactionType.EXPENSE,
+                    });
                   }}>
                   <Icon
                     name="add"
@@ -87,14 +90,14 @@ const ExpenseCategoryList = ({navigation, onChange, defaultValue}) => {
                   : categoryList.categoryItem.dark,
               ]}
               onPress={() => {
-                setActiveCategory(item.expenseCategoryId);
-                onChange(item.expenseCategoryId);
+                setActiveCategory(item.transactionCategoryId);
+                onChange(item.transactionCategoryId);
               }}>
-              {activeCategory === item.expenseCategoryId && (
+              {activeCategory === item.transactionCategoryId && (
                 <IconMap
                   style={categoryList.activeCategory}
                   iconName={'check-circle'}
-                  color={colors.theme[THEME].brandMediumDark}
+                  color={colors.theme[THEME].textLight}
                 />
               )}
               <IconMap
@@ -105,8 +108,8 @@ const ExpenseCategoryList = ({navigation, onChange, defaultValue}) => {
             </Pressable>
           );
         }}
-        keyExtractor={(category: IExpenseCategory) =>
-          category.expenseCategoryId.toString()
+        keyExtractor={(category: ITransactionCategory) =>
+          category.transactionCategoryId.toString()
         }
       />
     </View>

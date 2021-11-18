@@ -3,7 +3,7 @@ import {ISummary} from '../components/database/common/SummaryController';
 import {
   IExpense,
   IExpenseCategory,
-} from '../components/database/expense/ExpenseTypes';
+} from '../components/database/transaction/TransactionTypes';
 import {
   IIncome,
   IIncomeCategory,

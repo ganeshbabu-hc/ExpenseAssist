@@ -1,12 +1,14 @@
 import {
   TNAME_CURRENCY_TYPES,
   TNAME_EXPENSE,
-  TNAME_EXPENSE_CATEGORIES,
+  TNAME_TRANSACTION_CATEGORIES,
   TNAME_INCOME,
   TNAME_INCOME_CATEGORIES,
   TNAME_PAYMENT_TYPES,
+  TNAME_TRANSACTIONS,
 } from '../../utils/Constants';
 import {getDBConnection} from '../DBController';
+import {TransactionType} from '../transaction/TransactionTypes';
 export interface ISummary {
   totalExpense?: number;
   totalIncome?: number;
@@ -14,90 +16,110 @@ export interface ISummary {
   monthlyIncome?: number;
 }
 
-export const getMonthlyStats = async (type: string): Promise<any> => {
+export interface IStat {
+  transactionCategoryId: number;
+  amount: number;
+  currencyId: string;
+  dateAddedTlm: string;
+  dateUpdatedTlm: string;
+  transactionCategoryTitle: string;
+  transactionCategoryIcon: string;
+  paymentTitle: string;
+  currencySumbol: string;
+}
+
+export const getMonthlyStats = async (type: TransactionType): Promise<any> => {
   try {
     let meta: any = [];
     try {
-      if (type === 'expense') {
-        const query = `SELECT 
-        ex.EXPENSE_CATEGORY_ID as expenseCategoryId,
-        SUM(ex.AMOUNT) as amount,
-        ex.CURRENCY_ID as currencyId,
-        ex.DATE_ADDED_TLM as dateAddedTlm,
-        ex.DATE_UPDATED_TLM as dateUpdatedTlm,
-        ec.TITLE as expenseCategoryTitle,
-        ec.CATEGORY_ICON as expenseCategoryIcon,
+      let typeCond = '';
+      if (type === TransactionType.INCOME) {
+        typeCond = ` WHERE tx.TRANSACTION_TYPE = '${TransactionType.INCOME}' `;
+      } else if (type === TransactionType.EXPENSE) {
+        typeCond = ` WHERE tx.TRANSACTION_TYPE = '${TransactionType.EXPENSE}' `;
+      }
+      // if (type === TransactionType.EXPENSE) {
+      const query = `SELECT 
+        tx.TRANSACTION_CATEGORY_ID as transactionCategoryId,
+        SUM(tx.AMOUNT) as amount,
+        tx.CURRENCY_ID as currencyId,
+        tx.DATE_ADDED_TLM as dateAddedTlm,
+        tx.DATE_UPDATED_TLM as dateUpdatedTlm,
+        ec.TITLE as transactionCategoryTitle,
+        ec.CATEGORY_ICON as transactionCategoryIcon,
         pt.TITLE as paymentTitle,
         ct.SYMBOL as currencySumbol
-        FROM ${TNAME_EXPENSE} ex 
-        LEFT JOIN ${TNAME_PAYMENT_TYPES} pt ON ex.PAYMENT_ID = pt.PAYMENT_ID 
-        LEFT JOIN ${TNAME_EXPENSE_CATEGORIES} ec ON ex.EXPENSE_CATEGORY_ID = ec.EXPENSE_CATEGORY_ID 
-        LEFT JOIN ${TNAME_CURRENCY_TYPES} ct ON ct.CURRENCY_ID = ex.CURRENCY_ID 
-        GROUP BY ex.EXPENSE_CATEGORY_ID
-        ORDER BY ex.AMOUNT ASC`;
+        FROM ${TNAME_TRANSACTIONS} tx 
+        LEFT JOIN ${TNAME_PAYMENT_TYPES} pt ON tx.PAYMENT_ID = pt.PAYMENT_ID 
+        LEFT JOIN ${TNAME_TRANSACTION_CATEGORIES} ec ON tx.TRANSACTION_CATEGORY_ID = ec.TRANSACTION_CATEGORY_ID 
+        LEFT JOIN ${TNAME_CURRENCY_TYPES} ct ON ct.CURRENCY_ID = tx.CURRENCY_ID 
+        ${typeCond} 
+        GROUP BY tx.TRANSACTION_CATEGORY_ID
+        ORDER BY tx.AMOUNT ASC`;
 
-        // const query = `SELECT 
-        // ex.EXPENSE_ID as expenseId,
-        // ex.PAYMENT_ID as paymentId,
-        // ex.TITLE as title,
-        // ex.DESCRIPTION as description,
-        // ex.EXPENSE_CATEGORY_ID as expenseCategoryId,
-        // SUM(ex.AMOUNT) as amount,
-        // ex.CURRENCY_ID as currencyId,
-        // ex.DATE_ADDED_TLM as dateAddedTlm,
-        // ex.DATE_UPDATED_TLM as dateUpdatedTlm,
-        // ec.TITLE as expenseCategoryTitle,
-        // ec.CATEGORY_ICON as expenseCategoryIcon,
-        // pt.TITLE as paymentTitle,
-        // ct.SYMBOL as currencySumbol
-        // FROM ${TNAME_EXPENSE} ex 
-        // LEFT JOIN ${TNAME_PAYMENT_TYPES} pt ON ex.PAYMENT_ID = pt.PAYMENT_ID 
-        // LEFT JOIN ${TNAME_EXPENSE_CATEGORIES} ec ON ex.EXPENSE_CATEGORY_ID = ec.EXPENSE_CATEGORY_ID 
-        // LEFT JOIN ${TNAME_CURRENCY_TYPES} ct ON ct.CURRENCY_ID = ex.CURRENCY_ID 
-        // GROUP BY ex.EXPENSE_CATEGORY_ID
-        // ORDER BY ex.AMOUNT ASC`;
+      // const query = `SELECT
+      // tx.EXPENSE_ID as expenseId,
+      // tx.PAYMENT_ID as paymentId,
+      // tx.TITLE as title,
+      // tx.DESCRIPTION as description,
+      // tx.TRANSACTION_CATEGORY_ID as transactionCategoryId,
+      // SUM(tx.AMOUNT) as amount,
+      // tx.CURRENCY_ID as currencyId,
+      // tx.DATE_ADDED_TLM as dateAddedTlm,
+      // tx.DATE_UPDATED_TLM as dateUpdatedTlm,
+      // ec.TITLE as transactionCategoryTitle,
+      // ec.CATEGORY_ICON as transactionCategoryIcon,
+      // pt.TITLE as paymentTitle,
+      // ct.SYMBOL as currencySumbol
+      // FROM ${TNAME_EXPENSE} ex
+      // LEFT JOIN ${TNAME_PAYMENT_TYPES} pt ON tx.PAYMENT_ID = pt.PAYMENT_ID
+      // LEFT JOIN ${TNAME_TRANSACTION_CATEGORIES} ec ON tx.TRANSACTION_CATEGORY_ID = ec.TRANSACTION_CATEGORY_ID
+      // LEFT JOIN ${TNAME_CURRENCY_TYPES} ct ON ct.CURRENCY_ID = tx.CURRENCY_ID
+      // GROUP BY tx.TRANSACTION_CATEGORY_ID
+      // ORDER BY tx.AMOUNT ASC`;
 
-        const db = await getDBConnection();
-        const results = await db.executeSql(query);
-        results.forEach((result: any) => {
-          for (let index = 0; index < result.rows.length; index++) {
-            meta.push(result.rows.item(index));
-          }
-        });
-        // console.log(meta);
-        return meta;
-      } else {
-        const query = `SELECT 
-          ex.INCOME_ID as incomeId,
-          ex.PAYMENT_ID as paymentId,
-          ex.TITLE as title,
-          ex.DESCRIPTION as description,
-          ex.INCOME_CATEGORY_ID as incomeCategoryId,
-          SUM(ex.AMOUNT) as amount,
-          ex.CURRENCY_ID as currencyId,
-          ex.DATE_ADDED_TLM as dateAddedTlm,
-          ex.DATE_UPDATED_TLM as dateUpdatedTlm,
-          ec.TITLE as incomeCategoryTitle,
-          ec.CATEGORY_ICON as incomeCategoryIcon,
-          pt.TITLE as paymentTitle,
-          ct.SYMBOL as currencySumbol
-          FROM ${TNAME_INCOME} ex 
-          LEFT JOIN ${TNAME_PAYMENT_TYPES} pt ON ex.PAYMENT_ID = pt.PAYMENT_ID 
-          LEFT JOIN ${TNAME_INCOME_CATEGORIES} ec ON ex.INCOME_CATEGORY_ID = ec.INCOME_CATEGORY_ID 
-          LEFT JOIN ${TNAME_CURRENCY_TYPES} ct ON ct.CURRENCY_ID = ex.CURRENCY_ID 
-          GROUP BY ex.INCOME_CATEGORY_ID
-          ORDER BY ex.AMOUNT ASC`;
+      const db = await getDBConnection();
+      const results = await db.executeSql(query);
+      results.forEach((result: any) => {
+        for (let index = 0; index < result.rows.length; index++) {
+          const stat: IStat = result.rows.item(index) as IStat;
+          meta.push(stat);
+        }
+      });
+      // console.log(meta);
+      return meta;
+      // } else {
+      //   const query = `SELECT
+      //     tx.INCOME_ID as incomeId,
+      //     tx.PAYMENT_ID as paymentId,
+      //     tx.TITLE as title,
+      //     tx.DESCRIPTION as description,
+      //     tx.TRANSACTION_CATEGORY_ID as transactionCategoryId,
+      //     SUM(tx.AMOUNT) as amount,
+      //     tx.CURRENCY_ID as currencyId,
+      //     tx.DATE_ADDED_TLM as dateAddedTlm,
+      //     tx.DATE_UPDATED_TLM as dateUpdatedTlm,
+      //     ec.TITLE as transactionCategoryTitle,
+      //     ec.CATEGORY_ICON as transactionCategoryIcon,
+      //     pt.TITLE as paymentTitle,
+      //     ct.SYMBOL as currencySumbol
+      //     FROM ${TNAME_INCOME} ex
+      //     LEFT JOIN ${TNAME_PAYMENT_TYPES} pt ON tx.PAYMENT_ID = pt.PAYMENT_ID
+      //     LEFT JOIN ${TNAME_INCOME_CATEGORIES} ec ON tx.TRANSACTION_CATEGORY_ID = tx.TRANSACTION_CATEGORY_ID
+      //     LEFT JOIN ${TNAME_CURRENCY_TYPES} ct ON ct.CURRENCY_ID = tx.CURRENCY_ID
+      //     GROUP BY tx.TRANSACTION_CATEGORY_ID
+      //     ORDER BY tx.AMOUNT ASC`;
 
-        const db = await getDBConnection();
-        const results = await db.executeSql(query);
-        results.forEach((result: any) => {
-          for (let index = 0; index < result.rows.length; index++) {
-            meta.push(result.rows.item(index));
-          }
-        });
-        // console.log(meta);
-        return meta;
-      }
+      //   const db = await getDBConnection();
+      //   const results = await db.executeSql(query);
+      //   results.forEach((result: any) => {
+      //     for (let index = 0; index < result.rows.length; index++) {
+      //       meta.push(result.rows.item(index));
+      //     }
+      //   });
+      //   // console.log(meta);
+      //   return meta;
+      // }
 
       //   const db = await getDBConnection();
       //   const query = `SELECT * from

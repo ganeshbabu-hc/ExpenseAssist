@@ -15,35 +15,36 @@ import AddType from './common/add/AddType';
 import {useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import {
-  getExpenseCaetegories,
-  getExpenses,
-} from './database/expense/ExpenseController';
+  getTransactionCategories,
+  getTransactions,
+} from './database/transaction/TransactionController';
 import {
   UPDATE_CONFIGURATIONS,
-  UPDATE_CURRENCY_TYPES,
   UPDATE_EXPENSE_CATEGORIES_LIST,
-  UPDATE_EXPENSE_LIST,
   UPDATE_INCOME_CATEGORIES_LIST,
-  UPDATE_INCOME_LIST,
+  UPDATE_TRANSACTION_LIST,
   UPDATE_SUMMARY,
 } from '../redux/constants/StoreConstants';
 import {getCurrncyTypes} from './database/common/CurrencyController';
 import AddEditIncome from './income/AddEditIncome';
-import {
-  getIncomeCaetegories,
-  getIncomes,
-} from './database/income/IncomeController';
+import {getIncomes} from './database/income/IncomeController';
 import {getSummary} from './database/common/SummaryController';
-import StatsScreen from './home/StatsScreen';
+import StatsScreen from './home/StatsScreen2';
 import AddEditCategory from './common/AddEditCategory';
 import {BlurView} from '@react-native-community/blur';
-import StatsScreen1 from './home/StatsScreen1';
-import RecentList from './common/RecentList';
+import StatsScreen1 from './stats/StatsScreen';
+import TransactionList from './database/transaction/TransactionList';
 import {SettingsScreen} from './settings/SettingsScreen';
 import CurrencyScreen from './settings/CurrencyScreen';
 import {getConfigurations} from './database/common/CommonController';
 import ThemeScreen from './settings/ThemeScreen';
 import {THEME} from './utils/Constants';
+import {TransactionType} from './database/transaction/TransactionTypes';
+import UniconHome from './icons/unicons/UniconHome';
+import UniconPieAlt from './icons/unicons/UniconPieAlt';
+import UniconSetting from './icons/unicons/UniconSetting';
+import UniconUnivercity from './icons/unicons/UniconUnivercity';
+import { AccountsScreen } from './settings/AccountsScreen';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -74,7 +75,7 @@ const Home = ({navigation}) => {
           tabBarStyle: {
             height: 64,
             borderTopWidth: 0,
-            shadowColor: colors.theme[THEME].brandMedium,
+            shadowcolor: colors.theme[THEME].textBrandMedium,
             elevation: 20,
             shadowOffset: {
               width: 20,
@@ -85,31 +86,27 @@ const Home = ({navigation}) => {
           tabBarShowLabel: false,
           tabBarIcon: ({focused, color, size}) => {
             let iconName;
-
             switch (route.name) {
               case Routes.HOME:
                 iconName = (
-                  <CommunityIcon
-                    name={'home-outline'}
+                  <UniconHome
+                    active={focused}
                     color={
                       focused
-                        ? colors.theme[THEME].brandDark
+                        ? colors.theme[THEME].textBrandMedium
                         : colors.theme[THEME].textCardGray
                     }
-                    size={28}
                   />
                 );
                 break;
               case Routes.STATS:
                 iconName = (
-                  <CommunityIcon
-                    name={'chart-arc'}
+                  <UniconPieAlt
                     color={
                       focused
-                        ? colors.theme[THEME].brandDark
+                        ? colors.theme[THEME].textBrandMedium
                         : colors.theme[THEME].textCardGray
                     }
-                    size={28}
                   />
                 );
                 break;
@@ -118,27 +115,23 @@ const Home = ({navigation}) => {
                 break;
               case Routes.ACCOUNTS:
                 iconName = (
-                  <CommunityIcon
-                    name={'bank-outline'}
+                  <UniconUnivercity
                     color={
                       focused
-                        ? colors.theme[THEME].brandDark
+                        ? colors.theme[THEME].textBrandMedium
                         : colors.theme[THEME].textCardGray
                     }
-                    size={28}
                   />
                 );
                 break;
               case Routes.SETTINGS:
                 iconName = (
-                  <Icon
-                    name={'settings'}
+                  <UniconSetting
                     color={
                       focused
-                        ? colors.theme[THEME].brandDark
+                        ? colors.theme[THEME].textBrandMedium
                         : colors.theme[THEME].textCardGray
                     }
-                    size={28}
                   />
                 );
                 break;
@@ -161,7 +154,7 @@ const Home = ({navigation}) => {
           options={{unmountOnBlur: true}}
         />
         <Tab.Screen name={Routes.STATS} component={StatsScreen1} />
-        <Tab.Screen name={Routes.ACCOUNTS} component={ProfileScreen} />
+        <Tab.Screen name={Routes.ACCOUNTS} component={AccountsScreen} />
         <Tab.Screen name={Routes.SETTINGS} component={SettingsScreen} />
         <Tab.Screen name={Routes.ADD} component={HomeScreen} />
       </Tab.Navigator>
@@ -184,20 +177,24 @@ const config = {
 const Router = () => {
   const dispatch = useDispatch();
   const intializeStore = async () => {
-    const expenseList = await getExpenses();
-    dispatch({type: UPDATE_EXPENSE_LIST, payload: expenseList});
+    const transactioList = await getTransactions(10, TransactionType.ALL);
+    dispatch({type: UPDATE_TRANSACTION_LIST, payload: transactioList});
     const summary = await getSummary();
     dispatch({type: UPDATE_SUMMARY, payload: summary});
     const incomeList = await getIncomes();
-    dispatch({type: UPDATE_INCOME_LIST, payload: incomeList});
+    dispatch({type: UPDATE_TRANSACTION_LIST, payload: incomeList});
     const configs = await getConfigurations();
     dispatch({type: UPDATE_CONFIGURATIONS, payload: configs});
-    const expenseCategories = await getExpenseCaetegories();
+    const expenseCategories = await getTransactionCategories(
+      TransactionType.EXPENSE,
+    );
     dispatch({
       type: UPDATE_EXPENSE_CATEGORIES_LIST,
       payload: expenseCategories,
     });
-    const incomeCategories = await getIncomeCaetegories();
+    const incomeCategories = await getTransactionCategories(
+      TransactionType.INCOME,
+    );
     dispatch({
       type: UPDATE_INCOME_CATEGORIES_LIST,
       payload: incomeCategories,
@@ -209,12 +206,25 @@ const Router = () => {
     intializeStore();
   }, []);
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      theme={{
+        dark: false,
+        colors: {
+          primary: colors.theme[THEME].bgLight,
+          background: colors.theme[THEME].bgLight,
+          card: colors.theme[THEME].bgLight,
+          text: colors.theme[THEME].bgLight,
+          border: colors.theme[THEME].bgLight,
+          notification: colors.theme[THEME].bgLight,
+        },
+      }}>
       <Stack.Navigator
         screenOptions={({route}) => ({
           gestureEnabled: true,
           gestureDirection: 'horizontal',
           headerShown: false,
+          contentStyle: {backgroundColor: colors.theme[THEME].brandDanger},
+
           // headerBackButtonMenuEnabled: true,
         })}>
         <Stack.Screen
@@ -222,16 +232,7 @@ const Router = () => {
           component={Home}
           options={{title: 'Welcome'}}
         />
-        <Stack.Screen
-          // options={{
-          //   transitionSpec: {
-          //     open: config,
-          //     close: config,
-          //   },
-          // }}
-          name="AddType"
-          component={AddType}
-        />
+        <Stack.Screen name="AddType" component={AddType} />
         <Stack.Screen
           name="AddExpense"
           component={AddEditExpense}
@@ -248,8 +249,8 @@ const Router = () => {
           initialParams={{}}
         />
         <Stack.Screen
-          name="RecentList"
-          component={RecentList}
+          name="TransactionList"
+          component={TransactionList}
           initialParams={{}}
         />
         <Stack.Group>

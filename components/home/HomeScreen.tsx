@@ -1,6 +1,8 @@
 import * as React from 'react';
 import {
+  Animated,
   SafeAreaView,
+  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -19,9 +21,11 @@ import RecentExpenses from '../expense/RecentExpenses';
 import RecentIncomes from '../income/RecentIncomes';
 import NeuMorph from '../common/NeuMorph';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
-import RecentList from '../common/RecentList';
+import TransactionList from '../database/transaction/TransactionList';
 import ScrollViewWrapper from '../common/ScrollViewWrapper';
-import { THEME } from '../utils/Constants';
+import {THEME} from '../utils/Constants';
+import {useRef} from 'react';
+import {TransactionType} from '../database/transaction/TransactionTypes';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -40,6 +44,7 @@ export const ProfileScreen = ({route}: any) => {
 
 export const HomeScreen = ({navigation}: any) => {
   const isDarkMode = useColorScheme() === 'dark';
+  const scrollY = useRef(new Animated.Value(0)).current;
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
@@ -48,12 +53,16 @@ export const HomeScreen = ({navigation}: any) => {
   return (
     <SafeAreaView style={commonStyles.screen}>
       <View style={commonStyles.container}>
-        <AppHeader navigation={navigation} />
+        <AppHeader navigation={navigation} scrollY={scrollY} />
       </View>
-      <ScrollViewWrapper style={styles.quickMenuContainer}>
+      <ScrollViewWrapper scrollY={scrollY} style={styles.quickMenuContainer}>
         <SummaryList navigation={navigation} />
         <QuickMenu navigation={navigation} />
-        <RecentList navigation={navigation} />
+        <TransactionList
+          navigation={navigation}
+          type={TransactionType.ALL}
+          limit={5}
+        />
       </ScrollViewWrapper>
     </SafeAreaView>
   );

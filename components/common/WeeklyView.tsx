@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import {DATE_DB_FORMAT, DAYS_SHORT, MONTH_NAMES, THEME} from '../utils/Constants';
 import {dateFormatter} from '../utils/Formatter';
 import moment from 'moment';
+import IconMap from './IconMap';
 
 interface IWeeklyView {
   onChange: Function;
@@ -69,10 +70,10 @@ const WeeklyView = ({onChange, defaultValue}: IWeeklyView) => {
       <View style={styles.dateHeader}>
         <View>
           <Pressable onPress={showDatepicker} style={styles.dateBtn}>
-            <Icon
-              name="calendar-month"
+            <IconMap
+              iconName="calendar"
               size={commonStyles.icon.width}
-              color={colors.theme[THEME].brandMedium}
+              color={colors.theme[THEME].textBrandMedium}
             />
             <Text style={styles.btnText}>{`${
               MONTH_NAMES[date.getMonth()]
@@ -82,11 +83,11 @@ const WeeklyView = ({onChange, defaultValue}: IWeeklyView) => {
         <View>
           <Pressable onPress={showTimepicker} style={styles.timeBtn}>
             <Text style={styles.btnText}>{`${formatTime()}`}</Text>
-            <Icon
+            <IconMap
               style={styles.timeIon}
-              name="clock-time-five"
+              iconName="clock"
               size={commonStyles.icon.width}
-              color={colors.theme[THEME].brandMedium}
+              color={colors.theme[THEME].textBrandMedium}
             />
           </Pressable>
         </View>
