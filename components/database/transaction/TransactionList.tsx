@@ -120,7 +120,7 @@ const TransactionList = ({
                 style={recentList.listHeaderIconWrapper}>
                 <IconMap
                   style={recentList.listHeaderIcon}
-                  iconName="ellipse-horz"
+                  name={'ellipse-horz'}
                   size={commonStyles.icon.width}
                   color={colors.theme[THEME].textBrandMedium}
                 />

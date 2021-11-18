@@ -1,9 +1,9 @@
 import React from 'react';
-import Svg, {Path} from 'react-native-svg';
-import {defaultUnicon, Unicon, uniconPropTypes} from './Types';
+import Svg, { Path } from 'react-native-svg';
+import { defaultUnicon, Unicon, uniconPropTypes } from './Types';
 
 const UniconAlarm = (props: Unicon) => {
-  const {color, size, ...otherProps} = props;
+  const { color, size, ...otherProps } = props;
   return (
     <Svg
       width={size}

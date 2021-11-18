@@ -103,13 +103,13 @@ const CurrencyScreen = ({navigation}: any) => {
             {userCurrency.currencyId === item.currencyId ? (
               <IconMap
                 color={colors.theme[THEME].textBrandMedium}
-                iconName={'check-circle'}
+                name={'check-circle'}
                 size={commonStyles.icon.width}
               />
             ) : (
               <IconMap
                 color={colors.theme[THEME].textCardGray}
-                iconName={'circle'}
+                name={'circle'}
                 size={commonStyles.icon.width}
               />
             )}

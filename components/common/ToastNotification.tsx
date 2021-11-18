@@ -5,6 +5,7 @@ import {colors, commonStyles, utils} from '../styles/theme';
 import {THEME} from '../utils/Constants';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import {useSelector} from 'react-redux';
+import IconMap from './IconMap';
 
 export enum ToastPosition {
   TOP = 'top',
@@ -12,9 +13,9 @@ export enum ToastPosition {
 }
 
 export enum ToastType {
-  DANGER = 'dangerous',
-  INFO = 'error',
-  WARNING = 'warning',
+  DANGER = 'exclamation-octo',
+  INFO = 'exclamation-circle',
+  WARNING = 'exclamation-triangle',
 }
 
 export interface IToast {
@@ -29,13 +30,13 @@ interface IMessage {
   onHide: Function;
 }
 
-const Message = ({message, onHide}: IMessage) => {
+const Message = ({ message, onHide }: IMessage) => {
   const opacity = useRef(new Animated.Value(0)).current;
   console.log(message);
   const getIcon = () => {
     const toastType = message.toastType ?? ToastType.INFO;
     return (
-      <Icon
+      <IconMap
         name={toastType}
         size={commonStyles.icon.width}
         color={colors.theme[THEME].textLight}

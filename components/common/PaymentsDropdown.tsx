@@ -77,7 +77,7 @@ const PaymentsDropdown = ({onChange, defaultValue}: IpaymentDropdown) => {
                       )}
                     </View>
                     <IconMap
-                      iconName={payment.paymentIcon}
+                      name={payment.paymentIcon}
                       color={colors.theme[THEME].textBrandMedium}
                     />
                     <Text style={styles.paymentTitle}>{t(payment.title)}</Text>

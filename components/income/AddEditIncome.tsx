@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -7,25 +7,25 @@ import {
   Pressable,
   Animated,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {useDispatch, useSelector} from 'react-redux';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   SHOW_TOAST,
   UPDATE_TRANSACTION_LIST,
   UPDATE_SUMMARY,
 } from '../../redux/constants/StoreConstants';
 import AppHeader from '../common/AppHeader';
-import {colors, commonStyles, formStyles} from '../styles/theme';
-import {dateFormatter} from '../utils/Formatter';
+import { colors, commonStyles, formStyles } from '../styles/theme';
+import { dateFormatter } from '../utils/Formatter';
 import IncomeCategoryList from './IncomeCategoryList';
 import PaymentsDropdown from '../common/PaymentsDropdown';
 import WeeklyView from '../common/WeeklyView';
-import {getSummary} from '../database/common/SummaryController';
-import {ICurrency} from '../database/common/CurrencyController';
+import { getSummary } from '../database/common/SummaryController';
+import { ICurrency } from '../database/common/CurrencyController';
 import ScrollViewWrapper from '../common/ScrollViewWrapper';
-import {THEME} from '../utils/Constants';
+import { THEME } from '../utils/Constants';
 import t from '../common/translations/Translation';
-import {useRef} from 'react';
+import { useRef } from 'react';
 import {
   ITransaction,
   TransactionType,
@@ -35,6 +35,7 @@ import {
   saveTransaction,
   updateTransaction,
 } from '../database/transaction/TransactionController';
+import TransactionCategotyList from '../database/transaction/TransactionCategotyList';
 
 interface IAddEditIncome {
   navigation: any;
@@ -53,12 +54,12 @@ const defaultErrMsg: IErrorMessages = {
   transactionCategoryId: '',
 };
 
-const AddEditIncome = ({navigation, route}: IAddEditIncome) => {
+const AddEditIncome = ({ navigation, route }: IAddEditIncome) => {
   const scrollY = useRef(new Animated.Value(0)).current;
   const currency: ICurrency = useSelector((state: any) => {
     return state.common.configuration.currency.value;
   });
-  const {income}: {income: ITransaction} = route.params;
+  const { income }: { income: ITransaction } = route.params;
 
   const [errMsg, setErrMsg] = useState<IErrorMessages>(defaultErrMsg);
 
@@ -89,7 +90,7 @@ const AddEditIncome = ({navigation, route}: IAddEditIncome) => {
   const dispatch = useDispatch();
 
   const validateInputs = (): boolean => {
-    const msg: IErrorMessages = {...defaultErrMsg};
+    const msg: IErrorMessages = { ...defaultErrMsg };
     let isValid = true;
     if (!title.trim()) {
       msg.title = t('invalidIncomeTitle');
@@ -140,7 +141,7 @@ const AddEditIncome = ({navigation, route}: IAddEditIncome) => {
           type: SHOW_TOAST,
           payload: [
             {
-              title: t('incomeUpdated', {name: modIncome.title}),
+              title: t('incomeUpdated', { name: modIncome.title }),
             },
           ],
         });
@@ -153,7 +154,7 @@ const AddEditIncome = ({navigation, route}: IAddEditIncome) => {
           type: SHOW_TOAST,
           payload: [
             {
-              title: t('incomeSaved', {name: modIncome.title}),
+              title: t('incomeSaved', { name: modIncome.title }),
             },
           ],
         });
@@ -161,9 +162,9 @@ const AddEditIncome = ({navigation, route}: IAddEditIncome) => {
       }
     }
     const savedIncomes = await getTransactions(10, TransactionType.INCOME);
-    dispatch({type: UPDATE_TRANSACTION_LIST, payload: savedIncomes});
+    dispatch({ type: UPDATE_TRANSACTION_LIST, payload: savedIncomes });
     const summary = await getSummary();
-    dispatch({type: UPDATE_SUMMARY, payload: summary});
+    dispatch({ type: UPDATE_SUMMARY, payload: summary });
   };
   useEffect(() => {
     setErrMsg(defaultErrMsg);
@@ -222,8 +223,9 @@ const AddEditIncome = ({navigation, route}: IAddEditIncome) => {
               onChange={setPaymentId}
             />
           </View>
-          <IncomeCategoryList
+          <TransactionCategotyList
             navigation={navigation}
+            type={TransactionType.INCOME}
             defaultValue={transactionCategoryId}
             onChange={setTransactionCategoryId}
           />
@@ -252,7 +254,7 @@ const AddEditIncome = ({navigation, route}: IAddEditIncome) => {
               saveEditIncomeHandler();
             }}>
             <Text style={formStyles.buttonLabel}>
-              {editMode ? 'Save' : 'Add'}
+              {editMode ? t('update') : t('add')}
             </Text>
           </Pressable>
         </View>

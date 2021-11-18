@@ -1,16 +1,16 @@
 import React from 'react';
-import {Pressable, StyleSheet} from 'react-native';
-import Icon from 'react-native-vector-icons/dist/Feather';
-import {colors, utils} from '../styles/theme';
+import { Pressable, StyleSheet } from 'react-native';
+import IconMap from '../common/IconMap';
+import { colors, utils } from '../styles/theme';
 import { THEME } from '../utils/Constants';
-const Add = ({navigation}) => {
+const Add = ({ navigation }) => {
   return (
     <Pressable
       style={styles.btnContainer}
       onPress={() => {
         navigation.navigate('AddType');
       }}>
-      <Icon name="plus" color={colors.theme[THEME].textLight} size={32} />
+      <IconMap name={'plus'} color={colors.theme[THEME].textLight} size={32} />
     </Pressable>
   );
 };

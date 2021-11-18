@@ -8,7 +8,7 @@ export default {
   remainders: 'Reminders',
   //Add type
   addExpense: 'Add\nexpense',
-  addIncome: 'Add\ninxome',
+  addIncome: 'Add\nincome',
   addReminder: 'Add\nreminder',
 
   //Notification

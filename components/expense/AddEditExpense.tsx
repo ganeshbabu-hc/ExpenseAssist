@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -7,8 +7,8 @@ import {
   Pressable,
   Animated,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {useDispatch, useSelector} from 'react-redux';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   SHOW_TOAST,
   UPDATE_TRANSACTION_LIST,
@@ -20,17 +20,21 @@ import {
   saveTransaction,
   updateTransaction,
 } from '../database/transaction/TransactionController';
-import {ITransaction, TransactionType} from '../database/transaction/TransactionTypes';
-import {colors, commonStyles, formStyles} from '../styles/theme';
-import {dateFormatter} from '../utils/Formatter';
+import {
+  ITransaction,
+  TransactionType,
+} from '../database/transaction/TransactionTypes';
+import { colors, commonStyles, formStyles } from '../styles/theme';
+import { dateFormatter } from '../utils/Formatter';
 import ExpenseCategoryList from './ExpenseCategotyList';
 import PaymentsDropdown from '../common/PaymentsDropdown';
 import WeeklyView from '../common/WeeklyView';
-import {getSummary} from '../database/common/SummaryController';
-import {ICurrency} from '../database/common/CurrencyController';
+import { getSummary } from '../database/common/SummaryController';
+import { ICurrency } from '../database/common/CurrencyController';
 import ScrollViewWrapper from '../common/ScrollViewWrapper';
-import {THEME} from '../utils/Constants';
+import { THEME } from '../utils/Constants';
 import t from '../common/translations/Translation';
+import TransactionCategotyList from '../database/transaction/TransactionCategotyList';
 
 interface IAddEditExpense {
   navigation: any;
@@ -49,14 +53,14 @@ const defaultErrMsg: IErrorMessages = {
   transactionCategoryId: '',
 };
 
-const AddEditExpense = ({navigation, route}: IAddEditExpense) => {
+const AddEditExpense = ({ navigation, route }: IAddEditExpense) => {
   const scrollY = useRef(new Animated.Value(0)).current;
 
   const currency: ICurrency = useSelector((state: any) => {
     return state.common.configuration.currency.value;
   });
 
-  const {expense}: {expense: ITransaction} = route.params;
+  const { expense }: { expense: ITransaction } = route.params;
 
   const [errMsg, setErrMsg] = useState<IErrorMessages>(defaultErrMsg);
 
@@ -87,7 +91,7 @@ const AddEditExpense = ({navigation, route}: IAddEditExpense) => {
   const dispatch = useDispatch();
 
   const validateInputs = (): boolean => {
-    const msg: IErrorMessages = {...defaultErrMsg};
+    const msg: IErrorMessages = { ...defaultErrMsg };
     let isValid = true;
     if (!title.trim()) {
       msg.title = t('invalidExpenseTitle');
@@ -140,7 +144,7 @@ const AddEditExpense = ({navigation, route}: IAddEditExpense) => {
           type: SHOW_TOAST,
           payload: [
             {
-              title: t('expenseUpdated', {name: modExpense.title}),
+              title: t('expenseUpdated', { name: modExpense.title }),
             },
           ],
         });
@@ -153,7 +157,7 @@ const AddEditExpense = ({navigation, route}: IAddEditExpense) => {
           type: SHOW_TOAST,
           payload: [
             {
-              title: t('expenseSaved', {name: modExpense.title}),
+              title: t('expenseSaved', { name: modExpense.title }),
             },
           ],
         });
@@ -161,9 +165,9 @@ const AddEditExpense = ({navigation, route}: IAddEditExpense) => {
       }
     }
     const savedExpenses = await getTransactions(10, TransactionType.EXPENSE);
-    dispatch({type: UPDATE_TRANSACTION_LIST, payload: savedExpenses});
+    dispatch({ type: UPDATE_TRANSACTION_LIST, payload: savedExpenses });
     const summary = await getSummary();
-    dispatch({type: UPDATE_SUMMARY, payload: summary});
+    dispatch({ type: UPDATE_SUMMARY, payload: summary });
   };
 
   useEffect(() => {
@@ -223,10 +227,11 @@ const AddEditExpense = ({navigation, route}: IAddEditExpense) => {
               onChange={setPaymentId}
             />
           </View>
-          <ExpenseCategoryList
+          <TransactionCategotyList
             navigation={navigation}
             defaultValue={transactionCategoryId}
             onChange={setTransactionCategoryId}
+            type={TransactionType.EXPENSE}
           />
           {errMsg.transactionCategoryId !== '' && (
             <Text style={formStyles.inputError}>
@@ -253,7 +258,7 @@ const AddEditExpense = ({navigation, route}: IAddEditExpense) => {
               saveEditExpenseHandler();
             }}>
             <Text style={formStyles.buttonLabel}>
-              {editMode ? 'Update' : 'Add'}
+              {editMode ? t('update') : t('add')}
             </Text>
           </Pressable>
         </View>

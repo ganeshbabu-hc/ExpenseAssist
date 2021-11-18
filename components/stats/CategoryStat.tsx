@@ -1,21 +1,19 @@
-import React, {useMemo} from 'react';
-import {ProgressBarAndroidBase, StyleSheet, Text, View} from 'react-native';
-import Icon from 'react-native-vector-icons/dist/Feather';
-import {IStat} from '../database/common/StatsController';
-import {colors, utils} from '../styles/theme';
-import {THEME} from '../utils/Constants';
-import {ProgressBar} from '@react-native-community/progress-bar-android';
-import {isDate} from 'moment';
+import React, { useMemo } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { IStat } from '../database/common/StatsController';
+import { colors, utils } from '../styles/theme';
+import { THEME } from '../utils/Constants';
+import { ProgressBar } from '@react-native-community/progress-bar-android';
 import IconMap from '../common/IconMap';
 interface ICategoryStat {
   statlist: IStat[];
 }
-const CategoryStat = ({statlist}: ICategoryStat) => {
+const CategoryStat = ({ statlist }: ICategoryStat) => {
   const getProgress = (amount: number) => {
     const percentageRaw = (100 * amount) / total;
     const percentage = Math.round(percentageRaw * 100) / 100;
     const progress = percentageRaw / 100;
-    return {percentage, progress};
+    return { percentage, progress };
   };
 
   const total = useMemo(() => {
@@ -35,7 +33,7 @@ const CategoryStat = ({statlist}: ICategoryStat) => {
                 <IconMap
                   style={styles.barIcon}
                   color={colors.theme[THEME].graphColorScheme[index]}
-                  iconName={stat.transactionCategoryIcon}
+                  name={stat.transactionCategoryIcon}
                   size={24}
                 />
                 <Text style={styles.barLabel}>
@@ -101,6 +99,6 @@ const styles = StyleSheet.create({
     marginRight: 4,
   },
   bar: {
-    transform: [{scaleY: 5.0}],
+    transform: [{ scaleY: 5.0 }],
   },
 });

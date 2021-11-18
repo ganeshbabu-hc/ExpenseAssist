@@ -1,7 +1,7 @@
-import React, {useRef, useEffect} from 'react';
-import {Animated, Easing, Pressable, Text, View} from 'react-native';
+import React, { useRef, useEffect } from 'react';
+import { Animated, Easing, Pressable, Text, View } from 'react-native';
 import Swipeout from 'react-native-swipeout';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   SHOW_TOAST,
   UPDATE_SUMMARY,
@@ -9,17 +9,21 @@ import {
 } from '../../../redux/constants/StoreConstants';
 import IconMap from '../../common/IconMap';
 import ModalContent from '../../common/modal/ModalContent';
+import { ToastType } from '../../common/ToastNotification';
 import t from '../../common/translations/Translation';
 import UniconEdit from '../../icons/unicons/UniconEdit';
 import UniconPaperClip from '../../icons/unicons/UniconPaperClip';
 import UniconTrashAlt from '../../icons/unicons/UniconTrashAlt';
-import {recentList, colors} from '../../styles/theme';
-import {THEME} from '../../utils/Constants';
-import {displayDateFormat} from '../../utils/Formatter';
-import {ICurrency} from '../common/CurrencyController';
-import {getSummary} from '../common/SummaryController';
-import {removeTransaction, togglePinTransaction} from './TransactionController';
-import {TransactionType, ITransaction} from './TransactionTypes';
+import { recentList, colors } from '../../styles/theme';
+import { THEME } from '../../utils/Constants';
+import { displayDateFormat } from '../../utils/Formatter';
+import { ICurrency } from '../common/CurrencyController';
+import { getSummary } from '../common/SummaryController';
+import {
+  removeTransaction,
+  togglePinTransaction,
+} from './TransactionController';
+import { TransactionType, ITransaction } from './TransactionTypes';
 
 interface ITransactionItem {
   index: number;
@@ -54,8 +58,9 @@ const TransactionItem = ({
           {
             title:
               transaction.transactionType === TransactionType.EXPENSE
-                ? t('expenseRemoved', {name: transaction.title})
-                : t('incomeRemoved', {name: transaction.title}),
+                ? t('expenseRemoved', { name: transaction.title })
+                : t('incomeRemoved', { name: transaction.title }),
+            toastType: ToastType.WARNING,
           },
         ],
       });
@@ -63,15 +68,15 @@ const TransactionItem = ({
       // dispatch({type: UPDATE_TRANSACTION_LIST, payload: savedExpenses});
       onUpdate();
       const summary = await getSummary();
-      dispatch({type: UPDATE_SUMMARY, payload: summary});
+      dispatch({ type: UPDATE_SUMMARY, payload: summary });
     }
   };
 
   const editTransaction = (transaction: ITransaction) => {
     if (transaction.transactionType === TransactionType.EXPENSE) {
-      navigation.navigate('AddExpense', {expense: transaction});
+      navigation.navigate('AddExpense', { expense: transaction });
     } else if (transaction.transactionType === TransactionType.INCOME) {
-      navigation.navigate('AddIncome', {income: transaction});
+      navigation.navigate('AddIncome', { income: transaction });
     }
   };
 
@@ -113,7 +118,7 @@ const TransactionItem = ({
               pinTransaction(item);
             },
             component: (
-              <View style={[recentList.swipeIcon, recentList.swipeIconEdit]}>
+              <View style={recentList.swipeIcon}>
                 <UniconPaperClip color={colors.theme[THEME].textBrandMedium} />
               </View>
             ),
@@ -125,7 +130,7 @@ const TransactionItem = ({
               removeTransactions(item);
             },
             component: (
-              <View style={[recentList.swipeIcon, recentList.swipeIconDelete]}>
+              <View style={recentList.swipeIcon}>
                 <UniconTrashAlt color={colors.theme[THEME].textBrandMedium} />
               </View>
             ),
@@ -135,17 +140,19 @@ const TransactionItem = ({
               editTransaction(item);
             },
             component: (
-              <View style={[recentList.swipeIcon, recentList.swipeIconEdit]}>
+              <View style={recentList.swipeIcon}>
                 <UniconEdit color={colors.theme[THEME].textBrandMedium} />
               </View>
             ),
           },
         ]}>
-        {index !== 0 && (
-          <View style={recentList.dividerWrapper}>
-            <Text style={recentList.divider} />
-          </View>
-        )}
+        <View>
+          {index !== 0 && (
+            <View style={recentList.dividerWrapper}>
+              <Text style={recentList.divider} />
+            </View>
+          )}
+        </View>
         <Pressable
           onLongPress={() => {
             dispatch({
@@ -172,7 +179,7 @@ const TransactionItem = ({
                 },
               ]}>
               <IconMap
-                iconName={
+                name={
                   type === TransactionType.INCOME
                     ? item.transactionCategoryIcon ?? 'payment'
                     : item.transactionCategoryIcon ?? 'payment'
@@ -201,7 +208,7 @@ const TransactionItem = ({
               <View style={recentList.listItemInfoIcon}>
                 {item.pinned == true && (
                   <IconMap
-                    iconName={'paper-clip'}
+                    name={'paper-clip'}
                     color={colors.theme[THEME].textBrandMedium}
                   />
                 )}

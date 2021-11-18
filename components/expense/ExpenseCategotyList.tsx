@@ -96,12 +96,12 @@ const ExpenseCategoryList = ({navigation, onChange, defaultValue}) => {
               {activeCategory === item.transactionCategoryId && (
                 <IconMap
                   style={categoryList.activeCategory}
-                  iconName={'check-circle'}
+                  name={'check-circle'}
                   color={colors.theme[THEME].textLight}
                 />
               )}
               <IconMap
-                iconName={item.categoryIcon ?? 'cash-minus'}
+                name={item.categoryIcon ?? 'cash-minus'}
                 color={colors.theme[THEME].textLight}
               />
               <Text style={categoryList.categoryTitle}>{item.title}</Text>

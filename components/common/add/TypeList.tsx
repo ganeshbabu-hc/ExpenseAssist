@@ -72,7 +72,7 @@ const TypeList = ({navigation}: any) => {
         <View style={styles.typeCard}>
           <IconMap
             style={styles.typeCard.icon}
-            iconName={item.icon}
+            name={item.icon}
             color={cardType.text.color}
             size={commonStyles.icon.width}
           />

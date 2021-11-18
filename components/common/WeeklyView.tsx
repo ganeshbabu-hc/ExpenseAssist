@@ -1,10 +1,15 @@
-import React, {useState} from 'react';
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {colors, commonStyles, utils} from '../styles/theme';
+import { colors, commonStyles, utils } from '../styles/theme';
 import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
-import {DATE_DB_FORMAT, DAYS_SHORT, MONTH_NAMES, THEME} from '../utils/Constants';
-import {dateFormatter} from '../utils/Formatter';
+import {
+  DATE_DB_FORMAT,
+  DAYS_SHORT,
+  MONTH_NAMES,
+  THEME,
+} from '../utils/Constants';
+import { dateFormatter } from '../utils/Formatter';
 import moment from 'moment';
 import IconMap from './IconMap';
 
@@ -13,7 +18,7 @@ interface IWeeklyView {
   defaultValue?: string;
 }
 
-const WeeklyView = ({onChange, defaultValue}: IWeeklyView) => {
+const WeeklyView = ({ onChange, defaultValue }: IWeeklyView) => {
   const [date, setDate] = useState(() => {
     return moment(defaultValue, DATE_DB_FORMAT).toDate();
   });
@@ -71,7 +76,7 @@ const WeeklyView = ({onChange, defaultValue}: IWeeklyView) => {
         <View>
           <Pressable onPress={showDatepicker} style={styles.dateBtn}>
             <IconMap
-              iconName="calendar"
+              name={'calendar'}
               size={commonStyles.icon.width}
               color={colors.theme[THEME].textBrandMedium}
             />
@@ -85,7 +90,7 @@ const WeeklyView = ({onChange, defaultValue}: IWeeklyView) => {
             <Text style={styles.btnText}>{`${formatTime()}`}</Text>
             <IconMap
               style={styles.timeIon}
-              iconName="clock"
+              name={'clock'}
               size={commonStyles.icon.width}
               color={colors.theme[THEME].textBrandMedium}
             />

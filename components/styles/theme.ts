@@ -521,7 +521,7 @@ export const recentList = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: grey[100],
     height: 1,
-    width: '80%',
+    // width: '80%',
   },
   swiper: {
     backgroundColor: colors.theme[THEME].brandLight,
@@ -529,18 +529,11 @@ export const recentList = StyleSheet.create({
   },
   swipeIcon: {
     backgroundColor: colors.theme[THEME].brandLight,
-    height: '100%',
+    position: 'relative',
+    flex: 1,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  swipeIconEdit: {
-    backgroundColor: colors.theme[THEME].brandLight,
-    height: '100%',
-  },
-  swipeIconDelete: {
-    backgroundColor: colors.theme[THEME].brandLight,
-    height: '100%',
   },
   listHeader: {
     display: 'flex',

@@ -60,7 +60,7 @@ const QuickMenu = ({navigation}) => {
               index % 2 === 0 ? styles.lightBg : styles.darKbg,
             ]}>
             <IconMap
-              iconName={item.icon}
+              name={item.icon}
               color={
                 index % 2 === 0
                   ? colors.theme[THEME].textLight

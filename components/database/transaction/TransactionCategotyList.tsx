@@ -1,15 +1,15 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {View, Text, FlatList, Pressable} from 'react-native';
-import {categoryList, colors, commonStyles} from '../styles/theme';
+import React, { useEffect, useRef, useState } from 'react';
+import { View, Text, FlatList, Pressable } from 'react-native';
+import { categoryList, colors, commonStyles } from '../../styles/theme';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
-import IconMap from '../common/IconMap';
-import CustomPressable from '../common/CustomPressable';
-import {useSelector} from 'react-redux';
-import {THEME} from '../utils/Constants';
+import IconMap from '../../common/IconMap';
+import { useSelector } from 'react-redux';
+import { THEME } from '../../utils/Constants';
 import {
   ITransactionCategory,
   TransactionType,
-} from '../database/transaction/TransactionTypes';
+} from '../transaction/TransactionTypes';
+import { getTransactionCategories } from './TransactionController';
 
 const defaultCategory: ITransactionCategory = {
   transactionCategoryId: 0,
@@ -18,22 +18,29 @@ const defaultCategory: ITransactionCategory = {
   description: '',
   categoryIcon: 'plus',
 };
+interface TransactionCategotyList {
+  navigation?: any;
+  onChange: Function;
+  defaultValue?: number | null;
+  type: TransactionType;
+}
 
-const IncomeCategoryList = ({navigation, onChange, defaultValue}) => {
+const TransactionCategotyList = ({
+  navigation,
+  onChange,
+  defaultValue,
+  type,
+}: TransactionCategotyList) => {
   const flatList = useRef<FlatList>(null);
   const [activeCategory, setActiveCategory] = useState(defaultValue);
-
-  const incomeCategories = useSelector((state: any) => {
-    const list = [...state.income.incomeCategoryList];
-    list.unshift(defaultCategory);
-    return list;
-  });
+  const [transactionCategories, setTransactionCategories] = useState<
+    ITransactionCategory[]
+  >([]);
 
   const scrollToSeletedCategory = (list: ITransactionCategory[]) => {
     setTimeout(() => {
       let scrollIndex = 0;
       list.forEach((category: ITransactionCategory, index: number) => {
-        // console.log(category.transactionCategoryId, activeCategory);
         if (category.transactionCategoryId === activeCategory) {
           scrollIndex = index;
         }
@@ -48,21 +55,31 @@ const IncomeCategoryList = ({navigation, onChange, defaultValue}) => {
     }, 500);
   };
 
+  const getTransactionCategoryList = async () => {
+    const categoriesList = [...(await getTransactionCategories(type))];
+    categoriesList.unshift(defaultCategory);
+    setTransactionCategories(categoriesList);
+    scrollToSeletedCategory(categoriesList);
+  };
   useEffect(() => {
-    scrollToSeletedCategory(incomeCategories);
+    const unsubscribe = navigation.addListener('focus', () => {
+      getTransactionCategoryList();
+    });
+    // scrollToSeletedCategory(expenseCategories);
+    return unsubscribe;
   }, []);
   return (
     <View style={categoryList.expensitureWrapper}>
       <Text style={commonStyles.categoryTitle}>Category</Text>
       <FlatList
-        ref={flatList}
         keyboardDismissMode="interactive"
         keyboardShouldPersistTaps="always"
+        ref={flatList}
+        initialScrollIndex={0}
         showsHorizontalScrollIndicator={false}
         horizontal
-        data={incomeCategories}
-        renderItem={({item, index}) => {
-          console.log(item.categoryIcon);
+        data={transactionCategories}
+        renderItem={({ item, index }) => {
           if (item.transactionCategoryId === 0) {
             return (
               <View
@@ -74,7 +91,7 @@ const IncomeCategoryList = ({navigation, onChange, defaultValue}) => {
                   style={categoryList.categoryAddBtn}
                   onPress={() => {
                     navigation.navigate('AddEditCategory', {
-                      type: TransactionType.INCOME,
+                      type,
                     });
                   }}>
                   <Icon
@@ -106,20 +123,19 @@ const IncomeCategoryList = ({navigation, onChange, defaultValue}) => {
                 />
               )}
               <IconMap
-                name={item.categoryIcon}
+                name={item.categoryIcon ?? 'cash-minus'}
                 color={colors.theme[THEME].textLight}
               />
               <Text style={categoryList.categoryTitle}>{item.title}</Text>
             </Pressable>
           );
         }}
-        keyExtractor={(category: ITransactionCategory) =>
-          category.transactionCategoryId.toString()
+        keyExtractor={(category: ITransactionCategory, index: number) =>
+          category?.transactionCategoryId?.toString() || `category-id${index}`
         }
       />
-      <CustomPressable />
     </View>
   );
 };
 
-export default IncomeCategoryList;
+export default TransactionCategotyList;

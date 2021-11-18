@@ -3,23 +3,19 @@ import {
   Animated,
   Pressable,
   SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
 import AppHeader from '../common/AppHeader';
-import {colors, commonStyles, recentList, utils} from '../styles/theme';
-import Icon from 'react-native-vector-icons/dist/MaterialIcons';
-import {useSelector} from 'react-redux';
-import t from '../common/translations/Translation';
-import {THEME} from '../utils/Constants';
+import { colors, commonStyles, recentList, utils } from '../styles/theme';
+import { useSelector } from 'react-redux';
+import { THEME } from '../utils/Constants';
 import ScrollViewWrapper from '../common/ScrollViewWrapper';
-import {useRef} from 'react';
+import { useRef } from 'react';
 import IconMap from '../common/IconMap';
 
-export const SettingsScreen = ({navigation}: any) => {
+export const SettingsScreen = ({ navigation }: any) => {
   const scrollY = useRef(new Animated.Value(0)).current;
   // const isDarkMode = useColorScheme() === 'dark';
 
@@ -50,7 +46,7 @@ export const SettingsScreen = ({navigation}: any) => {
             }}>
             <View style={styles.settingIconWrapper}>
               <IconMap
-                iconName="swatch-book"
+                name={'swatch-book'}
                 size={28}
                 color={colors.theme[THEME].brandMedium}
               />
@@ -60,7 +56,7 @@ export const SettingsScreen = ({navigation}: any) => {
               <View style={styles.settingValueWrapper}>
                 <Text style={styles.settingValue}>Light</Text>
                 <IconMap
-                  iconName="angle-right"
+                  name={'angle-right'}
                   size={28}
                   color={colors.theme[THEME].brandMediumDark}
                 />
@@ -77,7 +73,7 @@ export const SettingsScreen = ({navigation}: any) => {
             }}>
             <View style={styles.settingIconWrapper}>
               <IconMap
-                iconName="usd-circle"
+                name={'usd-circle'}
                 size={28}
                 color={colors.theme[THEME].brandMedium}
               />
@@ -87,7 +83,7 @@ export const SettingsScreen = ({navigation}: any) => {
               <View style={styles.settingValueWrapper}>
                 <Text style={styles.settingValue}>{currency.code}</Text>
                 <IconMap
-                  iconName="angle-right"
+                  name={'angle-right'}
                   size={28}
                   color={colors.theme[THEME].brandMediumDark}
                 />
@@ -100,7 +96,7 @@ export const SettingsScreen = ({navigation}: any) => {
           <Pressable style={styles.settingWrapper}>
             <View style={styles.settingIconWrapper}>
               <IconMap
-                iconName="language"
+                name={'language'}
                 size={28}
                 color={colors.theme[THEME].brandMedium}
               />
@@ -108,7 +104,7 @@ export const SettingsScreen = ({navigation}: any) => {
             <View style={styles.settingDesc}>
               <Text style={styles.settingName}>Language</Text>
               <IconMap
-                iconName="angle-right"
+                name={'angle-right'}
                 size={28}
                 color={colors.theme[THEME].brandMediumDark}
               />
@@ -120,7 +116,7 @@ export const SettingsScreen = ({navigation}: any) => {
           <Pressable style={styles.settingWrapper}>
             <View style={styles.settingIconWrapper}>
               <IconMap
-                iconName="help-circle"
+                name={'help-circle'}
                 size={28}
                 color={colors.theme[THEME].brandMedium}
               />
@@ -128,7 +124,7 @@ export const SettingsScreen = ({navigation}: any) => {
             <View style={styles.settingDesc}>
               <Text style={styles.settingName}>Help</Text>
               <IconMap
-                iconName="angle-right"
+                name={'angle-right'}
                 size={28}
                 color={colors.theme[THEME].brandMediumDark}
               />

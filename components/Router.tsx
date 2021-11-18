@@ -1,19 +1,19 @@
 import * as React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import FeatherIcon from 'react-native-vector-icons/dist/Feather';
 import IonIcon from 'react-native-vector-icons/dist/Ionicons';
 import CommunityIcon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
-import {HomeScreen, ProfileScreen} from './home/HomeScreen';
-import {StyleSheet, View} from 'react-native';
+import { HomeScreen, ProfileScreen } from './home/HomeScreen';
+import { StyleSheet, View } from 'react-native';
 import Add from './home/Add';
 import AddEditExpense from './expense/AddEditExpense';
-import {colors} from './styles/theme';
+import { colors } from './styles/theme';
 import AddType from './common/add/AddType';
-import {useEffect} from 'react';
-import {useDispatch} from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import {
   getTransactionCategories,
   getTransactions,
@@ -25,21 +25,21 @@ import {
   UPDATE_TRANSACTION_LIST,
   UPDATE_SUMMARY,
 } from '../redux/constants/StoreConstants';
-import {getCurrncyTypes} from './database/common/CurrencyController';
+import { getCurrncyTypes } from './database/common/CurrencyController';
 import AddEditIncome from './income/AddEditIncome';
-import {getIncomes} from './database/income/IncomeController';
-import {getSummary} from './database/common/SummaryController';
+import { getIncomes } from './database/income/IncomeController';
+import { getSummary } from './database/common/SummaryController';
 import StatsScreen from './home/StatsScreen2';
 import AddEditCategory from './common/AddEditCategory';
-import {BlurView} from '@react-native-community/blur';
+import { BlurView } from '@react-native-community/blur';
 import StatsScreen1 from './stats/StatsScreen';
 import TransactionList from './database/transaction/TransactionList';
-import {SettingsScreen} from './settings/SettingsScreen';
+import { SettingsScreen } from './settings/SettingsScreen';
 import CurrencyScreen from './settings/CurrencyScreen';
-import {getConfigurations} from './database/common/CommonController';
+import { getConfigurations } from './database/common/CommonController';
 import ThemeScreen from './settings/ThemeScreen';
-import {THEME} from './utils/Constants';
-import {TransactionType} from './database/transaction/TransactionTypes';
+import { THEME } from './utils/Constants';
+import { TransactionType } from './database/transaction/TransactionTypes';
 import UniconHome from './icons/unicons/UniconHome';
 import UniconPieAlt from './icons/unicons/UniconPieAlt';
 import UniconSetting from './icons/unicons/UniconSetting';
@@ -63,11 +63,11 @@ enum Routes {
 //     style={StyleSheet.absoluteFill}
 //   />
 // ),
-const Home = ({navigation}) => {
+const Home = ({ navigation }) => {
   return (
     <View style={styles.appContainer}>
       <Tab.Navigator
-        screenOptions={({route}) => ({
+        screenOptions={({ route }) => ({
           gestureEnabled: true,
           gestureDirection: 'horizontal',
           lazy: true,
@@ -84,7 +84,7 @@ const Home = ({navigation}) => {
             shadowOpacity: 1,
           },
           tabBarShowLabel: false,
-          tabBarIcon: ({focused, color, size}) => {
+          tabBarIcon: ({ focused, color, size }) => {
             let iconName;
             switch (route.name) {
               case Routes.HOME:
@@ -151,7 +151,7 @@ const Home = ({navigation}) => {
         <Tab.Screen
           name={Routes.HOME}
           component={HomeScreen}
-          options={{unmountOnBlur: true}}
+          options={{ unmountOnBlur: true }}
         />
         <Tab.Screen name={Routes.STATS} component={StatsScreen1} />
         <Tab.Screen name={Routes.ACCOUNTS} component={AccountsScreen} />
@@ -177,28 +177,28 @@ const config = {
 const Router = () => {
   const dispatch = useDispatch();
   const intializeStore = async () => {
-    const transactioList = await getTransactions(10, TransactionType.ALL);
-    dispatch({type: UPDATE_TRANSACTION_LIST, payload: transactioList});
+    // const transactioList = await getTransactions(10, TransactionType.ALL);
+    // dispatch({ type: UPDATE_TRANSACTION_LIST, payload: transactioList });
     const summary = await getSummary();
-    dispatch({type: UPDATE_SUMMARY, payload: summary});
-    const incomeList = await getIncomes();
-    dispatch({type: UPDATE_TRANSACTION_LIST, payload: incomeList});
+    dispatch({ type: UPDATE_SUMMARY, payload: summary });
+    // const incomeList = await getIncomes();
+    // dispatch({ type: UPDATE_TRANSACTION_LIST, payload: incomeList });
     const configs = await getConfigurations();
-    dispatch({type: UPDATE_CONFIGURATIONS, payload: configs});
-    const expenseCategories = await getTransactionCategories(
-      TransactionType.EXPENSE,
-    );
-    dispatch({
-      type: UPDATE_EXPENSE_CATEGORIES_LIST,
-      payload: expenseCategories,
-    });
-    const incomeCategories = await getTransactionCategories(
-      TransactionType.INCOME,
-    );
-    dispatch({
-      type: UPDATE_INCOME_CATEGORIES_LIST,
-      payload: incomeCategories,
-    });
+    dispatch({ type: UPDATE_CONFIGURATIONS, payload: configs });
+    // const expenseCategories = await getTransactionCategories(
+    //   TransactionType.EXPENSE,
+    // );
+    // dispatch({
+    //   type: UPDATE_EXPENSE_CATEGORIES_LIST,
+    //   payload: expenseCategories,
+    // });
+    // const incomeCategories = await getTransactionCategories(
+    //   TransactionType.INCOME,
+    // );
+    // dispatch({
+    //   type: UPDATE_INCOME_CATEGORIES_LIST,
+    //   payload: incomeCategories,
+    // });
     // const currencyList = await getConfigurations();
     // dispatch({type: UPDATE_CURRENCY_TYPES, payload: configs});
   };
@@ -219,18 +219,18 @@ const Router = () => {
         },
       }}>
       <Stack.Navigator
-        screenOptions={({route}) => ({
+        screenOptions={({ route }) => ({
           gestureEnabled: true,
           gestureDirection: 'horizontal',
           headerShown: false,
-          contentStyle: {backgroundColor: colors.theme[THEME].brandDanger},
+          contentStyle: { backgroundColor: colors.theme[THEME].brandDanger },
 
           // headerBackButtonMenuEnabled: true,
         })}>
         <Stack.Screen
           name="Home"
           component={Home}
-          options={{title: 'Welcome'}}
+          options={{ title: 'Welcome' }}
         />
         <Stack.Screen name="AddType" component={AddType} />
         <Stack.Screen

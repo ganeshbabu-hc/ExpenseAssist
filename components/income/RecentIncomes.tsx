@@ -121,7 +121,7 @@ const RecentIncomes = ({limit = 5, navigation}: IRecentIncomes) => {
               <View style={recentList.listItemInfo}>
                 <View style={recentList.listItemIconWrapper}>
                   <IconMap
-                    iconName={income.transactionCategoryIcon ?? 'payment'}
+                    name={income.transactionCategoryIcon ?? 'payment'}
                     color={colors.theme[THEME].textBrandMedium}
                   />
                 </View>

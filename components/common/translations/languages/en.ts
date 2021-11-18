@@ -9,7 +9,7 @@ export default {
 
   //Add type
   addExpense: 'Add\nexpense',
-  addIncome: 'Add\ninxome',
+  addIncome: 'Add\nincome',
   addReminder: 'Add\nreminder',
 
   //Notification
@@ -48,6 +48,8 @@ export default {
   cash: 'cash',
   yesterday: 'Yesterday',
   add: 'Add',
+  update: 'Update',
+  save: 'Save',
   expenseTitle: 'Expense title',
   incomeTitle: 'Income title',
   amount: 'Amount',

@@ -1,5 +1,4 @@
-import {deepPurple} from 'material-ui-colors';
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   Text,
   View,
@@ -7,22 +6,20 @@ import {
   Pressable,
   StyleSheet,
   Animated,
-  Easing,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {G, Line, Circle, Rect} from 'react-native-svg';
-import {PieChart, BarChart, XAxis, Grid} from 'react-native-svg-charts';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { G, Line, Rect } from 'react-native-svg';
+import { PieChart, BarChart, XAxis, Grid } from 'react-native-svg-charts';
 import AppHeader from '../common/AppHeader';
 import ScrollViewWrapper from '../common/ScrollViewWrapper';
-import {getMonthlyStats, IStat} from '../database/common/StatsController';
-import {TransactionType} from '../database/transaction/TransactionTypes';
-import {colors, commonStyles, utils} from '../styles/theme';
-import {THEME} from '../utils/Constants';
-import {numberFormatter} from '../utils/Formatter';
+import { getMonthlyStats, IStat } from '../database/common/StatsController';
+import { TransactionType } from '../database/transaction/TransactionTypes';
+import { colors, commonStyles, utils } from '../styles/theme';
+import { THEME } from '../utils/Constants';
 import CategoryStat from './CategoryStat';
 import * as scale from 'd3-scale';
 
-const StatsScreen = ({navigation}) => {
+const StatsScreen = ({ navigation }) => {
   const [slice, setSlice] = useState({
     label: '',
     value: 0,
@@ -183,10 +180,10 @@ const StatsScreen = ({navigation}) => {
 
   const deviceWidth = Dimensions.get('window').width;
 
-  const Labels = ({slices}: {slices?: any}) => {
+  const Labels = ({ slices }: { slices?: any }) => {
     return slices.map((slice, index) => {
       // console.log(slice);
-      const {labelCentroid, pieCentroid, data} = slice;
+      const { labelCentroid, pieCentroid, data } = slice;
       return (
         <G key={index}>
           <Line
@@ -325,7 +322,7 @@ const StatsScreen = ({navigation}) => {
             style={[
               styles.pieWrapper,
               {
-                transform: [{rotate: rotateInterpolate}],
+                transform: [{ rotate: rotateInterpolate }],
                 opacity: animatedOpacity,
               },
             ]}>
@@ -338,21 +335,21 @@ const StatsScreen = ({navigation}) => {
               {/* <Labels /> */}
             </PieChart>
           </Animated.View>
-          <View style={{height: 200, padding: 20}}>
+          <View style={{ height: 200, padding: 20 }}>
             <BarChart
               style={styles.bar}
               data={barData}
               spacing={0.2}
               gridMin={0}
-              svg={{fill: 'rgb(134, 65, 244)'}}
-              yAccessor={({item}) => item.value}
+              svg={{ fill: 'rgb(134, 65, 244)' }}
+              yAccessor={({ item }) => item.value}
             />
             <XAxis
-              style={{marginTop: 10}}
+              style={{ marginTop: 10 }}
               data={barData}
               scale={scale.scaleBand}
               formatLabel={(value, index) => index}
-              labelStyle={{color: 'black'}}
+              labelStyle={{ color: 'black' }}
             />
             <Grid direction={Grid.Direction.VERTICAL} />
           </View>

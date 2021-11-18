@@ -128,13 +128,13 @@ const SummaryList = ({navigation}: any) => {
         <View style={styles.summaryCard}>
           <IconMap
             style={styles.summaryCard.icon}
-            iconName={item.icon}
+            name={item.icon}
             color={cardType.text.color}
           />
           <Text style={[cardType.text, styles.summaryCard.title]}>
             {item.title}
           </Text>
-          <Text style={[styles.currencyIcon, {color: cardType.text.color}]}>
+          <Text style={[styles.currencyIcon, { color: cardType.text.color }]}>
             {currency.symbol}
           </Text>
           <Text style={[cardType.totalText, styles.summaryCard.total]}>

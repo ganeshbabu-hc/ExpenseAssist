@@ -10,16 +10,15 @@ import {
   View,
 } from 'react-native';
 import AppHeader from '../common/AppHeader';
-import {colors, commonStyles, recentList, utils} from '../styles/theme';
-import Icon from 'react-native-vector-icons/dist/MaterialIcons';
-import {useSelector} from 'react-redux';
+import { colors, commonStyles, recentList, utils } from '../styles/theme';
+import { useSelector } from 'react-redux';
 import t from '../common/translations/Translation';
-import {THEME} from '../utils/Constants';
+import { THEME } from '../utils/Constants';
 import ScrollViewWrapper from '../common/ScrollViewWrapper';
-import {useRef} from 'react';
+import { useRef } from 'react';
 import IconMap from '../common/IconMap';
 
-export const AccountsScreen = ({navigation}: any) => {
+export const AccountsScreen = ({ navigation }: any) => {
   const scrollY = useRef(new Animated.Value(0)).current;
   // const isDarkMode = useColorScheme() === 'dark';
 
@@ -46,7 +45,7 @@ export const AccountsScreen = ({navigation}: any) => {
           <Pressable style={styles.settingWrapper}>
             <View style={styles.settingIconWrapper}>
               <IconMap
-                iconName="ul-li"
+                name={'ul-li'}
                 size={28}
                 color={colors.theme[THEME].brandMedium}
               />
@@ -54,7 +53,7 @@ export const AccountsScreen = ({navigation}: any) => {
             <View style={styles.settingDesc}>
               <Text style={styles.settingName}>Categories</Text>
               <IconMap
-                iconName="angle-right"
+                name={'angle-right'}
                 size={28}
                 color={colors.theme[THEME].brandMediumDark}
               />
@@ -66,7 +65,7 @@ export const AccountsScreen = ({navigation}: any) => {
           <Pressable style={styles.settingWrapper}>
             <View style={styles.settingIconWrapper}>
               <IconMap
-                iconName="payments"
+                name={'payments'}
                 size={28}
                 color={colors.theme[THEME].brandMedium}
               />
@@ -74,7 +73,7 @@ export const AccountsScreen = ({navigation}: any) => {
             <View style={styles.settingDesc}>
               <Text style={styles.settingName}>Payments</Text>
               <IconMap
-                iconName="angle-right"
+                name={'angle-right'}
                 size={28}
                 color={colors.theme[THEME].brandMediumDark}
               />
@@ -86,7 +85,7 @@ export const AccountsScreen = ({navigation}: any) => {
           <Pressable style={styles.settingWrapper}>
             <View style={styles.settingIconWrapper}>
               <IconMap
-                iconName="alarm"
+                name={'alarm'}
                 size={28}
                 color={colors.theme[THEME].brandMedium}
               />
@@ -94,7 +93,7 @@ export const AccountsScreen = ({navigation}: any) => {
             <View style={styles.settingDesc}>
               <Text style={styles.settingName}>Remainders</Text>
               <IconMap
-                iconName="angle-right"
+                name={'angle-right'}
                 size={28}
                 color={colors.theme[THEME].brandMediumDark}
               />

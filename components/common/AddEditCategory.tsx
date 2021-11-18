@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -7,21 +7,18 @@ import {
   Pressable,
   ScrollView,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {useDispatch} from 'react-redux';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useDispatch } from 'react-redux';
 import {
   SHOW_TOAST,
   UPDATE_EXPENSE_CATEGORIES_LIST,
 } from '../../redux/constants/StoreConstants';
 import AppHeader from './AppHeader';
-import {getTransactionCategories} from '../database/transaction/TransactionController';
-import {colors, commonStyles, formStyles} from '../styles/theme';
+import { getTransactionCategories } from '../database/transaction/TransactionController';
+import { colors, commonStyles, formStyles } from '../styles/theme';
 // import {ShowSnackBar} from './Util';
-import {
-  saveExpenseCategory,
-  saveTransactionCategory,
-} from '../database/common/CommonController';
-import {THEME} from '../utils/Constants';
+import { saveTransactionCategory } from '../database/common/CommonController';
+import { THEME } from '../utils/Constants';
 import t from './translations/Translation';
 import {
   ITransactionCategory,
@@ -44,9 +41,9 @@ const defaultErrMsg: IErrorMessages = {
   amount: '',
 };
 
-const AddEditCategory = ({navigation, route, type}: IAddEditCategory) => {
-  const {transactionCategory}: {transactionCategory: ITransactionCategory} =
-    route.params.transactionCategory ?? {undefined};
+const AddEditCategory = ({ navigation, route, type }: IAddEditCategory) => {
+  const { transactionCategory }: { transactionCategory: ITransactionCategory } =
+    route.params.transactionCategory ?? { undefined };
   // const {expense}: {expense: IExpense} = route.params;
 
   const categoryType: TransactionType = route?.params?.type || type;
@@ -68,7 +65,7 @@ const AddEditCategory = ({navigation, route, type}: IAddEditCategory) => {
   const dispatch = useDispatch();
 
   const validateInputs = (): boolean => {
-    const msg: IErrorMessages = {...defaultErrMsg};
+    const msg: IErrorMessages = { ...defaultErrMsg };
     let isValid = true;
     if (!title.trim()) {
       msg.title = 'Category title is needed';
@@ -111,7 +108,7 @@ const AddEditCategory = ({navigation, route, type}: IAddEditCategory) => {
           type: SHOW_TOAST,
           payload: [
             {
-              title: t('categoryAdded', {name: modCategory.title}),
+              title: t('categoryAdded', { name: modCategory.title }),
             },
           ],
         });
@@ -177,11 +174,10 @@ const AddEditCategory = ({navigation, route, type}: IAddEditCategory) => {
           <Pressable
             style={[formStyles.button, formStyles.fullWidth]}
             onPress={() => {
-              console.log('save--validateInputs', categoryType);
               saveTransactionCategoryHandler();
             }}>
             <Text style={formStyles.buttonLabel}>
-              {editMode ? 'Save' : 'Add'}
+              {editMode ? t('update') : t('add')}
             </Text>
           </Pressable>
         </View>

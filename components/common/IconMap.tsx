@@ -3,9 +3,8 @@ import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import IonIcon from 'react-native-vector-icons/dist/Ionicons';
 import CommunityIcon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/dist/FontAwesome5';
-import {colors, commonStyles} from '../styles/theme';
-import {StyleSheet} from 'react-native';
-import {THEME} from '../utils/Constants';
+import { colors, commonStyles } from '../styles/theme';
+import { THEME } from '../utils/Constants';
 import UniconCrockery from '../icons/unicons/UniconCrockery';
 import UniconShopping from '../icons/unicons/UniconShopping';
 import UniconCar from '../icons/unicons/UniconCar';
@@ -39,24 +38,74 @@ import UniconCircle from '../icons/unicons/UniconCircle';
 import UniconClock from '../icons/unicons/UniconClock';
 import UniconCalendar from '../icons/unicons/UniconCalendar';
 import UniconPaperClip from '../icons/unicons/UniconPaperClip';
+import UniconPlus from '../icons/unicons/UniconPlus';
+import UniconArrowLeft from '../icons/unicons/UniconArrowLeft';
+import UniconExclamationTriangle from '../icons/unicons/UniconExclamationTriangle';
+import UniconExclamationCircle from '../icons/unicons/UniconExclamationCircle';
+import UniconExclamationOctagon from '../icons/unicons/UniconExclamationOctagon';
 interface IconMap {
-  iconName: string;
+  name: string;
   color?: string;
   style?: any;
   size?: number;
   active?: boolean;
 }
 
-const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
+const IconMap = ({ name, color, style, size, active = false }: IconMap) => {
   // console.log(iconName);
   let IconComponent;
-  switch (iconName) {
+  switch (name) {
+    case 'plus':
+      return (
+        <UniconPlus
+          style={style}
+          active={active}
+          size={size ?? 24}
+          color={color ? color : colors.theme[THEME].textDark}
+        />
+      );
+    case 'arrow-left':
+      return (
+        <UniconArrowLeft
+          style={style}
+          active={active}
+          size={size ?? 24}
+          color={color ? color : colors.theme[THEME].textDark}
+        />
+      );
+    case 'exclamation-triangle':
+      return (
+        <UniconExclamationTriangle
+          style={style}
+          active={active}
+          size={size ?? 24}
+          color={color ? color : colors.theme[THEME].textDark}
+        />
+      );
+    case 'exclamation-circle':
+      return (
+        <UniconExclamationCircle
+          style={style}
+          active={active}
+          size={size ?? 24}
+          color={color ? color : colors.theme[THEME].textDark}
+        />
+      );
+    case 'exclamation-octo':
+      return (
+        <UniconExclamationOctagon
+          style={style}
+          active={active}
+          size={size ?? 24}
+          color={color ? color : colors.theme[THEME].textDark}
+        />
+      );
     case 'paper-clip':
       return (
         <UniconPaperClip
           style={style}
           active={active}
-          size={24}
+          size={size ?? 24}
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
@@ -65,7 +114,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
         <UniconClock
           style={style}
           active={active}
-          size={24}
+          size={size ?? 24}
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
@@ -74,7 +123,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
         <UniconCalendar
           style={style}
           active={active}
-          size={24}
+          size={size ?? 24}
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
@@ -83,7 +132,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
         <UniconCircle
           style={style}
           active={active}
-          size={24}
+          size={size ?? 24}
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
@@ -92,7 +141,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
         <UniconHelpCircle
           style={style}
           active={active}
-          size={24}
+          size={size ?? 24}
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
@@ -101,7 +150,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
         <UniconLanguage
           style={style}
           active={active}
-          size={24}
+          size={size ?? 24}
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
@@ -110,7 +159,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
         <UniconUlLi
           style={style}
           active={active}
-          size={24}
+          size={size ?? 24}
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
@@ -119,7 +168,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
         <UniconUsdCircle
           style={style}
           active={active}
-          size={24}
+          size={size ?? 24}
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
@@ -128,7 +177,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
         <UniconSwatchBook
           style={style}
           active={active}
-          size={24}
+          size={size ?? 24}
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
@@ -137,7 +186,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
         <UniconAngleRight
           style={style}
           active={active}
-          size={24}
+          size={size ?? 24}
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
@@ -146,7 +195,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
         <UniconAngleRight
           style={style}
           active={active}
-          size={24}
+          size={size ?? 24}
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
@@ -155,7 +204,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
         <UniconEllipseHorz
           style={style}
           active={active}
-          size={24}
+          size={size ?? 24}
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
@@ -164,7 +213,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
         <UniconAlarm
           style={style}
           active={active}
-          size={24}
+          size={size ?? 24}
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
@@ -173,7 +222,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
         <UniconTransaction
           style={style}
           active={active}
-          size={24}
+          size={size ?? 24}
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
@@ -182,7 +231,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
         <UniconWallet
           style={style}
           active={active}
-          size={24}
+          size={size ?? 24}
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
@@ -191,7 +240,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
         <UniconMoneyInsert
           style={style}
           active={active}
-          size={24}
+          size={size ?? 24}
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
@@ -200,7 +249,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
         <UniconBuilding
           style={style}
           active={active}
-          size={24}
+          size={size ?? 24}
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
@@ -209,7 +258,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
         <UniconArrowGrowth
           style={style}
           active={active}
-          size={24}
+          size={size ?? 24}
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
@@ -218,7 +267,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
         <UniconWithDrawl
           style={style}
           active={active}
-          size={24}
+          size={size ?? 24}
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
@@ -227,7 +276,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
         <UniconPercent
           style={style}
           active={active}
-          size={24}
+          size={size ?? 24}
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
@@ -236,7 +285,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
         <UniconEnvolopeDownload
           style={style}
           active={active}
-          size={24}
+          size={size ?? 24}
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
@@ -245,7 +294,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
         <UniconAward
           style={style}
           active={active}
-          size={24}
+          size={size ?? 24}
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
@@ -254,7 +303,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
         <UniconMoneyBill
           style={style}
           active={active}
-          size={24}
+          size={size ?? 24}
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
@@ -263,7 +312,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
         <UniconMoneyStack
           style={style}
           active={active}
-          size={24}
+          size={size ?? 24}
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
@@ -271,8 +320,8 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
       //   return (
       //     <UniconMoneyStack
       //       style={style}
-      active = {active};
-    //       size={24}
+      active = { active };
+    //       size={size ?? 24}
     //       color={color ? color : colors.theme[THEME].textDark}
     //     />
     //   );
@@ -281,7 +330,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
         <UniconCeckCircleOutline
           style={style}
           active={active}
-          size={24}
+          size={size ?? 24}
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
@@ -290,7 +339,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
         <UniconMoneyInsert
           style={style}
           active={active}
-          size={24}
+          size={size ?? 24}
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
@@ -299,7 +348,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
         <UniconArchive
           style={style}
           active={active}
-          size={24}
+          size={size ?? 24}
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
@@ -308,7 +357,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
         <UniconEducation
           style={style}
           active={active}
-          size={24}
+          size={size ?? 24}
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
@@ -317,7 +366,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
         <UniconGift
           style={style}
           active={active}
-          size={24}
+          size={size ?? 24}
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
@@ -326,7 +375,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
         <UniconHealth
           style={style}
           active={active}
-          size={24}
+          size={size ?? 24}
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
@@ -335,7 +384,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
         <UniconKart
           style={style}
           active={active}
-          size={24}
+          size={size ?? 24}
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
@@ -344,7 +393,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
         <UniconSocial
           style={style}
           active={active}
-          size={24}
+          size={size ?? 24}
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
@@ -353,7 +402,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
         <UniconCar
           style={style}
           active={active}
-          size={24}
+          size={size ?? 24}
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
@@ -362,7 +411,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
         <UniconCrockery
           style={style}
           active={active}
-          size={24}
+          size={size ?? 24}
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
@@ -371,7 +420,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
         <UniconShopping
           style={style}
           active={active}
-          size={24}
+          size={size ?? 24}
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
@@ -382,7 +431,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
           style={style}
           active={active}
           color={color ? color : colors.theme[THEME].textDark}
-          name={iconName}
+          name={name}
           size={size ?? commonStyles.icon.width}
         />
       );
@@ -400,7 +449,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
           style={style}
           active={active}
           color={color ? color : colors.theme[THEME].textDark}
-          name={iconName}
+          name={name}
           size={size ?? commonStyles.icon.width}
         />
       );
@@ -411,7 +460,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
           style={style}
           active={active}
           color={color ? color : colors.theme[THEME].textDark}
-          name={iconName}
+          name={name}
           size={size ?? commonStyles.icon.width}
         />
       );
@@ -422,7 +471,7 @@ const IconMap = ({iconName, color, style, size, active = false}: IconMap) => {
           style={style}
           active={active}
           color={color ? color : colors.theme[THEME].textDark}
-          name={iconName}
+          name={name}
           size={size ?? commonStyles.icon.width}
         />
       );
