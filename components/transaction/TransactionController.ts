@@ -9,8 +9,8 @@ import {
   TNAME_TRANSACTIONS,
   TNAME_TRANSACTION_CATEGORIES,
   TNAME_PAYMENT_TYPES,
-} from '../../utils/Constants';
-import {getDBConnection} from '../DBController';
+} from '../utils/Constants';
+import {getDBConnection} from '../database/DBController';
 
 export const saveTransaction = async (expense: ITransaction[]) => {
   const insertQuery =

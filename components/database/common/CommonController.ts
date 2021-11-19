@@ -5,7 +5,7 @@ import {
   TNAME_TRANSACTIONS,
 } from '../../utils/Constants';
 import {getDBConnection} from '../DBController';
-import {ITransactionCategory} from '../transaction/TransactionTypes';
+import {ITransactionCategory} from '../../transaction/TransactionTypes';
 import {IIncomeCategory} from '../income/IncomeTypes';
 
 export interface IConfiguration {

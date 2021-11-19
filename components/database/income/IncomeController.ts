@@ -6,7 +6,7 @@ import {
   TNAME_TRANSACTION_CATEGORIES,
 } from '../../utils/Constants';
 import {getDBConnection} from '../DBController';
-import {ITransaction} from '../transaction/TransactionTypes';
+import {ITransaction} from '../../transaction/TransactionTypes';
 
 export const saveIncome = async (income: ITransaction[]) => {
   const insertQuery =

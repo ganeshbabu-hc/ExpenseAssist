@@ -17,7 +17,7 @@ import { useDispatch } from 'react-redux';
 import {
   getTransactionCategories,
   getTransactions,
-} from './database/transaction/TransactionController';
+} from './transaction/TransactionController';
 import {
   UPDATE_CONFIGURATIONS,
   UPDATE_EXPENSE_CATEGORIES_LIST,
@@ -33,18 +33,19 @@ import StatsScreen from './home/StatsScreen2';
 import AddEditCategory from './common/AddEditCategory';
 import { BlurView } from '@react-native-community/blur';
 import StatsScreen1 from './stats/StatsScreen';
-import TransactionList from './database/transaction/TransactionList';
+import TransactionList from './transaction/TransactionList';
 import { SettingsScreen } from './settings/SettingsScreen';
 import CurrencyScreen from './settings/CurrencyScreen';
 import { getConfigurations } from './database/common/CommonController';
 import ThemeScreen from './settings/ThemeScreen';
 import { THEME } from './utils/Constants';
-import { TransactionType } from './database/transaction/TransactionTypes';
+import { TransactionType } from './transaction/TransactionTypes';
 import UniconHome from './icons/unicons/UniconHome';
 import UniconPieAlt from './icons/unicons/UniconPieAlt';
 import UniconSetting from './icons/unicons/UniconSetting';
 import UniconUnivercity from './icons/unicons/UniconUnivercity';
 import { AccountsScreen } from './settings/AccountsScreen';
+import AddEditTransaction from './transaction/AddEditTransaction';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -179,8 +180,8 @@ const Router = () => {
   const intializeStore = async () => {
     // const transactioList = await getTransactions(10, TransactionType.ALL);
     // dispatch({ type: UPDATE_TRANSACTION_LIST, payload: transactioList });
-    const summary = await getSummary();
-    dispatch({ type: UPDATE_SUMMARY, payload: summary });
+    // const summary = await getSummary();
+    // dispatch({ type: UPDATE_SUMMARY, payload: summary });
     // const incomeList = await getIncomes();
     // dispatch({ type: UPDATE_TRANSACTION_LIST, payload: incomeList });
     const configs = await getConfigurations();
@@ -234,13 +235,8 @@ const Router = () => {
         />
         <Stack.Screen name="AddType" component={AddType} />
         <Stack.Screen
-          name="AddExpense"
-          component={AddEditExpense}
-          initialParams={{}}
-        />
-        <Stack.Screen
-          name="AddIncome"
-          component={AddEditIncome}
+          name="AddTransaction"
+          component={AddEditTransaction}
           initialParams={{}}
         />
         <Stack.Screen

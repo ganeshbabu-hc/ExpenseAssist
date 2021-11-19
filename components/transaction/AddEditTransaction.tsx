@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -9,35 +9,24 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  SHOW_TOAST,
-  UPDATE_TRANSACTION_LIST,
-  UPDATE_SUMMARY,
-} from '../../redux/constants/StoreConstants';
+import { SHOW_TOAST } from '../../redux/constants/StoreConstants';
 import AppHeader from '../common/AppHeader';
+import {
+  saveTransaction,
+  updateTransaction,
+} from '../transaction/TransactionController';
+import { ITransaction, TransactionType } from '../transaction/TransactionTypes';
 import { colors, commonStyles, formStyles } from '../styles/theme';
 import { dateFormatter } from '../utils/Formatter';
-import IncomeCategoryList from './IncomeCategoryList';
 import PaymentsDropdown from '../common/PaymentsDropdown';
 import WeeklyView from '../common/WeeklyView';
-import { getSummary } from '../database/common/SummaryController';
-import { ICurrency } from '../database/common/CurrencyController';
 import ScrollViewWrapper from '../common/ScrollViewWrapper';
 import { THEME } from '../utils/Constants';
 import t from '../common/translations/Translation';
-import { useRef } from 'react';
-import {
-  ITransaction,
-  TransactionType,
-} from '../database/transaction/TransactionTypes';
-import {
-  getTransactions,
-  saveTransaction,
-  updateTransaction,
-} from '../database/transaction/TransactionController';
-import TransactionCategotyList from '../database/transaction/TransactionCategotyList';
+import TransactionCategotyList from '../transaction/TransactionCategotyList';
+import { ICurrency } from '../database/common/CurrencyController';
 
-interface IAddEditIncome {
+interface IAddEditTransaction {
   navigation: any;
   route?: any;
 }
@@ -54,37 +43,41 @@ const defaultErrMsg: IErrorMessages = {
   transactionCategoryId: '',
 };
 
-const AddEditIncome = ({ navigation, route }: IAddEditIncome) => {
+const AddEditTransaction = ({ navigation, route }: IAddEditTransaction) => {
   const scrollY = useRef(new Animated.Value(0)).current;
+
   const currency: ICurrency = useSelector((state: any) => {
     return state.common.configuration.currency.value;
   });
-  const { income }: { income: ITransaction } = route.params;
+
+  const { transaction }: { transaction: ITransaction } = route.params;
+
+  const transactionType: TransactionType =
+    transaction?.transactionType ?? route.params.type;
 
   const [errMsg, setErrMsg] = useState<IErrorMessages>(defaultErrMsg);
-
   const [title, setTitle] = useState(() => {
-    return income?.title ?? '';
+    return transaction?.title ?? '';
   });
   const [amount, setAmount] = useState(() => {
-    return income?.amount.toString() ?? '';
+    return transaction?.amount.toString() ?? '';
   });
   const [paymentId, setPaymentId] = useState(() => {
-    return income?.paymentId ?? 1;
+    return transaction?.paymentId ?? 1;
   });
   const [description, setDescription] = useState(() => {
-    return income?.description ?? '';
+    return transaction?.description ?? '';
   });
   const [transactionCategoryId, setTransactionCategoryId] = useState<
     number | null
   >(() => {
-    return income?.transactionCategoryId ?? null;
+    return transaction?.transactionCategoryId ?? null;
   });
   const [editMode] = useState(() => {
-    return income ? true : false;
+    return transaction ? true : false;
   });
   const [dateAddedTlm, setDateAddedTlm] = useState(() => {
-    return income?.dateAddedTlm ?? dateFormatter(new Date());
+    return transaction?.dateAddedTlm ?? dateFormatter(new Date());
     // return new Date();
   });
   const dispatch = useDispatch();
@@ -93,7 +86,7 @@ const AddEditIncome = ({ navigation, route }: IAddEditIncome) => {
     const msg: IErrorMessages = { ...defaultErrMsg };
     let isValid = true;
     if (!title.trim()) {
-      msg.title = t('invalidIncomeTitle');
+      msg.title = t('invalidExpenseTitle');
       isValid = false;
     }
     if (!amount.trim()) {
@@ -105,6 +98,7 @@ const AddEditIncome = ({ navigation, route }: IAddEditIncome) => {
       msg.transactionCategoryId = t('invalidtransactionCatgoeryId');
       isValid = false;
     }
+
     setErrMsg(msg);
     return isValid;
   };
@@ -118,54 +112,74 @@ const AddEditIncome = ({ navigation, route }: IAddEditIncome) => {
     setDateAddedTlm(dateFormatter(new Date()));
   };
 
-  const saveEditIncomeHandler = async () => {
+  const saveEditTransactioneHandler = async () => {
     if (!validateInputs()) {
       return;
     }
-    const modIncome: ITransaction = {
-      transactionId: income?.transactionId ?? undefined,
+
+    const modTransaction: ITransaction = {
+      transactionId: transaction?.transactionId ?? undefined,
       title,
       amount: Number(amount),
       paymentId: Number(paymentId),
+      transactionType: transactionType,
       description,
-      transactionType: TransactionType.INCOME,
       transactionCategoryId: Number(transactionCategoryId),
       currencyId: 47,
       dateAddedTlm,
     };
     let result = null;
     if (editMode) {
-      result = await updateTransaction(modIncome);
+      result = await updateTransaction(modTransaction);
+      const titleType =
+        transactionType === TransactionType.INCOME
+          ? 'incomeUpdated'
+          : 'expenseUpdated';
       if (result) {
         dispatch({
           type: SHOW_TOAST,
           payload: [
             {
-              title: t('incomeUpdated', { name: modIncome.title }),
+              title: t(titleType, { name: modTransaction.title }),
             },
           ],
         });
         navigation.goBack();
       }
     } else {
-      result = await saveTransaction([modIncome]);
+      result = await saveTransaction([modTransaction]);
+      const titleType =
+        transactionType === TransactionType.INCOME
+          ? 'incomeSaved'
+          : 'expenseSaved';
       if (result) {
         dispatch({
           type: SHOW_TOAST,
           payload: [
             {
-              title: t('incomeSaved', { name: modIncome.title }),
+              title: t(titleType, { name: modTransaction.title }),
             },
           ],
         });
-        clearInputs();
+        // clearInputs();
       }
     }
-    const savedIncomes = await getTransactions(10, TransactionType.INCOME);
-    dispatch({ type: UPDATE_TRANSACTION_LIST, payload: savedIncomes });
-    const summary = await getSummary();
-    dispatch({ type: UPDATE_SUMMARY, payload: summary });
   };
+
+  // const appTitle = transactionType ===
+
+  const getAppTitle = (): string => {
+    if (editMode) {
+      return transactionType === TransactionType.INCOME
+        ? t('EditIncome')
+        : t('EditExpense');
+    } else {
+      return transactionType === TransactionType.INCOME
+        ? t('AddIncome')
+        : t('AddExpense');
+    }
+  };
+
   useEffect(() => {
     setErrMsg(defaultErrMsg);
   }, [title, amount]);
@@ -174,7 +188,7 @@ const AddEditIncome = ({ navigation, route }: IAddEditIncome) => {
     <SafeAreaView style={commonStyles.screen}>
       <View style={commonStyles.container}>
         <AppHeader
-          title={`${editMode ? 'Edit' : 'Add'} Income`}
+          title={getAppTitle()}
           navigation={navigation}
           homeScreen={false}
           backTo=""
@@ -182,11 +196,11 @@ const AddEditIncome = ({ navigation, route }: IAddEditIncome) => {
         />
       </View>
       <ScrollViewWrapper scrollY={scrollY}>
-        <View style={[commonStyles.container, styles.incomeWrapper]}>
+        <View style={[commonStyles.container, styles.expenseWrapper]}>
           <WeeklyView defaultValue={dateAddedTlm} onChange={setDateAddedTlm} />
           <View>
             <View style={formStyles.inputWrapper}>
-              <Text style={formStyles.inputLabel}>Income title</Text>
+              <Text style={formStyles.inputLabel}>Expense title</Text>
               <TextInput
                 placeholderTextColor={colors.theme[THEME].textCardGray}
                 placeholder="Eg, Spetember salary"
@@ -202,7 +216,7 @@ const AddEditIncome = ({ navigation, route }: IAddEditIncome) => {
           <View style={formStyles.inputContainer}>
             <View style={[formStyles.inputWrapper, formStyles.halfWidth]}>
               <Text style={formStyles.inputLabel}>
-                {currency.symbol} Amount
+                {currency.symbol} {t('amount')}
               </Text>
               <TextInput
                 placeholderTextColor={colors.theme[THEME].textCardGray}
@@ -225,9 +239,9 @@ const AddEditIncome = ({ navigation, route }: IAddEditIncome) => {
           </View>
           <TransactionCategotyList
             navigation={navigation}
-            type={TransactionType.INCOME}
             defaultValue={transactionCategoryId}
             onChange={setTransactionCategoryId}
+            type={TransactionType.EXPENSE}
           />
           {errMsg.transactionCategoryId !== '' && (
             <Text style={formStyles.inputError}>
@@ -236,12 +250,12 @@ const AddEditIncome = ({ navigation, route }: IAddEditIncome) => {
           )}
           <View>
             <View style={formStyles.inputWrapper}>
-              <Text style={formStyles.inputLabel}>Note</Text>
+              <Text style={formStyles.inputLabel}>{t('note')}</Text>
               <TextInput
                 multiline
-                placeholderTextColor={colors.theme[THEME].textCardGray}
                 numberOfLines={4}
-                placeholder="Description"
+                placeholder={t('description')}
+                placeholderTextColor={colors.theme[THEME].textCardGray}
                 style={formStyles.input}
                 onChangeText={setDescription}
                 value={description}
@@ -251,7 +265,7 @@ const AddEditIncome = ({ navigation, route }: IAddEditIncome) => {
           <Pressable
             style={[formStyles.button, formStyles.fullWidth]}
             onPress={() => {
-              saveEditIncomeHandler();
+              saveEditTransactioneHandler();
             }}>
             <Text style={formStyles.buttonLabel}>
               {editMode ? t('update') : t('add')}
@@ -264,7 +278,7 @@ const AddEditIncome = ({ navigation, route }: IAddEditIncome) => {
 };
 
 const styles = StyleSheet.create({
-  incomeWrapper: {
+  expenseWrapper: {
     backgroundColor: colors.theme[THEME].brandLight,
     display: 'flex',
     flex: 1,
@@ -273,4 +287,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddEditIncome;
+export default AddEditTransaction;

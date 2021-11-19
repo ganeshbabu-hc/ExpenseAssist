@@ -1,5 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import {Animated, Dimensions, StatusBar, StyleSheet, View} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+  Animated,
+  Dimensions,
+  StatusBar,
+  StyleSheet,
+  View,
+} from 'react-native';
 import {
   colors,
   commonStyles,
@@ -7,8 +13,8 @@ import {
   utils,
 } from '../styles/theme';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
-import {THEME} from '../utils/Constants';
-import {useRef} from 'react';
+import { THEME } from '../utils/Constants';
+import { useRef } from 'react';
 import t from './translations/Translation';
 
 interface IAppHeader {
@@ -89,7 +95,7 @@ const AppHeader = ({
       {homeScreen ? (
         <View style={styles.headerDesc}>
           <Animated.Text
-            style={[styles.headerDescTitle, {fontSize: fontSizing}]}>
+            style={[styles.headerDescTitle, { fontSize: fontSizing }]}>
             {t('title')}
           </Animated.Text>
           <Animated.Text style={styles.headerDescSubTitle}>
@@ -119,7 +125,7 @@ const AppHeader = ({
           style={[
             styles.appTitle,
             {
-              transform: [{translateX: titleLeftTranslate}],
+              transform: [{ translateX: titleLeftTranslate }],
               fontSize: fontSizingSubTitle,
             },
           ]}>
@@ -141,7 +147,7 @@ const AppHeader = ({
 
 const styles = StyleSheet.create({
   homeMenuIcon: {
-    transform: [{rotateZ: '90deg'}],
+    transform: [{ rotateZ: '90deg' }],
   },
   icon: {
     paddingVertical: 10,

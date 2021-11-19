@@ -43,6 +43,7 @@ import UniconArrowLeft from '../icons/unicons/UniconArrowLeft';
 import UniconExclamationTriangle from '../icons/unicons/UniconExclamationTriangle';
 import UniconExclamationCircle from '../icons/unicons/UniconExclamationCircle';
 import UniconExclamationOctagon from '../icons/unicons/UniconExclamationOctagon';
+import UniconPlusCircle from '../icons/unicons/UniconPlusCircle';
 interface IconMap {
   name: string;
   color?: string;
@@ -55,6 +56,15 @@ const IconMap = ({ name, color, style, size, active = false }: IconMap) => {
   // console.log(iconName);
   let IconComponent;
   switch (name) {
+    case 'plus-circle':
+      return (
+        <UniconPlusCircle
+          style={style}
+          active={active}
+          size={size ?? 24}
+          color={color ? color : colors.theme[THEME].textDark}
+        />
+      );
     case 'plus':
       return (
         <UniconPlus

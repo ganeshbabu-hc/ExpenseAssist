@@ -1,36 +1,45 @@
 import React from 'react';
-import {FlatList, Pressable, StyleSheet, Text, View} from 'react-native';
-import {commonStyles, colors, utils, ripple} from '../../styles/theme';
+import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import { commonStyles, colors, utils, ripple } from '../../styles/theme';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
-import {THEME} from '../../utils/Constants';
+import { THEME } from '../../utils/Constants';
 import IconMap from '../IconMap';
 import t from '../translations/Translation';
+import { TransactionType } from '../../transaction/TransactionTypes';
 
 interface ITypeItem {
   id: number;
   title: string;
   icon: string;
   route: string;
+  routeParams?: any;
 }
 
 const typeList: ITypeItem[] = [
-  // {id: 0, title: '', icon: 'add', route: ''},
-  {id: 1, title: t('addExpense'), icon: 'payments', route: 'AddExpense'},
+  {
+    id: 1,
+    title: t('addExpense'),
+    icon: 'payments',
+    route: 'AddTransaction',
+    routeParams: { type: TransactionType.EXPENSE },
+  },
   {
     id: 2,
     title: t('addIncome'),
     icon: 'account-balance-wallet',
-    route: 'AddIncome',
+    route: 'AddTransaction',
+    routeParams: { type: TransactionType.INCOME },
   },
   {
     id: 3,
     title: t('addReminder'),
     icon: 'alarm',
     route: 'AddReminder',
+    routeParams: {},
   },
 ];
 
-const TypeList = ({navigation}: any) => {
+const TypeList = ({ navigation }: any) => {
   const _keyExtractor = (item: any) => item.id;
 
   const _renderItem = (item: ITypeItem, index: number) => {
@@ -67,7 +76,7 @@ const TypeList = ({navigation}: any) => {
           index === 0 ? commonStyles.card.firstCard : {},
         ]}
         onPress={() => {
-          navigation.navigate(item.route, {});
+          navigation.navigate(item.route, item.routeParams);
         }}>
         <View style={styles.typeCard}>
           <IconMap
@@ -92,7 +101,7 @@ const TypeList = ({navigation}: any) => {
         horizontal
         scrollEnabled
         data={typeList}
-        renderItem={({item, index}) => _renderItem(item, index)}
+        renderItem={({ item, index }) => _renderItem(item, index)}
         keyExtractor={_keyExtractor}
       />
     </View>

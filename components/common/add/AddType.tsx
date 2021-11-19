@@ -3,7 +3,7 @@ import {Animated, SafeAreaView, StyleSheet, View} from 'react-native';
 import {commonStyles} from '../../styles/theme';
 import AppHeader from '../AppHeader';
 import TypeList from './TypeList';
-import TransactionList from '../../database/transaction/TransactionList';
+import TransactionList from '../../transaction/TransactionList';
 import {useRef} from 'react';
 
 const AddType = ({navigation}) => {

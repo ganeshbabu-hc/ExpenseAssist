@@ -14,7 +14,7 @@ import {
   UPDATE_EXPENSE_CATEGORIES_LIST,
 } from '../../redux/constants/StoreConstants';
 import AppHeader from './AppHeader';
-import { getTransactionCategories } from '../database/transaction/TransactionController';
+import { getTransactionCategories } from '../transaction/TransactionController';
 import { colors, commonStyles, formStyles } from '../styles/theme';
 // import {ShowSnackBar} from './Util';
 import { saveTransactionCategory } from '../database/common/CommonController';
@@ -23,7 +23,7 @@ import t from './translations/Translation';
 import {
   ITransactionCategory,
   TransactionType,
-} from '../database/transaction/TransactionTypes';
+} from '../transaction/TransactionTypes';
 
 interface IAddEditCategory {
   navigation: any;

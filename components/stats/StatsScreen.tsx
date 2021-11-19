@@ -13,7 +13,7 @@ import { PieChart, BarChart, XAxis, Grid } from 'react-native-svg-charts';
 import AppHeader from '../common/AppHeader';
 import ScrollViewWrapper from '../common/ScrollViewWrapper';
 import { getMonthlyStats, IStat } from '../database/common/StatsController';
-import { TransactionType } from '../database/transaction/TransactionTypes';
+import { TransactionType } from '../transaction/TransactionTypes';
 import { colors, commonStyles, utils } from '../styles/theme';
 import { THEME } from '../utils/Constants';
 import CategoryStat from './CategoryStat';

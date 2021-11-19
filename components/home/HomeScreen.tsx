@@ -21,11 +21,11 @@ import RecentExpenses from '../expense/RecentExpenses';
 import RecentIncomes from '../income/RecentIncomes';
 import NeuMorph from '../common/NeuMorph';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
-import TransactionList from '../database/transaction/TransactionList';
+import TransactionList from '../transaction/TransactionList';
 import ScrollViewWrapper from '../common/ScrollViewWrapper';
-import {THEME} from '../utils/Constants';
-import {useRef} from 'react';
-import {TransactionType} from '../database/transaction/TransactionTypes';
+import { THEME } from '../utils/Constants';
+import { useRef } from 'react';
+import { TransactionType } from '../transaction/TransactionTypes';
 
 const HomeStack = createNativeStackNavigator();
 

@@ -1,6 +1,6 @@
 import {TNAME_TRANSACTIONS} from '../../utils/Constants';
 import {getDBConnection} from '../DBController';
-import { TransactionType } from '../transaction/TransactionTypes';
+import { TransactionType } from '../../transaction/TransactionTypes';
 export interface ISummary {
   totalExpense?: number;
   totalIncome?: number;

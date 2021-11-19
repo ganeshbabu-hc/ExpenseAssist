@@ -481,11 +481,10 @@ export const commonStyles = StyleSheet.create({
     justifyContent: 'space-evenly',
     alignItems: 'center',
     elevation: 10,
-    shadowcolor: colors.theme[THEME].textBrandMedium,
-    // paddingTop: 10,
+    shadowcolor: colors.theme[THEME].brandMedium,
     shadowOffset: {
-      width: 10,
-      height: 10,
+      width: -10,
+      height: -10,
     },
   },
   bottomTab: {
@@ -495,8 +494,10 @@ export const commonStyles = StyleSheet.create({
     fontSize: utils.fontSize.medium,
     color: colors.theme[THEME].textBrandMedium,
     fontFamily: utils.fontFamily.Bold,
+    paddingVertical: 16,
   },
   bottomTabText: {
+    paddingVertical: 16,
     fontSize: utils.fontSize.medium,
     color: colors.theme[THEME].textGray,
     fontFamily: utils.fontFamily.Bold,

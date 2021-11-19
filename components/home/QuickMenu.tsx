@@ -1,17 +1,17 @@
 import React from 'react';
-import {FlatList, Pressable, Image, StyleSheet, Text, View} from 'react-native';
-import {colors, commonStyles, utils} from '../styles/theme';
-import Icon from 'react-native-vector-icons/dist/MaterialIcons';
-import {deepPurple} from 'material-ui-colors';
-import {THEME} from '../utils/Constants';
+import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import { colors, commonStyles, utils } from '../styles/theme';
+import { THEME } from '../utils/Constants';
 import IconMap from '../common/IconMap';
 import t from '../common/translations/Translation';
+import { TransactionType } from '../transaction/TransactionTypes';
 
 interface ITypeItem {
   id: number;
   title: string;
   icon: string;
   route: string;
+  routeParams: any;
 }
 
 const summaryList: ITypeItem[] = [
@@ -19,7 +19,11 @@ const summaryList: ITypeItem[] = [
     id: 1,
     title: t('pinned'),
     icon: 'paper-clip',
-    route: 'AddIncome',
+    route: 'TransactionList',
+    routeParams: {
+      type: TransactionType.PINNED,
+      header: true,
+    },
   },
 
   {
@@ -27,11 +31,18 @@ const summaryList: ITypeItem[] = [
     title: t('savings'),
     icon: 'payments',
     route: 'AddIncome',
+    routeParams: {},
   },
-  {id: 3, title: t('reminders'), icon: 'alarm', route: 'AddExpense'},
+  {
+    id: 3,
+    title: t('reminders'),
+    icon: 'alarm',
+    route: 'AddExpense',
+    routeParams: {},
+  },
 ];
 
-const QuickMenu = ({navigation}) => {
+const QuickMenu = ({ navigation }) => {
   const _keyExtractor = (item: any) => item.id;
 
   const _renderItem = (item: ITypeItem, index: number) => {
@@ -51,7 +62,7 @@ const QuickMenu = ({navigation}) => {
           index === 0 ? commonStyles.card.firstCard : {},
         ]}
         onPress={() => {
-          navigation.navigate(item.route, {});
+          navigation.navigate(item.route, item.routeParams);
         }}>
         <View style={styles.typeCard}>
           <View
@@ -98,7 +109,7 @@ const QuickMenu = ({navigation}) => {
           horizontal
           scrollEnabled
           data={summaryList}
-          renderItem={({item, index}) => _renderItem(item, index)}
+          renderItem={({ item, index }) => _renderItem(item, index)}
           keyExtractor={_keyExtractor}
         />
       </View>

@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {getMonthlyStats} from '../database/common/StatsController';
-import { TransactionType } from '../database/transaction/TransactionTypes';
+import { TransactionType } from '../transaction/TransactionTypes';
 import {colors, commonStyles, utils} from '../styles/theme';
 import { THEME } from '../utils/Constants';
 // import PieChart from 'react-native-d3-charts';

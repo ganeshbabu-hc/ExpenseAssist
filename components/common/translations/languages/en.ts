@@ -59,8 +59,8 @@ export default {
   description: 'Description',
   AddExpense: 'Add expense',
   AddIncome: 'Add income',
-  EddExpense: 'Add expense',
-  EddIncome: 'Add income',
+  EditExpense: 'Edit expense',
+  EditIncome: 'Edit income',
 
   // Expense categories
   food: 'Food',

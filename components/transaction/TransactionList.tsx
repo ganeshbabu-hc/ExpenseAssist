@@ -1,19 +1,28 @@
-import React, {useEffect, useState} from 'react';
-import {Animated, FlatList, Pressable, Text, View} from 'react-native';
-import {colors, commonStyles, recentList} from '../../styles/theme';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  Animated,
+  Easing,
+  FlatList,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import { colors, commonStyles, recentList } from '../styles/theme';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import FeatherIcon from 'react-native-vector-icons/dist/Feather';
-import IconMap from '../../common/IconMap';
-import {getTransactions} from './TransactionController';
-import AppHeader from '../../common/AppHeader';
-import AddInfo from '../../illustrations/AddInfo';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import ScrollViewWrapper from '../../common/ScrollViewWrapper';
-import {THEME} from '../../utils/Constants';
-import t from '../../common/translations/Translation';
-import {ITransaction, TransactionType} from './TransactionTypes';
-import Empty from '../../illustrations/Empty';
+import IconMap from '../common/IconMap';
+import { getTransactions } from './TransactionController';
+import AppHeader from '../common/AppHeader';
+import AddInfo from '../illustrations/AddInfo';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import ScrollViewWrapper from '../common/ScrollViewWrapper';
+import { THEME } from '../utils/Constants';
+import t from '../common/translations/Translation';
+import { ITransaction, TransactionType } from './TransactionTypes';
+import Empty from '../illustrations/Empty';
 import TransactionItem from './TransactionItem';
+import { BlurView } from '@react-native-community/blur';
 
 interface ITransactionList {
   limit?: number;
@@ -23,6 +32,45 @@ interface ITransactionList {
   route?: any;
   scrollY?: Animated.Value;
 }
+
+interface ITransactionTypes {
+  id: number;
+  label: string;
+  type: TransactionType;
+}
+
+const transactionTypes: ITransactionTypes[] = [
+  {
+    id: 1,
+    label: t('all'),
+    type: TransactionType.ALL,
+  },
+  {
+    id: 2,
+    label: t('Income'),
+    type: TransactionType.INCOME,
+  },
+  {
+    id: 3,
+    label: t('Expense'),
+    type: TransactionType.EXPENSE,
+  },
+  {
+    id: 4,
+    label: t('pinned'),
+    type: TransactionType.PINNED,
+  },
+];
+
+// const usePrevious = (value: TransactionType) => {
+//   const ref = useRef();
+//   // Store current value in ref
+//   useEffect(() => {
+//     ref.current = value;
+//   }, [value]); // Only re-run if value changes
+//   // Return previous value (happens before update in useEffect above)
+//   return ref.current;
+// };
 
 const TransactionList = ({
   limit = 10,
@@ -34,15 +82,17 @@ const TransactionList = ({
 }: ITransactionList) => {
   header = route?.params?.header || header || false;
   type = route?.params?.type || type;
+  const animatedValue = useRef(new Animated.Value(0)).current;
   const [loading, setLoading] = useState(false);
   const [transactionType, setTransactionType] = useState<TransactionType>(type);
   const [transactionList, setTransactionList] = useState<ITransaction[]>([]);
+  // const previousTransaction = usePrevious(transactionType);
+
   const refreshList = () => {
-    updateTransactions();
+    updateTransactions(false);
   };
 
-  const renderItem = ({item, index}: any) => {
-    // console.log(item.transactionCategoryIcon);
+  const renderItem = ({ item, index }: any) => {
     return (
       <TransactionItem
         onUpdate={refreshList}
@@ -55,29 +105,50 @@ const TransactionList = ({
   };
 
   // console.log(transactionList);
-  const updateTransactions = async () => {
-    // const recentsList = useSelector((state: any) => {
-    //   if (transactionType === TransactionType.INCOME) {
-    //     return state.income.incomeList;
-    //   }
-    //   return state.expense.expenseList;
-    // });
-
-    console.log('transactionType--', transactionType);
+  const updateTransactions = async (refresh: boolean = true) => {
+    if (refresh) {
+      setLoading(true);
+    }
     const resultList = await getTransactions(limit, transactionType);
-    // console.log(transactionList);
     setTransactionList(resultList);
     setLoading(false);
   };
 
+  const animateTranslation = animatedValue?.interpolate({
+    inputRange: [0, 1],
+    outputRange: [100, 0],
+    extrapolate: 'clamp',
+  });
+  const animateOpacity = animatedValue?.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 1],
+    extrapolate: 'clamp',
+  });
+
+  const animateAddButton = () => {
+    let newAnimatedValue: number;
+    if (
+      transactionType === TransactionType.PINNED ||
+      transactionType === TransactionType.ALL
+    ) {
+      newAnimatedValue = 0;
+    } else {
+      newAnimatedValue = 1;
+    }
+    Animated.timing(animatedValue, {
+      toValue: newAnimatedValue,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  };
+
   useEffect(() => {
-    setLoading(true);
     updateTransactions();
+    animateAddButton();
   }, [transactionType]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      setLoading(true);
       updateTransactions();
     });
 
@@ -127,26 +198,36 @@ const TransactionList = ({
               </Pressable>
             )}
             {header && (
-              <Pressable
-                onPress={() => {
-                  if (transactionType === TransactionType.EXPENSE) {
-                    navigation.navigate('AddExpense');
-                  } else {
-                    navigation.navigate('AddIncome');
-                  }
-                }}
-                style={recentList.listHeaderIconWrapper}>
-                <Icon
-                  style={recentList.listHeaderIcon}
-                  name="add"
-                  size={commonStyles.icon.width}
-                  color={colors.theme[THEME].textBrandMedium}
-                />
-              </Pressable>
+              <Animated.View
+                style={[
+                  {
+                    opacity: animateOpacity,
+                    transform: [{ translateX: animateTranslation }],
+                  },
+                ]}>
+                <Pressable
+                  onPress={() => {
+                    navigation.navigate('AddTransaction', {
+                      type:
+                        transactionType === TransactionType.INCOME
+                          ? TransactionType.INCOME
+                          : TransactionType.EXPENSE,
+                    });
+                  }}
+                  style={recentList.listHeaderIconWrapper}>
+                  <IconMap
+                    style={recentList.listHeaderIcon}
+                    name="plus-circle"
+                    size={28}
+                    color={colors.theme[THEME].textBrandMedium}
+                  />
+                </Pressable>
+              </Animated.View>
             )}
           </View>
           {!loading && (
             <FlatList
+              // maxToRenderPerBatch={10}
               scrollEnabled
               contentContainerStyle={commonStyles.contentContainerStyle}
               data={transactionList}
@@ -178,14 +259,12 @@ const TransactionList = ({
               {transactionType !== TransactionType.PINNED && (
                 <Pressable
                   onPress={() => {
-                    if (transactionType === TransactionType.EXPENSE) {
-                      navigation.navigate('AddExpense');
-                    } else {
-                      navigation.navigate('AddIncome');
-                    }
+                    navigation.navigate('AddTransaction', {
+                      type: transactionType,
+                    });
                   }}
                   style={commonStyles.illustrationTitleBtn}>
-                  <FeatherIcon
+                  <IconMap
                     name="plus"
                     color={colors.theme[THEME].textLight}
                     size={32}
@@ -198,77 +277,29 @@ const TransactionList = ({
       </ScrollViewWrapper>
       {header && (
         <View style={commonStyles.bottomTabContainer}>
-          <Pressable
-            onPress={() => {
-              setTransactionType(TransactionType.ALL);
-            }}
-            style={commonStyles.bottomTabContainer}>
-            <Text
-              style={[
-                transactionType === TransactionType.ALL
-                  ? commonStyles.bottomTabTextActive
-                  : commonStyles.bottomTabText,
-              ]}>
-              All
-            </Text>
-          </Pressable>
-          <Pressable
-            onPress={() => {
-              setTransactionType(TransactionType.INCOME);
-            }}
-            style={commonStyles.bottomTabContainer}>
-            <Text
-              style={[
-                transactionType === TransactionType.INCOME
-                  ? commonStyles.bottomTabTextActive
-                  : commonStyles.bottomTabText,
-              ]}>
-              {t('Income')}
-            </Text>
-          </Pressable>
-          <Pressable
-            onPress={() => {
-              setTransactionType(TransactionType.EXPENSE);
-            }}
-            style={commonStyles.bottomTab}>
-            <Text
-              style={[
-                transactionType === TransactionType.EXPENSE
-                  ? commonStyles.bottomTabTextActive
-                  : commonStyles.bottomTabText,
-              ]}>
-              {t('Expense')}
-            </Text>
-          </Pressable>
-          <Pressable
-            onPress={() => {
-              setTransactionType(TransactionType.PINNED);
-            }}
-            style={commonStyles.bottomTab}>
-            <Text
-              style={[
-                transactionType === TransactionType.PINNED
-                  ? commonStyles.bottomTabTextActive
-                  : commonStyles.bottomTabText,
-              ]}>
-              {t('pinned')}
-            </Text>
-          </Pressable>
+          {transactionTypes.map((transactionItem: ITransactionTypes) => {
+            return (
+              <Pressable
+                key={`list-type-${transactionItem.id}`}
+                onPress={() => {
+                  setTransactionType(transactionItem.type);
+                }}
+                style={commonStyles.bottomTabContainer}>
+                <Text
+                  style={[
+                    transactionType === transactionItem.type
+                      ? commonStyles.bottomTabTextActive
+                      : commonStyles.bottomTabText,
+                  ]}>
+                  {transactionItem.label}
+                </Text>
+              </Pressable>
+            );
+          })}
         </View>
       )}
     </SafeAreaView>
   );
 };
-
-// {
-//   /* <FadeInFlatList
-// durationPerItem={50}
-// data={recentsList}
-// itemsToFadeIn={10}
-// key={keyExtractor}
-// initialDelay={200}
-// renderItem={renderItem}
-// /> */
-// }
 
 export default TransactionList;

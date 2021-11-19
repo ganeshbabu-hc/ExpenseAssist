@@ -1,13 +1,13 @@
-import React from 'react';
-import {FlatList, Pressable, StyleSheet, Text, View} from 'react-native';
-import {colors, commonStyles, utils} from '../styles/theme';
+import React, { useEffect, useState } from 'react';
+import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import { colors, commonStyles, utils } from '../styles/theme';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
-import {useSelector} from 'react-redux';
-import {ISummary} from '../database/common/SummaryController';
-import {numberFormatter} from '../utils/Formatter';
-import {ICurrency} from '../database/common/CurrencyController';
-import {THEME} from '../utils/Constants';
-import {TransactionType} from '../database/transaction/TransactionTypes';
+import { useSelector } from 'react-redux';
+import { getSummary, ISummary } from '../database/common/SummaryController';
+import { numberFormatter } from '../utils/Formatter';
+import { ICurrency } from '../database/common/CurrencyController';
+import { THEME } from '../utils/Constants';
+import { TransactionType } from '../transaction/TransactionTypes';
 import IconMap from '../common/IconMap';
 import t from '../common/translations/Translation';
 // import {TransactionType} from '../database/transaction/TransactionTypes';
@@ -22,10 +22,17 @@ interface ISummaryItem {
   onPress?: Function;
 }
 
-const SummaryList = ({navigation}: any) => {
-  const summary: ISummary = useSelector(
-    (state: any) => state.summary.summaryList,
-  );
+const SummaryList = ({ navigation }: any) => {
+  const [summary, setSummary] = useState<ISummary>({
+    totalExpense: 0,
+    totalIncome: 0,
+    monthlyExpense: 0,
+    monthlyIncome: 0,
+  });
+
+  // const summary: ISummary = useSelector(
+  //   (state: any) => state.summary.summaryList,
+  // );
   const currency: ICurrency = useSelector((state: any) => {
     return state.common.configuration.currency.value;
   });
@@ -145,6 +152,21 @@ const SummaryList = ({navigation}: any) => {
     );
   };
 
+  const updateSummaryList = async () => {
+    const summaryList: any = await getSummary();
+    console.log(summaryList);
+    setSummary(summaryList);
+  };
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      console.log('----updating the summary list');
+      updateSummaryList();
+    });
+
+    return unsubscribe;
+  }, []);
+
   return (
     <View style={styles.summaryListWrapper}>
       <View style={styles.summaryListContainer}>
@@ -162,7 +184,7 @@ const SummaryList = ({navigation}: any) => {
           showsHorizontalScrollIndicator={false}
           horizontal
           data={summaryCardList}
-          renderItem={({item, index}) => _renderItem(item, index)}
+          renderItem={({ item, index }) => _renderItem(item, index)}
           keyExtractor={_keyExtractor}
         />
       </View>
