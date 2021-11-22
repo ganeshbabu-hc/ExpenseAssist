@@ -14,6 +14,8 @@
 //   currencySumbol?: string;
 // }
 
+import { Asset } from "react-native-image-picker";
+
 export enum TransactionType {
   EXPENSE = 'expense',
   INCOME = 'income',
@@ -46,4 +48,10 @@ export interface ITransactionCategory {
   transactionType: TransactionType;
   dateUpdatedTlm?: string;
   categoryIcon?: string;
+}
+
+export interface ITransactionImage extends Asset {
+  imageId?: number;
+  transactionId?: number;
+  base64?: string;
 }

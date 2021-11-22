@@ -1,9 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, FlatList, Pressable } from 'react-native';
 import { categoryList, colors, commonStyles } from '../styles/theme';
-import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import IconMap from '../common/IconMap';
-import { useSelector } from 'react-redux';
 import { THEME } from '../utils/Constants';
 import { ITransactionCategory, TransactionType } from './TransactionTypes';
 import { getTransactionCategories } from './TransactionController';
@@ -30,7 +28,6 @@ const TransactionCategotyList = ({
 }: TransactionCategotyList) => {
   const flatList = useRef<FlatList>(null);
   const [activeCategory, setActiveCategory] = useState(defaultValue);
-  console.log(activeCategory);
   const [transactionCategories, setTransactionCategories] = useState<
     ITransactionCategory[]
   >([]);
@@ -92,9 +89,9 @@ const TransactionCategotyList = ({
                       type,
                     });
                   }}>
-                  <Icon
-                    name="add"
-                    size={38}
+                  <IconMap
+                    name="plus"
+                    size={34}
                     color={colors.theme[THEME].textCardGray}
                   />
                 </Pressable>

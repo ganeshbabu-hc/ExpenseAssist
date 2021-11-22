@@ -1,6 +1,6 @@
 import React from 'react';
-import {IToast} from '../../components/common/ToastNotification';
-import {IConfiguration} from '../../components/database/common/CommonController';
+import { IToast } from '../../components/common/ToastNotification';
+import { IConfiguration } from '../../components/database/common/CommonController';
 import {
   SHOW_MODAL,
   HIDE_MODAL,
@@ -28,13 +28,12 @@ const initialState: ICommonState = {
     currency: {
       name: 'currency',
       type: 'json',
-      value: {code: 'INR', currencyId: 47, name: 'Rupees', symbol: '₹'},
+      value: { code: 'INR', currencyId: 47, name: 'Rupees', symbol: '₹' },
     },
   },
   toast: [],
 };
 export const CommonReducer = (state = initialState, action: any) => {
-  // console.log(action);
   switch (action.type) {
     case SHOW_MODAL:
       return {
@@ -49,8 +48,7 @@ export const CommonReducer = (state = initialState, action: any) => {
         showModal: false,
       };
     case UPDATE_CURRENCY:
-      let config: ICommonState = {...state};
-      // console.log(config);
+      let config: ICommonState = { ...state };
       config.configuration.currency.value = action.payload;
       return config;
     case UPDATE_CONFIGURATIONS:

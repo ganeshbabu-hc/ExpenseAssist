@@ -81,11 +81,9 @@ const AddEditCategory = ({ navigation, route, type }: IAddEditCategory) => {
     setDescription('');
   };
   const saveTransactionCategoryHandler = async () => {
-    // console.log('save--validateInputs');
     if (!validateInputs()) {
       return;
     }
-    // console.log('save--category');
 
     let modCategory: ITransactionCategory = {
       transactionCategoryId:

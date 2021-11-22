@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useMemo, useRef } from 'react';
+import { Animated, StyleSheet, Text, View } from 'react-native';
 import { IStat } from '../database/common/StatsController';
 import { colors, utils } from '../styles/theme';
 import { THEME } from '../utils/Constants';
@@ -8,11 +8,12 @@ import IconMap from '../common/IconMap';
 interface ICategoryStat {
   statlist: IStat[];
 }
+
 const CategoryStat = ({ statlist }: ICategoryStat) => {
   const getProgress = (amount: number) => {
     const percentageRaw = (100 * amount) / total;
     const percentage = Math.round(percentageRaw * 100) / 100;
-    const progress = percentageRaw / 100;
+    const progress = percentageRaw;
     return { percentage, progress };
   };
 
@@ -44,19 +45,40 @@ const CategoryStat = ({ statlist }: ICategoryStat) => {
                 {`${getProgress(stat.amount).percentage} %`}
               </Text>
             </View>
-            <View style={styles.barContainer}>
-              <ProgressBar
-                styleAttr="Horizontal"
-                indeterminate={false}
-                progress={getProgress(stat.amount).progress}
-                animating={true}
-                style={styles.bar}
-                color={colors.theme[THEME].graphColorScheme[index]}
-              />
-            </View>
+            <ProgressWrapper
+              progress={getProgress(stat.amount).progress}
+              index={index}
+            />
           </View>
         );
       })}
+    </View>
+  );
+};
+
+const ProgressWrapper = ({
+  progress,
+  index,
+}: {
+  progress: number;
+  index: number;
+}) => {
+  const animatedValue = new Animated.Value(0);
+  const progressValue = animatedValue?.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0%', `${progress}%`],
+    extrapolate: 'clamp',
+  });
+
+  Animated.timing(animatedValue, {
+    useNativeDriver: false,
+    toValue: 1,
+    delay: index * 50,
+    duration: 600,
+  }).start();
+  return (
+    <View style={styles.barContainer}>
+      <Animated.View style={[styles.bar, { width: progressValue }]} />
     </View>
   );
 };
@@ -92,13 +114,22 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   barContainer: {
+    flex: 1,
+    backgroundColor: colors.theme[THEME].textCardGray,
+    height: 14,
     borderRadius: 30,
+    marginTop: 6,
     overflow: 'hidden',
+  },
+  bar: {
+    borderRadius: 30,
+    flex: 1,
+    height: '100%',
+    width: 20,
+    backgroundColor: colors.theme[THEME].brandMedium,
+    // transform: [{ scaleY: 5.0 }],
   },
   barIcon: {
     marginRight: 4,
-  },
-  bar: {
-    transform: [{ scaleY: 5.0 }],
   },
 });

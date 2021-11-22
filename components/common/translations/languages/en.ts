@@ -13,10 +13,10 @@ export default {
   addReminder: 'Add\nreminder',
 
   //Notification
-  expenseSaved: 'Your expense %{name} is saved',
-  expenseUpdated: 'Your expense %{name} is updated',
-  incomeSaved: 'Your income %{name} is saved',
-  incomeUpdated: 'Your income %{name} is updated',
+  expenseSaved: 'Expense %{name} is saved',
+  expenseUpdated: 'Expense %{name} is updated',
+  incomeSaved: 'Income %{name} is saved',
+  incomeUpdated: 'Income %{name} is updated',
   invalidAmount: 'Enter a valid amount',
   invalidIncomeTitle: 'Income title is needed',
   invalidExpenseTitle: 'Expense title is needed',
@@ -46,7 +46,8 @@ export default {
   All: 'All',
   all: 'All',
   cash: 'cash',
-  yesterday: 'Yesterday',
+  yesterday: 'yesterday',
+  today: 'today',
   add: 'Add',
   update: 'Update',
   save: 'Save',
@@ -61,6 +62,9 @@ export default {
   AddIncome: 'Add income',
   EditExpense: 'Edit expense',
   EditIncome: 'Edit income',
+  searchTransaction: 'Search transactions',
+  txPinned: 'Transaction is pinned',
+  txUnpinned: 'Transaction is unpinned',
 
   // Expense categories
   food: 'Food',
@@ -88,5 +92,25 @@ export default {
   Account: 'Account',
   UPI: 'UPI',
   Card: 'Card',
+
   //settings
+  accounts: 'Accounts',
+  categories: 'Categories',
+  payments: 'Payments',
+  settings: 'Settings',
+  currency: 'Currency',
+  theme: 'Theme',
+  language: 'Language',
+  help: 'Help',
+  egDollars: 'Eg, Dollars',
+  egSalary: 'Eg, September grocery',
+  egGrocery: 'Eg, August grocery',
+
+  //image upload
+  camera: 'Camera',
+  gallery: 'Gallery',
+  backup: 'Backup',
+  uploadImagesNotification: 'You can upload maximum 2 images',
+  uploadImages: 'Upload images from',
+  uploads: 'Uploads',
 };

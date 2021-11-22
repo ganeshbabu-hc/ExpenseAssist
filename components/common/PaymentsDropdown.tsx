@@ -69,8 +69,8 @@ const PaymentsDropdown = ({onChange, defaultValue}: IpaymentDropdown) => {
                   <View style={styles.paymentWrapper}>
                     <View style={styles.paymentCheckWrapper}>
                       {payment.paymentId === paymentId && (
-                        <Icon
-                          name="check"
+                        <IconMap
+                          name="check-circle"
                           color={colors.theme[THEME].brandDark}
                           size={28}
                         />

@@ -2,36 +2,19 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/dist/MaterialIcons';
-import FeatherIcon from 'react-native-vector-icons/dist/Feather';
-import IonIcon from 'react-native-vector-icons/dist/Ionicons';
-import CommunityIcon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
-import { HomeScreen, ProfileScreen } from './home/HomeScreen';
-import { StyleSheet, View } from 'react-native';
+import {
+  CardStyleInterpolators,
+  createStackNavigator,
+} from '@react-navigation/stack';
+import { HomeScreen } from './home/HomeScreen';
+import { Animated, Easing, StyleSheet, View } from 'react-native';
 import Add from './home/Add';
-import AddEditExpense from './expense/AddEditExpense';
 import { colors } from './styles/theme';
 import AddType from './common/add/AddType';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import {
-  getTransactionCategories,
-  getTransactions,
-} from './transaction/TransactionController';
-import {
-  UPDATE_CONFIGURATIONS,
-  UPDATE_EXPENSE_CATEGORIES_LIST,
-  UPDATE_INCOME_CATEGORIES_LIST,
-  UPDATE_TRANSACTION_LIST,
-  UPDATE_SUMMARY,
-} from '../redux/constants/StoreConstants';
-import { getCurrncyTypes } from './database/common/CurrencyController';
-import AddEditIncome from './income/AddEditIncome';
-import { getIncomes } from './database/income/IncomeController';
-import { getSummary } from './database/common/SummaryController';
-import StatsScreen from './home/StatsScreen2';
+import { UPDATE_CONFIGURATIONS } from '../redux/constants/StoreConstants';
 import AddEditCategory from './common/AddEditCategory';
-import { BlurView } from '@react-native-community/blur';
 import StatsScreen1 from './stats/StatsScreen';
 import TransactionList from './transaction/TransactionList';
 import { SettingsScreen } from './settings/SettingsScreen';
@@ -39,14 +22,12 @@ import CurrencyScreen from './settings/CurrencyScreen';
 import { getConfigurations } from './database/common/CommonController';
 import ThemeScreen from './settings/ThemeScreen';
 import { THEME } from './utils/Constants';
-import { TransactionType } from './transaction/TransactionTypes';
-import UniconHome from './icons/unicons/UniconHome';
-import UniconPieAlt from './icons/unicons/UniconPieAlt';
-import UniconSetting from './icons/unicons/UniconSetting';
-import UniconUnivercity from './icons/unicons/UniconUnivercity';
 import { AccountsScreen } from './settings/AccountsScreen';
 import AddEditTransaction from './transaction/AddEditTransaction';
-const Stack = createNativeStackNavigator();
+import IconMap from './common/IconMap';
+import ImageViewer from './common/ImageViewer';
+// const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 enum Routes {
@@ -86,55 +67,22 @@ const Home = ({ navigation }) => {
           },
           tabBarShowLabel: false,
           tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
+            let iconName = '';
             switch (route.name) {
               case Routes.HOME:
-                iconName = (
-                  <UniconHome
-                    active={focused}
-                    color={
-                      focused
-                        ? colors.theme[THEME].textBrandMedium
-                        : colors.theme[THEME].textCardGray
-                    }
-                  />
-                );
+                iconName = 'home';
                 break;
               case Routes.STATS:
-                iconName = (
-                  <UniconPieAlt
-                    color={
-                      focused
-                        ? colors.theme[THEME].textBrandMedium
-                        : colors.theme[THEME].textCardGray
-                    }
-                  />
-                );
+                iconName = 'pie';
                 break;
               case Routes.ADD:
                 iconName = 'add';
                 break;
               case Routes.ACCOUNTS:
-                iconName = (
-                  <UniconUnivercity
-                    color={
-                      focused
-                        ? colors.theme[THEME].textBrandMedium
-                        : colors.theme[THEME].textCardGray
-                    }
-                  />
-                );
+                iconName = 'univercity';
                 break;
               case Routes.SETTINGS:
-                iconName = (
-                  <UniconSetting
-                    color={
-                      focused
-                        ? colors.theme[THEME].textBrandMedium
-                        : colors.theme[THEME].textCardGray
-                    }
-                  />
-                );
+                iconName = 'gear';
                 break;
               default:
                 break;
@@ -143,7 +91,16 @@ const Home = ({ navigation }) => {
             if (Routes.ADD === route.name) {
               return <Add navigation={navigation} />;
             } else {
-              return iconName;
+              return (
+                <IconMap
+                  name={iconName}
+                  color={
+                    focused
+                      ? colors.theme[THEME].textBrandMedium
+                      : colors.theme[THEME].textCardGray
+                  }
+                />
+              );
             }
           },
           tabBarActiveTintColor: 'black',
@@ -184,8 +141,8 @@ const Router = () => {
     // dispatch({ type: UPDATE_SUMMARY, payload: summary });
     // const incomeList = await getIncomes();
     // dispatch({ type: UPDATE_TRANSACTION_LIST, payload: incomeList });
-    const configs = await getConfigurations();
-    dispatch({ type: UPDATE_CONFIGURATIONS, payload: configs });
+    // const configs = await getConfigurations();
+    // dispatch({ type: UPDATE_CONFIGURATIONS, payload: configs });
     // const expenseCategories = await getTransactionCategories(
     //   TransactionType.EXPENSE,
     // );
@@ -221,6 +178,7 @@ const Router = () => {
       }}>
       <Stack.Navigator
         screenOptions={({ route }) => ({
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
           gestureEnabled: true,
           gestureDirection: 'horizontal',
           headerShown: false,
@@ -234,21 +192,29 @@ const Router = () => {
           options={{ title: 'Welcome' }}
         />
         <Stack.Screen name="AddType" component={AddType} />
-        <Stack.Screen
-          name="AddTransaction"
-          component={AddEditTransaction}
-          initialParams={{}}
-        />
-        <Stack.Screen
-          name="AddEditCategory"
-          component={AddEditCategory}
-          initialParams={{}}
-        />
+
         <Stack.Screen
           name="TransactionList"
           component={TransactionList}
           initialParams={{}}
         />
+        <Stack.Group>
+          <Stack.Screen
+            name="AddTransaction"
+            component={AddEditTransaction}
+            initialParams={{}}
+          />
+          <Stack.Screen
+            name="AddEditCategory"
+            component={AddEditCategory}
+            initialParams={{}}
+          />
+          <Stack.Screen
+            name="ImageViewer"
+            component={ImageViewer}
+            initialParams={{}}
+          />
+        </Stack.Group>
         <Stack.Group>
           <Stack.Screen
             name="CurrencyScreen"

@@ -1,73 +1,13 @@
-import React, {useEffect} from 'react';
-import {Provider} from 'react-redux';
-import AppModal from './components/common/modal/AppModal';
-import {getDBConnection} from './components/database/DBController';
-import Router from './components/Router';
+import React from 'react';
+import { Provider } from 'react-redux';
 import configureStore from './redux/store/ConfigureStore';
-// import PushNotificationIOS from '@react-native-community/push-notification-ios';
-import {LogBox} from 'react-native';
-import Notification from './components/common/ToastNotification';
-import { addColumn, trucateTable } from './components/database/common/CommonController';
-
-// import {enableFreeze} from 'react-native-screens';
-// enableFreeze(true);
-// TODO: Remove when fixed
-LogBox.ignoreLogs([
-  'VirtualizedLists should never be nested inside plain ScrollViews with the same orientation because it can break windowing and other functionality - use another VirtualizedList-backed container instead',
-]);
+import AppWrapper from './AppWrapper';
 
 const store = configureStore();
-
 const App = () => {
-  getDBConnection();
-  // setTheme();
-
-  useEffect(() => {
-    // addColumn();
-    // setTheme();
-    // resetDatabase();
-    // Reminders.requestPermission();
-
-    // Get reminders
-
-    // Reminders.addReminder({
-    //   title: 'Wake-up reminder',
-    //   note: 'Wake-up and have breakfast!',
-    //   timestamp: Date.now() + 1000 * 5, // next five minutes from current time (milliseconds)
-    // });
-    setTimeout(async () => {
-      // Constants.THEME = 'purple';
-      // Request permission
-      // Notifications.schduleNotification(new Date(Date.now() + 5 * 1000));
-      // Notifications.schduleNotification(new Date());
-      // Add reminder
-      // const remainers = await Reminders.getReminders();
-      // console.log(remainers);
-      //       Reminders.requestPermission();
-      // // Get reminders
-      // Reminders.getReminders();
-      // // Add reminder
-      // Reminders.addReminder({
-      //   title: 'Wake-up reminder',
-      //   note: 'Wake-up and have breakfast!',
-      //   timestamp: Date.now() * 60000 * 5, // next five minutes from current time (milliseconds)
-      // });
-      // // Remove reminder
-      // Reminders.removeReminder('the-reminder-id');
-      // dropTables();
-      // createConfigTable();
-      // insertStatements();
-      // resetDatabase();
-      // const result = await getConfigurations();
-      // console.log(result);
-      // trucateTable();
-    }, 1000);
-  }, []);
   return (
     <Provider store={store}>
-      <Notification />
-      <Router />
-      <AppModal />
+      <AppWrapper />
     </Provider>
   );
 };

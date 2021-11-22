@@ -1,4 +1,5 @@
 import moment from 'moment';
+import t from '../common/translations/Translation';
 import {DATE_DISPLAY_FORMAT, DATE_DB_FORMAT} from './Constants';
 
 export const dateFormatter = (date: Date): string => {
@@ -8,11 +9,11 @@ export const dateFormatter = (date: Date): string => {
 export const displayDateFormat = (dateStr: string | undefined): string => {
   const formatted = moment(dateStr, DATE_DB_FORMAT).format(DATE_DISPLAY_FORMAT);
   if (moment(dateStr, DATE_DB_FORMAT).isSame(moment(), 'day')) {
-    return 'Today';
+    return t('today');
   } else if (
     moment(dateStr, DATE_DB_FORMAT).isSame(moment().subtract(1, 'd'), 'day')
   ) {
-    return 'Yesterday';
+    return t('yesterday');
   }
 
   return formatted;

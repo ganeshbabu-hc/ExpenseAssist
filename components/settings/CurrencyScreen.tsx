@@ -4,7 +4,6 @@ import {
   FlatList,
   Pressable,
   SafeAreaView,
-  StatusBar,
   StyleSheet,
   Text,
   TextInput,
@@ -18,23 +17,21 @@ import {
   recentList,
   utils,
 } from '../styles/theme';
-import Icon from 'react-native-vector-icons/dist/MaterialIcons';
-import {useEffect, useRef, useState} from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   getCurrncyTypes,
   ICurrency,
   setCurrency,
 } from '../database/common/CurrencyController';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   SHOW_TOAST,
   UPDATE_CURRENCY,
 } from '../../redux/constants/StoreConstants';
-import {THEME} from '../utils/Constants';
+import { THEME } from '../utils/Constants';
 import t from '../common/translations/Translation';
-import ScrollViewWrapper from '../common/ScrollViewWrapper';
 import IconMap from '../common/IconMap';
-const CurrencyScreen = ({navigation}: any) => {
+const CurrencyScreen = ({ navigation }: any) => {
   // const isDarkMode = useColorScheme() === 'dark';
   const scrollY = useRef(new Animated.Value(0)).current;
   const dispatch = useDispatch();
@@ -74,12 +71,12 @@ const CurrencyScreen = ({navigation}: any) => {
   const updateCurrency = async (currency: ICurrency) => {
     const result = await setCurrency(currency);
     if (result) {
-      dispatch({type: UPDATE_CURRENCY, payload: currency});
+      dispatch({ type: UPDATE_CURRENCY, payload: currency });
       dispatch({
         type: SHOW_TOAST,
         payload: [
           {
-            title: t('currencySet', {name: currency.name}),
+            title: t('currencySet', { name: currency.name }),
           },
         ],
       });
@@ -155,7 +152,7 @@ const CurrencyScreen = ({navigation}: any) => {
         <AppHeader
           navigation={navigation}
           homeScreen={false}
-          title="Currency"
+          title={t('currency')}
           scrollY={scrollY}
         />
       </View>
@@ -163,7 +160,7 @@ const CurrencyScreen = ({navigation}: any) => {
         <View style={styles.inputWrapper}>
           <TextInput
             placeholderTextColor={colors.theme[THEME].textCardGray}
-            placeholder="Eg, Dollars"
+            placeholder={t('egDollars')}
             style={formStyles.input}
             onChangeText={setTitle}
             value={title}
@@ -171,16 +168,17 @@ const CurrencyScreen = ({navigation}: any) => {
         </View>
         <FlatList
           ref={flatList}
+          maxToRenderPerBatch={10}
           contentInsetAdjustmentBehavior="automatic"
           keyboardDismissMode="interactive"
           keyboardShouldPersistTaps="always"
           style={styles.currencyList}
           data={filteredList}
-          renderItem={({item, index}) => _renderItem(item, index)}
+          renderItem={({ item, index }) => _renderItem(item, index)}
           keyExtractor={_keyExtractor}
           onScroll={Animated.event(
-            [{nativeEvent: {contentOffset: {y: scrollY}}}],
-            {useNativeDriver: false},
+            [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+            { useNativeDriver: false },
           )}
         />
       </View>

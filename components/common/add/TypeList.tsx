@@ -56,8 +56,8 @@ const TypeList = ({ navigation }: any) => {
             onPress={() => {
               navigation.navigate(item.route);
             }}>
-            <Icon
-              name="add"
+            <IconMap
+              name="plus"
               size={48}
               color={colors.theme[THEME].textCardGray}
             />

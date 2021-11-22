@@ -35,7 +35,6 @@ const TransactionItem = ({
   index,
   onUpdate,
 }: ITransactionItem) => {
-  // console.log('--item--', item);
   const dispatch = useDispatch();
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const removeAnimation = useRef(new Animated.Value(0)).current;
@@ -200,10 +199,10 @@ const TransactionItem = ({
               <View>
                 <View style={recentList.listItemDescription}>
                   <Text style={recentList.listItemPayment}>
-                    {`${item.paymentTitle} • `}
+                    {`${t(item.paymentTitle)} • `}
                   </Text>
                   <Text style={recentList.listItemDate}>
-                    {`${item.transactionType} • `}
+                    {`${t(item.transactionType)} • `}
                   </Text>
                   <Text style={recentList.listItemDate}>
                     {displayDateFormat(item.dateAddedTlm)}

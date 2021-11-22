@@ -1,21 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import {
-  Animated,
-  Dimensions,
-  StatusBar,
-  StyleSheet,
-  View,
-} from 'react-native';
-import {
-  colors,
-  commonStyles,
-  containerLeftMargin,
-  utils,
-} from '../styles/theme';
-import Icon from 'react-native-vector-icons/dist/MaterialIcons';
+import React from 'react';
+import { Animated, Pressable, StatusBar, StyleSheet, View } from 'react-native';
+import { colors, commonStyles, utils } from '../styles/theme';
 import { THEME } from '../utils/Constants';
-import { useRef } from 'react';
 import t from './translations/Translation';
+import IconMap from './IconMap';
 
 interface IAppHeader {
   navigation?: any;
@@ -23,6 +11,7 @@ interface IAppHeader {
   backTo?: string;
   title?: string;
   scrollY?: Animated.Value;
+  backBtn?: boolean;
 }
 
 const MIN_HEIGHT = 200;
@@ -34,23 +23,11 @@ const AppHeader = ({
   navigation,
   title = '',
   scrollY = new Animated.Value(0),
+  backBtn = true,
 }: IAppHeader) => {
-  const backArrow = useRef();
-  const [width, setWidth] = useState(Dimensions.get('window').width);
-
   const animatedImgHeight = scrollY?.interpolate({
     inputRange: [0, MIN_HEIGHT - MAX_HEIGHT],
     outputRange: [90, 50],
-    extrapolate: 'clamp',
-  });
-  // const windowWidth = Dimensions.get('window').width;
-  // (containerLeftMargin - commonStyles.icon.width * 2)
-  const titleLeftTranslate = scrollY?.interpolate({
-    inputRange: [0, MIN_HEIGHT - MAX_HEIGHT],
-    outputRange: [
-      0,
-      -width / 2 + (containerLeftMargin + commonStyles.icon.width * 2.5),
-    ],
     extrapolate: 'clamp',
   });
 
@@ -68,31 +45,23 @@ const AppHeader = ({
 
   const headerElevation = scrollY?.interpolate({
     inputRange: [0, MIN_HEIGHT - MAX_HEIGHT],
-    outputRange: [10, 0],
+    outputRange: [0, 10],
     extrapolate: 'clamp',
   });
 
-  useEffect(() => {
-    const dimentionCHange = Dimensions.addEventListener('change', () => {
-      setWidth(Dimensions.get('window').width);
-    });
-    return () => {
-      dimentionCHange.remove();
-    };
-  }, []);
   return (
     <Animated.View
       style={[
         styles.headerContainer,
         {
-          // elevation: headerElevation,
+          elevation: headerElevation,
         },
       ]}>
       <StatusBar
         backgroundColor={colors.theme[THEME].brandLight}
         barStyle={'dark-content'}
       />
-      {homeScreen ? (
+      {homeScreen && (
         <View style={styles.headerDesc}>
           <Animated.Text
             style={[styles.headerDescTitle, { fontSize: fontSizing }]}>
@@ -102,11 +71,9 @@ const AppHeader = ({
             {t('subTitle')}
           </Animated.Text>
         </View>
-      ) : (
-        <Icon
-          style={styles.icon}
-          ref={backArrow}
-          color={colors.theme[THEME].textBrandMedium}
+      )}
+      {!homeScreen && backBtn && (
+        <Pressable
           onPress={() => {
             if (backTo === '') {
               navigation.goBack();
@@ -115,17 +82,21 @@ const AppHeader = ({
             } else {
               navigation.navigate('Home');
             }
-          }}
-          size={commonStyles.icon.width}
-          name="keyboard-backspace"
-        />
+          }}>
+          <IconMap
+            style={styles.icon}
+            color={colors.theme[THEME].textBrandMedium}
+            size={32}
+            name="arrow-left"
+          />
+        </Pressable>
       )}
       {title !== '' && (
         <Animated.Text
           style={[
             styles.appTitle,
             {
-              transform: [{ translateX: titleLeftTranslate }],
+              // transform: [{ translateX: titleLeftTranslate }],
               fontSize: fontSizingSubTitle,
             },
           ]}>

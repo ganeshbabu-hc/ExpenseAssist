@@ -6,17 +6,23 @@ import {
   StyleSheet,
   Pressable,
   Animated,
+  Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import { SHOW_TOAST } from '../../redux/constants/StoreConstants';
 import AppHeader from '../common/AppHeader';
 import {
+  getTransactionImages,
   saveTransaction,
   updateTransaction,
 } from '../transaction/TransactionController';
-import { ITransaction, TransactionType } from '../transaction/TransactionTypes';
-import { colors, commonStyles, formStyles } from '../styles/theme';
+import {
+  ITransaction,
+  ITransactionImage,
+  TransactionType,
+} from '../transaction/TransactionTypes';
+import { colors, commonStyles, formStyles, uploadMenu } from '../styles/theme';
 import { dateFormatter } from '../utils/Formatter';
 import PaymentsDropdown from '../common/PaymentsDropdown';
 import WeeklyView from '../common/WeeklyView';
@@ -25,6 +31,9 @@ import { THEME } from '../utils/Constants';
 import t from '../common/translations/Translation';
 import TransactionCategotyList from '../transaction/TransactionCategotyList';
 import { ICurrency } from '../database/common/CurrencyController';
+import IconMap from '../common/IconMap';
+import UploadMenu from './UploadMenu';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 interface IAddEditTransaction {
   navigation: any;
@@ -80,6 +89,17 @@ const AddEditTransaction = ({ navigation, route }: IAddEditTransaction) => {
     return transaction?.dateAddedTlm ?? dateFormatter(new Date());
     // return new Date();
   });
+
+  const [pinned, setPinned] = useState(() => {
+    return transaction?.pinned ?? false;
+    // return new Date();
+  });
+
+  //upload image
+  const [showImageUpload, setShowImageUpload] = useState(false);
+  const [imageList, setImageList] = useState<ITransactionImage[]>([]);
+  const menuAnimamated = useRef(new Animated.Value(0)).current;
+
   const dispatch = useDispatch();
 
   const validateInputs = (): boolean => {
@@ -123,6 +143,7 @@ const AddEditTransaction = ({ navigation, route }: IAddEditTransaction) => {
       amount: Number(amount),
       paymentId: Number(paymentId),
       transactionType: transactionType,
+      pinned: pinned,
       description,
       transactionCategoryId: Number(transactionCategoryId),
       currencyId: 47,
@@ -147,7 +168,7 @@ const AddEditTransaction = ({ navigation, route }: IAddEditTransaction) => {
         navigation.goBack();
       }
     } else {
-      result = await saveTransaction([modTransaction]);
+      result = await saveTransaction([modTransaction], imageList);
       const titleType =
         transactionType === TransactionType.INCOME
           ? 'incomeSaved'
@@ -161,7 +182,7 @@ const AddEditTransaction = ({ navigation, route }: IAddEditTransaction) => {
             },
           ],
         });
-        // clearInputs();
+        clearInputs();
       }
     }
   };
@@ -180,10 +201,37 @@ const AddEditTransaction = ({ navigation, route }: IAddEditTransaction) => {
     }
   };
 
+  //image upload
+  const showUploadMenu = async (showUpload: boolean) => {
+    Animated.timing(menuAnimamated, {
+      useNativeDriver: true,
+      toValue: showUpload ? 1 : 0,
+      duration: 300,
+    }).start();
+    setShowImageUpload(showUpload);
+  };
+
+  const fetchTransactionImages = async () => {
+    if (transaction?.transactionId) {
+      const result: ITransactionImage[] = await getTransactionImages(
+        transaction.transactionId,
+      );
+      setImageList(result);
+      // console.log('Image results---', result);
+    }
+    return [];
+  };
+
   useEffect(() => {
     setErrMsg(defaultErrMsg);
   }, [title, amount]);
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      fetchTransactionImages();
+    });
+    return unsubscribe;
+  }, []);
   return (
     <SafeAreaView style={commonStyles.screen}>
       <View style={commonStyles.container}>
@@ -241,7 +289,7 @@ const AddEditTransaction = ({ navigation, route }: IAddEditTransaction) => {
             navigation={navigation}
             defaultValue={transactionCategoryId}
             onChange={setTransactionCategoryId}
-            type={TransactionType.EXPENSE}
+            type={transactionType}
           />
           {errMsg.transactionCategoryId !== '' && (
             <Text style={formStyles.inputError}>
@@ -262,17 +310,131 @@ const AddEditTransaction = ({ navigation, route }: IAddEditTransaction) => {
               />
             </View>
           </View>
-          <Pressable
-            style={[formStyles.button, formStyles.fullWidth]}
-            onPress={() => {
-              saveEditTransactioneHandler();
-            }}>
-            <Text style={formStyles.buttonLabel}>
-              {editMode ? t('update') : t('add')}
-            </Text>
-          </Pressable>
+          {imageList.length > 0 && (
+            <View style={uploadMenu.imageListWrapper}>
+              <View>
+                <Text style={formStyles.inputLabel}>{t('uploads')}</Text>
+              </View>
+              <TouchableOpacity
+                style={uploadMenu.imageListContainer}
+                onPress={() => {
+                  navigation.navigate('ImageViewer', imageList);
+                }}>
+                {imageList.map((image: ITransactionImage, index: number) => {
+                  return (
+                    <Image
+                      key={`image-${index}`}
+                      style={uploadMenu.imageListItem}
+                      resizeMode="cover"
+                      source={{ uri: 'data:image/png;base64,' + image.base64 }}
+                    />
+                  );
+                })}
+              </TouchableOpacity>
+            </View>
+          )}
+          <View style={formStyles.actionContainer}>
+            <View style={formStyles.actionQuickmenu}>
+              <Pressable
+                onPress={async () => {
+                  showUploadMenu(!showImageUpload);
+                }}
+                style={[formStyles.actionBtn, formStyles.pinnedActive]}>
+                <IconMap
+                  name="image"
+                  color={colors.theme[THEME].brandMedium}
+                  size={28}
+                />
+              </Pressable>
+              <Pressable
+                onPress={() => {
+                  const msg = pinned ? t('txUnpinned') : t('txPinned');
+                  dispatch({
+                    type: SHOW_TOAST,
+                    payload: [
+                      {
+                        title: msg,
+                      },
+                    ],
+                  });
+                  setPinned(!pinned);
+                }}
+                style={[
+                  formStyles.actionBtn,
+                  pinned ? formStyles.pinnedActive : formStyles.pinnedInactive,
+                  {
+                    backgroundColor: pinned
+                      ? colors.theme[THEME].textBrandMedium
+                      : colors.theme[THEME].textLight,
+                  },
+                ]}>
+                <IconMap
+                  name="paper-clip"
+                  color={
+                    pinned
+                      ? colors.theme[THEME].textLight
+                      : colors.theme[THEME].textBrandMedium
+                  }
+                  size={28}
+                />
+              </Pressable>
+            </View>
+            <Pressable
+              style={[
+                formStyles.button,
+                formStyles.saveButton,
+                formStyles.fullWidth,
+              ]}
+              onPress={() => {
+                saveEditTransactioneHandler();
+              }}>
+              <Text style={formStyles.buttonLabel}>
+                {editMode ? t('update') : t('add')}
+              </Text>
+            </Pressable>
+          </View>
         </View>
       </ScrollViewWrapper>
+      <Animated.View
+        style={[
+          uploadMenu.uploadWrapper,
+          {
+            transform: [
+              {
+                translateY: menuAnimamated.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [193, 0],
+                  extrapolate: 'clamp',
+                }),
+              },
+            ],
+          },
+        ]}>
+        {/* <View style={uploadMenu.elevationWrapper} /> */}
+        <View style={[commonStyles.container, uploadMenu.uploadMenuHeader]}>
+          <View>
+            <Text style={uploadMenu.uploadMenuTitle}>{t('uploadImages')}</Text>
+            <Text style={uploadMenu.uploadMenuSubTitle}>
+              {t('uploadImagesNotification')}
+            </Text>
+          </View>
+          <Pressable
+            style={uploadMenu.uploadMenuClose}
+            onPress={() => {
+              showUploadMenu(false);
+            }}>
+            <IconMap
+              size={34}
+              name="close"
+              color={colors.theme[THEME].brandMedium}
+            />
+          </Pressable>
+        </View>
+        <UploadMenu
+          menuHandler={showUploadMenu}
+          imageListHandler={setImageList}
+        />
+      </Animated.View>
     </SafeAreaView>
   );
 };

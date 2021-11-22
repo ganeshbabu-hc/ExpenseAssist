@@ -69,7 +69,6 @@ const StatsScreen = ({route}: any) => {
       });
     });
     setData(newData);
-    // console.log(newData);
   };
   useEffect(() => {
     getStats();

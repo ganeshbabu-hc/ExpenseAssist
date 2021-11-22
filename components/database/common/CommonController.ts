@@ -1,12 +1,10 @@
 import {
   TNAME_CONFIGURATION,
   TNAME_TRANSACTION_CATEGORIES,
-  TNAME_INCOME_CATEGORIES,
   TNAME_TRANSACTIONS,
 } from '../../utils/Constants';
-import {getDBConnection} from '../DBController';
-import {ITransactionCategory} from '../../transaction/TransactionTypes';
-import {IIncomeCategory} from '../income/IncomeTypes';
+import { getDBConnection } from '../DBController';
+import { ITransactionCategory } from '../../transaction/TransactionTypes';
 
 export interface IConfiguration {
   name: string;
@@ -41,7 +39,6 @@ export const getConfigurations = async () => {
 export const saveTransactionCategory = async (
   category: ITransactionCategory,
 ) => {
-  console.log('category---', category);
   const insertQuery =
     `INSERT OR REPLACE INTO ${TNAME_TRANSACTION_CATEGORIES}(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_TYPE) values` +
     `('${category.title}', '${category.description}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '${category.transactionType}')`;
@@ -81,12 +78,27 @@ export const createConfigTable = async () => {
   // console.log('createConfigTable', result);
 };
 
+export const createImageTable = async () => {
+  // console.log('In creating the config table');
+  const insertQuery = `CREATE TABLE TRANSACTION_IMAGES (
+    IMAGE_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    TRANSACTION_ID text NOT NULL,
+    IMAGE BLOB NOT NULL,
+    DATE_ADDED_TLM DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    DATE_UPDATED_TLM DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(TRANSACTION_ID) REFERENCES TRANSACTION_CATEGORIES(TRANSACTION_ID)
+  );`;
+  const db = await getDBConnection();
+  const result = await db.executeSql(insertQuery);
+  // console.log('createConfigTable', result);
+};
+
 export const addColumn = async () => {
-  const query = `ALTER TABLE TRANSACTIONS  ADD COLUMN PINNED NUMBER DEFAULT 0;`;
+  const query = 'ALTER TABLE TRANSACTIONS  ADD COLUMN PINNED NUMBER DEFAULT 0;';
   const db = await getDBConnection();
   const result = await db.executeSql(query);
   console.log(result);
-}
+};
 
 export const insertStatements = async () => {
   // console.log('In insertStatements config table');

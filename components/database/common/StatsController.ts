@@ -117,7 +117,6 @@ export const getMonthlyStats = async (type: TransactionType): Promise<any> => {
       //       meta.push(result.rows.item(index));
       //     }
       //   });
-      //   // console.log(meta);
       //   return meta;
       // }
 

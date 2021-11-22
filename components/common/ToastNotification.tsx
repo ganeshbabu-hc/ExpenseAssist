@@ -1,11 +1,12 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-import {Animated, StyleSheet, Text, View} from 'react-native';
-import {colors, commonStyles, utils} from '../styles/theme';
-import {THEME} from '../utils/Constants';
+import { Animated, StyleSheet, Text, View } from 'react-native';
+import { colors, commonStyles, utils } from '../styles/theme';
+import { THEME } from '../utils/Constants';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
-import {useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import IconMap from './IconMap';
+import { SHOW_TOAST } from '../../redux/constants/StoreConstants';
 
 export enum ToastPosition {
   TOP = 'top',
@@ -32,7 +33,6 @@ interface IMessage {
 
 const Message = ({ message, onHide }: IMessage) => {
   const opacity = useRef(new Animated.Value(0)).current;
-  console.log(message);
   const getIcon = () => {
     const toastType = message.toastType ?? ToastType.INFO;
     return (
@@ -87,23 +87,33 @@ const Message = ({ message, onHide }: IMessage) => {
 };
 
 export default () => {
-  const toastMessages: IToast[] = useSelector((state: any) => state.common.toast);
+  const toastMessages: IToast[] = useSelector(
+    (state: any) => state.common.toast,
+  );
   const [messages, setMessages] = useState<IToast[]>([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    // console.log(toastMessages, messages);
-    // toastMessages[0].id = new Date().getTime();
     if (toastMessages.length > 0) {
       setMessages([...messages, ...toastMessages]);
     }
   }, [toastMessages]);
 
+  useEffect(() => {
+    return () => {
+      dispatch({
+        type: SHOW_TOAST,
+        payload: [],
+      });
+    };
+  }, []);
+
   return (
-    <>
-      <View style={styles.message1Wrapper}>
-        {messages.map((message: IToast) => (
+    <View style={styles.message1Wrapper}>
+      {messages.length > 0 &&
+        messages.map((message: IToast, index: number) => (
           <Message
-            key={message.title}
+            key={`message-id-${index}`}
             message={message}
             onHide={() => {
               setMessages((messagesList: IToast[]) =>
@@ -114,8 +124,7 @@ export default () => {
             }}
           />
         ))}
-      </View>
-    </>
+    </View>
   );
 };
 

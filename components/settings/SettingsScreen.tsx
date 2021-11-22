@@ -14,6 +14,7 @@ import { THEME } from '../utils/Constants';
 import ScrollViewWrapper from '../common/ScrollViewWrapper';
 import { useRef } from 'react';
 import IconMap from '../common/IconMap';
+import t from '../common/translations/Translation';
 
 export const SettingsScreen = ({ navigation }: any) => {
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -25,7 +26,6 @@ export const SettingsScreen = ({ navigation }: any) => {
   const currency: any = useSelector((state: any) => {
     return state.common.configuration.currency.value;
   });
-  // console.log('--curr-----', curr);
 
   return (
     <SafeAreaView style={commonStyles.screen}>
@@ -33,8 +33,9 @@ export const SettingsScreen = ({ navigation }: any) => {
         <AppHeader
           navigation={navigation}
           homeScreen={false}
-          title="Settings"
+          title={t('settings')}
           scrollY={scrollY}
+          backBtn={false}
         />
       </View>
       <ScrollViewWrapper scrollY={scrollY} style={styles.quickMenuContainer}>
@@ -52,7 +53,7 @@ export const SettingsScreen = ({ navigation }: any) => {
               />
             </View>
             <View style={styles.settingDesc}>
-              <Text style={styles.settingName}>Theme</Text>
+              <Text style={styles.settingName}>{t('theme')}</Text>
               <View style={styles.settingValueWrapper}>
                 <Text style={styles.settingValue}>Light</Text>
                 <IconMap
@@ -79,7 +80,7 @@ export const SettingsScreen = ({ navigation }: any) => {
               />
             </View>
             <View style={styles.settingDesc}>
-              <Text style={styles.settingName}>Currency</Text>
+              <Text style={styles.settingName}>{t('currency')}</Text>
               <View style={styles.settingValueWrapper}>
                 <Text style={styles.settingValue}>{currency.code}</Text>
                 <IconMap
@@ -102,7 +103,47 @@ export const SettingsScreen = ({ navigation }: any) => {
               />
             </View>
             <View style={styles.settingDesc}>
-              <Text style={styles.settingName}>Language</Text>
+              <Text style={styles.settingName}>{t('language')}</Text>
+              <IconMap
+                name={'angle-right'}
+                size={28}
+                color={colors.theme[THEME].brandMediumDark}
+              />
+            </View>
+          </Pressable>
+          <View style={[recentList.dividerWrapper, styles.divider]}>
+            <Text style={recentList.divider} />
+          </View>
+          <Pressable style={styles.settingWrapper}>
+            <View style={styles.settingIconWrapper}>
+              <IconMap
+                name={'image'}
+                size={28}
+                color={colors.theme[THEME].brandMedium}
+              />
+            </View>
+            <View style={styles.settingDesc}>
+              <Text style={styles.settingName}>{t('uploads')}</Text>
+              <IconMap
+                name={'angle-right'}
+                size={28}
+                color={colors.theme[THEME].brandMediumDark}
+              />
+            </View>
+          </Pressable>
+          <View style={[recentList.dividerWrapper, styles.divider]}>
+            <Text style={recentList.divider} />
+          </View>
+          <Pressable style={styles.settingWrapper}>
+            <View style={styles.settingIconWrapper}>
+              <IconMap
+                name={'data-sharing'}
+                size={28}
+                color={colors.theme[THEME].brandMedium}
+              />
+            </View>
+            <View style={styles.settingDesc}>
+              <Text style={styles.settingName}>{t('backup')}</Text>
               <IconMap
                 name={'angle-right'}
                 size={28}
@@ -122,7 +163,7 @@ export const SettingsScreen = ({ navigation }: any) => {
               />
             </View>
             <View style={styles.settingDesc}>
-              <Text style={styles.settingName}>Help</Text>
+              <Text style={styles.settingName}>{t('help')}</Text>
               <IconMap
                 name={'angle-right'}
                 size={28}

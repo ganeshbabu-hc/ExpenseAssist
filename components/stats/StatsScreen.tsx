@@ -44,11 +44,8 @@ const StatsScreen = ({ navigation }) => {
       return 0;
     });
     setStatList(sorted);
-
-    // console.log(newData);
   };
   const getGraphColor = (index: number) => {
-    // console.log(colors.theme[THEME].graphColorScheme);
     // return 'hsla(251, 69%, 34%, 1)';
     return colors.theme[THEME].graphColorScheme[index];
   };
@@ -74,7 +71,6 @@ const StatsScreen = ({ navigation }) => {
 
   const updateChart = () => {
     const newData: any = [];
-    // console.log('Ganesh--updating stats list');
     statList.forEach((category: IStat, index: number) => {
       newData.push({
         amount: category.amount,
@@ -182,7 +178,6 @@ const StatsScreen = ({ navigation }) => {
 
   const Labels = ({ slices }: { slices?: any }) => {
     return slices.map((slice, index) => {
-      // console.log(slice);
       const { labelCentroid, pieCentroid, data } = slice;
       return (
         <G key={index}>
@@ -214,6 +209,7 @@ const StatsScreen = ({ navigation }) => {
           homeScreen={false}
           title="Stats"
           scrollY={scrollY}
+          backBtn={false}
         />
       </View>
       <View style={commonStyles.container}>

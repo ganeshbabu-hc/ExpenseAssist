@@ -1,28 +1,31 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import {
   Animated,
-  Easing,
   FlatList,
   Pressable,
-  StyleSheet,
   Text,
+  TextInput,
   View,
 } from 'react-native';
-import { colors, commonStyles, recentList } from '../styles/theme';
-import Icon from 'react-native-vector-icons/dist/MaterialIcons';
-import FeatherIcon from 'react-native-vector-icons/dist/Feather';
+import { colors, commonStyles, formStyles, recentList } from '../styles/theme';
 import IconMap from '../common/IconMap';
 import { getTransactions } from './TransactionController';
 import AppHeader from '../common/AppHeader';
-import AddInfo from '../illustrations/AddInfo';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ScrollViewWrapper from '../common/ScrollViewWrapper';
-import { THEME } from '../utils/Constants';
+import { DEBOUNCE_RATE, THEME } from '../utils/Constants';
 import t from '../common/translations/Translation';
 import { ITransaction, TransactionType } from './TransactionTypes';
 import Empty from '../illustrations/Empty';
 import TransactionItem from './TransactionItem';
-import { BlurView } from '@react-native-community/blur';
+import AddDoc from '../illustrations/AddDoc';
+import debounce from 'lodash.debounce';
 
 interface ITransactionList {
   limit?: number;
@@ -83,10 +86,31 @@ const TransactionList = ({
   header = route?.params?.header || header || false;
   type = route?.params?.type || type;
   const animatedValue = useRef(new Animated.Value(0)).current;
+  const animatedSearch = useRef(new Animated.Value(1)).current;
   const [loading, setLoading] = useState(false);
   const [transactionType, setTransactionType] = useState<TransactionType>(type);
   const [transactionList, setTransactionList] = useState<ITransaction[]>([]);
-  // const previousTransaction = usePrevious(transactionType);
+  const [enableSearch, setEnableSearch] = useState(false);
+  const [title, setTitle] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const searchDebounce = useCallback(
+    debounce((query: string) => {
+      handleTransactionSearch(query);
+    }, DEBOUNCE_RATE),
+    [enableSearch],
+  );
+
+  const onQueryChange = (query: string) => {
+    setSearchQuery(query);
+    searchDebounce(query);
+  };
+
+  const handleTransactionSearch = (query: string) => {
+    if (enableSearch) {
+      updateTransactions(true, transactionType, query);
+    }
+  };
 
   const refreshList = () => {
     updateTransactions(false);
@@ -104,19 +128,32 @@ const TransactionList = ({
     );
   };
 
-  // console.log(transactionList);
-  const updateTransactions = async (refresh: boolean = true) => {
+  const updateTransactions = async (
+    refresh: boolean = true,
+    overrideType?: TransactionType,
+    query?: string,
+  ) => {
     if (refresh) {
       setLoading(true);
     }
-    const resultList = await getTransactions(limit, transactionType);
+    const resultList = await getTransactions(
+      limit,
+      overrideType ?? transactionType,
+      query,
+    );
     setTransactionList(resultList);
     setLoading(false);
   };
 
   const animateTranslation = animatedValue?.interpolate({
     inputRange: [0, 1],
-    outputRange: [100, 0],
+    outputRange: [40, 0],
+    extrapolate: 'clamp',
+  });
+
+  const animateTranslationSearch = animatedValue?.interpolate({
+    inputRange: [0, 1],
+    outputRange: [40, 0],
     extrapolate: 'clamp',
   });
   const animateOpacity = animatedValue?.interpolate({
@@ -137,23 +174,75 @@ const TransactionList = ({
     }
     Animated.timing(animatedValue, {
       toValue: newAnimatedValue,
-      duration: 300,
+      duration: 200,
       useNativeDriver: true,
+    }).start();
+  };
+
+  const updateTitle = () => {
+    switch (transactionType) {
+      case TransactionType.INCOME:
+        setTitle(t('Income'));
+        break;
+      case TransactionType.ALL:
+        setTitle(t('All'));
+        break;
+      case TransactionType.EXPENSE:
+        setTitle(t('Expense'));
+        break;
+      case TransactionType.PINNED:
+        setTitle(t('pinned'));
+        break;
+    }
+    // animatedTitle.setValue(0);
+    // Animated.sequence([
+    //   Animated.timing(animatedTitle, {
+    //     toValue: 1,
+    //     duration: 300,
+    //     useNativeDriver: true,
+    //   }),
+    //   Animated.delay(300),
+    //   Animated.timing(animatedTitle, {
+    //     toValue: 2,
+    //     duration: 300,
+    //     useNativeDriver: true,
+    //   }),
+    // ]).start();
+  };
+
+  const showSearch = (enable: boolean) => {
+    setEnableSearch(enable);
+    Animated.timing(animatedSearch, {
+      toValue: enable ? 0 : 1,
+      duration: 300,
+      useNativeDriver: false,
     }).start();
   };
 
   useEffect(() => {
     updateTransactions();
     animateAddButton();
+    updateTitle();
+    // animatedTitle()
   }, [transactionType]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      updateTransactions();
+      updateTransactions(false, transactionType);
     });
+    updateTitle();
+    return () => {
+      unsubscribe();
+      searchDebounce.cancel();
+    };
+  }, []);
 
-    return unsubscribe;
-  }, [navigation]);
+  // useEffect(() => {
+  //   console.log(searchQuery);
+  //   if (enableSearch) {
+  //     handleTransactionSearch();
+  //   }
+  // }, [searchQuery]);
 
   return (
     <SafeAreaView style={commonStyles.screen}>
@@ -163,17 +252,40 @@ const TransactionList = ({
             navigation={navigation}
             homeScreen={false}
             scrollY={scrollY}
-            title={
-              transactionType === TransactionType.INCOME
-                ? t('Income')
-                : transactionType === TransactionType.ALL
-                ? t('All')
-                : t('Expense')
-            }
+            title={title}
           />
         )}
       </View>
       <ScrollViewWrapper scrollY={scrollY}>
+        {header && (
+          <Animated.View
+            style={[
+              {
+                height: animatedSearch?.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [120, 0],
+                  extrapolate: 'clamp',
+                }),
+                opacity: animatedSearch?.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [1, 0],
+                  extrapolate: 'clamp',
+                }),
+              },
+            ]}>
+            <View style={[commonStyles.searchWrapper]}>
+              <View style={formStyles.inputWrapper}>
+                <TextInput
+                  placeholder={t('searchTransaction')}
+                  placeholderTextColor={colors.theme[THEME].textCardGray}
+                  style={formStyles.input}
+                  onChangeText={onQueryChange}
+                  value={searchQuery}
+                />
+              </View>
+            </View>
+          </Animated.View>
+        )}
         <View style={[commonStyles.container, recentList.listWrapper]}>
           <View style={recentList.listHeader}>
             <Text style={[commonStyles.title, recentList.listTitle]}>
@@ -198,31 +310,69 @@ const TransactionList = ({
               </Pressable>
             )}
             {header && (
-              <Animated.View
-                style={[
-                  {
-                    opacity: animateOpacity,
-                    transform: [{ translateX: animateTranslation }],
-                  },
-                ]}>
-                <Pressable
-                  onPress={() => {
-                    navigation.navigate('AddTransaction', {
-                      type:
-                        transactionType === TransactionType.INCOME
-                          ? TransactionType.INCOME
-                          : TransactionType.EXPENSE,
-                    });
-                  }}
-                  style={recentList.listHeaderIconWrapper}>
-                  <IconMap
-                    style={recentList.listHeaderIcon}
-                    name="plus-circle"
-                    size={28}
-                    color={colors.theme[THEME].textBrandMedium}
-                  />
-                </Pressable>
-              </Animated.View>
+              <View style={recentList.txActionWrapper}>
+                <Animated.View
+                  style={[
+                    {
+                      // opacity: animateOpacity,
+                      transform: [{ translateX: animateTranslationSearch }],
+                    },
+                  ]}>
+                  {enableSearch ? (
+                    <Pressable
+                      onPress={() => {
+                        showSearch(false);
+                        setSearchQuery('');
+                      }}
+                      style={recentList.listHeaderIconWrapper}>
+                      <IconMap
+                        style={recentList.listHeaderIcon}
+                        name="close"
+                        size={32}
+                        color={colors.theme[THEME].textBrandMedium}
+                      />
+                    </Pressable>
+                  ) : (
+                    <Pressable
+                      onPress={() => {
+                        showSearch(true);
+                      }}
+                      style={recentList.listHeaderIconWrapper}>
+                      <IconMap
+                        style={recentList.listHeaderIcon}
+                        name="search"
+                        size={32}
+                        color={colors.theme[THEME].textBrandMedium}
+                      />
+                    </Pressable>
+                  )}
+                </Animated.View>
+                <Animated.View
+                  style={[
+                    {
+                      opacity: animateOpacity,
+                      transform: [{ translateX: animateTranslation }],
+                    },
+                  ]}>
+                  <Pressable
+                    onPress={() => {
+                      navigation.navigate('AddTransaction', {
+                        type:
+                          transactionType === TransactionType.INCOME
+                            ? TransactionType.INCOME
+                            : TransactionType.EXPENSE,
+                      });
+                    }}
+                    style={recentList.listHeaderIconWrapper}>
+                    <IconMap
+                      style={recentList.listHeaderIcon}
+                      name="plus-circle"
+                      size={32}
+                      color={colors.theme[THEME].textBrandMedium}
+                    />
+                  </Pressable>
+                </Animated.View>
+              </View>
             )}
           </View>
           {!loading && (
@@ -248,7 +398,7 @@ const TransactionList = ({
           {transactionList.length < 1 && !loading && (
             <View style={commonStyles.illustrationWrapper}>
               {transactionType !== TransactionType.PINNED && (
-                <AddInfo style={commonStyles.illustration} />
+                <AddDoc style={commonStyles.illustration} />
               )}
               {transactionType === TransactionType.PINNED && <Empty />}
               <Text style={commonStyles.illustrationTitle}>
@@ -260,7 +410,10 @@ const TransactionList = ({
                 <Pressable
                   onPress={() => {
                     navigation.navigate('AddTransaction', {
-                      type: transactionType,
+                      type:
+                        transactionType === TransactionType.INCOME
+                          ? TransactionType.INCOME
+                          : TransactionType.EXPENSE,
                     });
                   }}
                   style={commonStyles.illustrationTitleBtn}>

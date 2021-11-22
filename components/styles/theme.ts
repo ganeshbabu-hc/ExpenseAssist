@@ -1,7 +1,7 @@
-import {ColorSchemeName, StyleSheet} from 'react-native';
-import {deepOrange, deepPurple, grey, pink} from 'material-ui-colors';
+import { ColorSchemeName, StyleSheet } from 'react-native';
+import { deepOrange, deepPurple, grey, pink } from 'material-ui-colors';
 import color from 'material-ui-colors/dist/amber';
-import {THEME} from '../utils/Constants';
+import { THEME } from '../utils/Constants';
 
 // https://material.io/design/color/the-color-system.html#tools-for-picking-colors
 
@@ -60,6 +60,32 @@ export let colors: IColors = {
       textLight: '#fff',
       bgLight: '#fff',
       textBrandMedium: deepPurple.A700,
+      textBrandDark: deepPurple[900],
+      graphColorScheme: [
+        // deepPurple[900],
+        // deepPurple[800],
+        deepPurple[900],
+        deepPurple[700],
+        deepPurple[500],
+        deepPurple[300],
+        deepPurple[100],
+        deepPurple[600],
+        deepPurple[700],
+      ],
+    },
+    red: {
+      // brandLight: deepPurple[50],
+      brandLight: 'hsla(230, 0%, 98%, 1)',
+      brandMedium: 'black',
+      brandMediumDark: deepPurple[200],
+      brandDark: 'black',
+      brandDanger: pink[600],
+      textDark: '#000',
+      textGray: grey[500],
+      textCardGray: grey[400],
+      textLight: '#fff',
+      bgLight: '#fff',
+      textBrandMedium: 'black',
       textBrandDark: deepPurple[900],
       graphColorScheme: [
         // deepPurple[900],
@@ -334,7 +360,7 @@ export const formStyles = StyleSheet.create({
     width: '48%',
   },
   fullWidth: {
-    width: '100%',
+    flex: 1,
   },
   button: {
     marginVertical: 20,
@@ -347,10 +373,39 @@ export const formStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  actionBtn: {
+    padding: 8,
+    marginRight: 10,
+  },
+  pinnedActive: {
+    borderRadius: utils.inputRadius,
+    borderColor: colors.theme[THEME].textBrandMedium,
+    borderWidth: 1,
+  },
+  pinnedInactive: {
+    borderRadius: utils.inputRadius,
+    borderColor: colors.theme[THEME].textBrandMedium,
+    borderWidth: 1,
+  },
+  saveButton: {
+    // marginLeft: 10,
+  },
   buttonLabel: {
     color: colors.theme[THEME].textLight,
     fontSize: utils.fontSize.medium,
     fontFamily: utils.fontFamily.Bold,
+  },
+  actionContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  actionQuickmenu: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
   },
 });
 
@@ -505,6 +560,90 @@ export const commonStyles = StyleSheet.create({
   contentContainerStyle: {
     paddingBottom: 20,
   },
+  searchWrapper: {
+    margin: 20,
+    marginLeft: containerLeftMargin,
+  },
+});
+
+export const uploadMenu = StyleSheet.create({
+  uploadWrapper: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    display: 'flex',
+    flex: 1,
+    elevation: 10,
+  },
+  elevationWrapper: {
+    display: 'flex',
+    flex: 1,
+    height: 10,
+    elevation: 10,
+  },
+  uploadMenuHeader: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  uploadMenuTitle: {
+    color: colors.theme[THEME].textBrandMedium,
+    fontSize: utils.fontSize.medium,
+    fontFamily: utils.fontFamily.Bold,
+    paddingTop: 20,
+  },
+  uploadMenuSubTitle: {
+    color: colors.theme[THEME].textCardGray,
+    fontSize: utils.fontSize.xxsmall,
+    fontFamily: utils.fontFamily.Bold,
+    paddingBottom: 20,
+  },
+  uploadContainer: {
+    paddingBottom: 20,
+    backgroundColor: colors.theme[THEME].brandLight,
+  },
+  uploadMenu: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingVertical: 10,
+  },
+  uploadText: {
+    color: colors.theme[THEME].textBrandMedium,
+    fontSize: utils.fontSize.medium,
+    marginLeft: 10,
+    fontFamily: utils.fontFamily.Bold,
+  },
+  uploadMenuClose: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    width: 60,
+    padding: 6,
+    // backgroundColor: colors.theme[THEME].brandMedium,
+    borderTopLeftRadius: utils.inputRadius,
+    borderTopRightRadius: utils.inputRadius,
+  },
+  imageListWrapper: {
+    marginTop: 20,
+  },
+  imageListContainer: {
+    marginVertical: 10,
+    display: 'flex',
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+  },
+  imageListItem: {
+    borderRadius: utils.inputRadius,
+    // borderWidth: 1,
+    borderColor: colors.theme[THEME].textBrandMedium,
+    // marginBottom: 10,
+    // marginRight: 10,
+    width: '100%',
+    height: 120,
+  },
 });
 
 export const recentList = StyleSheet.create({
@@ -548,6 +687,7 @@ export const recentList = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.theme[THEME].brandLight,
     borderRadius: utils.inputRadius,
+    paddingLeft: 10,
   },
   listHeaderIcon: {
     paddingVertical: 8,
@@ -645,6 +785,12 @@ export const recentList = StyleSheet.create({
   modalDesc: {
     color: colors.theme[THEME].textBrandMedium,
   },
+  txActionWrapper: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
 });
 
 export const categoryList = StyleSheet.create({
@@ -660,7 +806,7 @@ export const categoryList = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'center',
     marginVertical: 10,
-    marginRight: 15,
+    marginRight: 8,
   },
   categoryAddBtn: {
     borderRadius: utils.inputRadius,
@@ -668,7 +814,7 @@ export const categoryList = StyleSheet.create({
     borderColor: colors.theme[THEME].textCardGray,
     borderStyle: 'dotted',
     width: 80,
-    paddingVertical: 2,
+    paddingVertical: 3,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',

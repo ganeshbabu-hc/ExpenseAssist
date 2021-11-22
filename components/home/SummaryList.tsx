@@ -37,13 +37,9 @@ const SummaryList = ({ navigation }: any) => {
     return state.common.configuration.currency.value;
   });
 
-  // console.log(summary.monthlyIncome - summary.monthlyExpense);
-  // console.log(summary.monthlyExpense);
-
   const getBalance = (monthlyIncome?: number, monthlyExpense?: number) => {
     const income = monthlyIncome || 0;
     const expense = monthlyExpense || 0;
-    console.log(income - expense);
     return income - expense;
   };
 
@@ -154,13 +150,11 @@ const SummaryList = ({ navigation }: any) => {
 
   const updateSummaryList = async () => {
     const summaryList: any = await getSummary();
-    console.log(summaryList);
     setSummary(summaryList);
   };
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      console.log('----updating the summary list');
       updateSummaryList();
     });
 

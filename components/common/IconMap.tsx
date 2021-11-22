@@ -1,9 +1,5 @@
 import React from 'react';
-import Icon from 'react-native-vector-icons/dist/MaterialIcons';
-import IonIcon from 'react-native-vector-icons/dist/Ionicons';
-import CommunityIcon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
-import FontAwesome from 'react-native-vector-icons/dist/FontAwesome5';
-import { colors, commonStyles } from '../styles/theme';
+import { colors } from '../styles/theme';
 import { THEME } from '../utils/Constants';
 import UniconCrockery from '../icons/unicons/UniconCrockery';
 import UniconShopping from '../icons/unicons/UniconShopping';
@@ -44,6 +40,17 @@ import UniconExclamationTriangle from '../icons/unicons/UniconExclamationTriangl
 import UniconExclamationCircle from '../icons/unicons/UniconExclamationCircle';
 import UniconExclamationOctagon from '../icons/unicons/UniconExclamationOctagon';
 import UniconPlusCircle from '../icons/unicons/UniconPlusCircle';
+import UniconImage from '../icons/unicons/UniconImage';
+import UniconSearch from '../icons/unicons/UniconSearch';
+import UniconSetting from '../icons/unicons/UniconSetting';
+import UniconPieAlt from '../icons/unicons/UniconPieAlt';
+import UniconUnivercity from '../icons/unicons/UniconUnivercity';
+import UniconHome from '../icons/unicons/UniconHome';
+import UniconCreditCard from '../icons/unicons/UniconCreditCard';
+import UniconMobile from '../icons/unicons/UniconMobile';
+import UniconScenary from '../icons/unicons/UniconScenary';
+import UniconCamera from '../icons/unicons/UniconCamera';
+import UniconDataSharing from '../icons/unicons/UniconDataSharing';
 interface IconMap {
   name: string;
   color?: string;
@@ -53,9 +60,119 @@ interface IconMap {
 }
 
 const IconMap = ({ name, color, style, size, active = false }: IconMap) => {
-  // console.log(iconName);
-  let IconComponent;
+  let IconComponent = null;
   switch (name) {
+    case 'scenary':
+      return (
+        <UniconScenary
+          style={style}
+          active={active}
+          size={size ?? 24}
+          color={color ? color : colors.theme[THEME].textDark}
+        />
+      );
+    case 'data-sharing':
+      return (
+        <UniconDataSharing
+          style={style}
+          active={active}
+          size={size ?? 24}
+          color={color ? color : colors.theme[THEME].textDark}
+        />
+      );
+    case 'close':
+      return (
+        <UniconPlus
+          style={[style, { transform: [{ rotateZ: '-45deg' }] }]}
+          active={active}
+          size={size ?? 24}
+          color={color ? color : colors.theme[THEME].textDark}
+        />
+      );
+    case 'search':
+      return (
+        <UniconSearch
+          style={style}
+          active={active}
+          size={size ?? 24}
+          color={color ? color : colors.theme[THEME].textDark}
+        />
+      );
+    case 'credit-card':
+      return (
+        <UniconCreditCard
+          style={style}
+          active={active}
+          size={size ?? 24}
+          color={color ? color : colors.theme[THEME].textDark}
+        />
+      );
+    case 'mobile':
+    case 'touch-app':
+      return (
+        <UniconMobile
+          style={style}
+          active={active}
+          size={size ?? 24}
+          color={color ? color : colors.theme[THEME].textDark}
+        />
+      );
+    case 'home':
+      return (
+        <UniconHome
+          style={style}
+          active={active}
+          size={size ?? 24}
+          color={color ? color : colors.theme[THEME].textDark}
+        />
+      );
+    case 'univercity':
+    case 'account-balance':
+      return (
+        <UniconUnivercity
+          style={style}
+          active={active}
+          size={size ?? 24}
+          color={color ? color : colors.theme[THEME].textDark}
+        />
+      );
+    case 'pie':
+      return (
+        <UniconPieAlt
+          style={style}
+          active={active}
+          size={size ?? 24}
+          color={color ? color : colors.theme[THEME].textDark}
+        />
+      );
+    case 'gear':
+      return (
+        <UniconSetting
+          style={style}
+          active={active}
+          size={size ?? 24}
+          color={color ? color : colors.theme[THEME].textDark}
+        />
+      );
+
+    case 'camera':
+      return (
+        <UniconCamera
+          style={style}
+          active={active}
+          size={size ?? 24}
+          color={color ? color : colors.theme[THEME].textDark}
+        />
+      );
+    case 'image':
+      return (
+        <UniconImage
+          style={style}
+          active={active}
+          size={size ?? 24}
+          color={color ? color : colors.theme[THEME].textDark}
+        />
+      );
     case 'plus-circle':
       return (
         <UniconPlusCircle
@@ -326,15 +443,6 @@ const IconMap = ({ name, color, style, size, active = false }: IconMap) => {
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
-      // case 'plus':
-      //   return (
-      //     <UniconMoneyStack
-      //       style={style}
-      active = { active };
-    //       size={size ?? 24}
-    //       color={color ? color : colors.theme[THEME].textDark}
-    //     />
-    //   );
     case 'check-circle':
       return (
         <UniconCeckCircleOutline
@@ -434,57 +542,7 @@ const IconMap = ({ name, color, style, size, active = false }: IconMap) => {
           color={color ? color : colors.theme[THEME].textDark}
         />
       );
-    case 'hand-holding-usd':
-    case 'award':
-      IconComponent = (
-        <FontAwesome
-          style={style}
-          active={active}
-          color={color ? color : colors.theme[THEME].textDark}
-          name={name}
-          size={size ?? commonStyles.icon.width}
-        />
-      );
-      break;
-    case 'cash-plus':
-    case 'account-cash':
-    case 'cash-minus':
-    case 'cash-refund':
-    case 'chart-line':
-    case 'sale':
-    case 'cash':
-    case 'gift':
-      IconComponent = (
-        <CommunityIcon
-          style={style}
-          active={active}
-          color={color ? color : colors.theme[THEME].textDark}
-          name={name}
-          size={size ?? commonStyles.icon.width}
-        />
-      );
-      break;
-    case 'business':
-      IconComponent = (
-        <IonIcon
-          style={style}
-          active={active}
-          color={color ? color : colors.theme[THEME].textDark}
-          name={name}
-          size={size ?? commonStyles.icon.width}
-        />
-      );
-      break;
     default:
-      IconComponent = (
-        <Icon
-          style={style}
-          active={active}
-          color={color ? color : colors.theme[THEME].textDark}
-          name={name}
-          size={size ?? commonStyles.icon.width}
-        />
-      );
       break;
   }
   return IconComponent;

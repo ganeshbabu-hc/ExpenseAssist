@@ -1,32 +1,18 @@
 import * as React from 'react';
-import {
-  FlatList,
-  Pressable,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import { FlatList, SafeAreaView, StyleSheet, View } from 'react-native';
 import AppHeader from '../common/AppHeader';
-import {
-  colors,
-  commonStyles,
-  formStyles,
-  recentList,
-  utils,
-} from '../styles/theme';
-import Icon from 'react-native-vector-icons/dist/MaterialIcons';
-import {useEffect, useRef, useState} from 'react';
+import { colors, commonStyles, utils } from '../styles/theme';
+import { useEffect, useRef, useState } from 'react';
 import {
   getCurrncyTypes,
   ICurrency,
   setCurrency,
 } from '../database/common/CurrencyController';
-import {useDispatch, useSelector} from 'react-redux';
-import {UPDATE_CURRENCY} from '../../redux/constants/StoreConstants';
-import {THEME} from '../utils/Constants';
-const ThemeScreen = ({navigation}: any) => {
+import { useDispatch, useSelector } from 'react-redux';
+import { UPDATE_CURRENCY } from '../../redux/constants/StoreConstants';
+import { THEME } from '../utils/Constants';
+import t from '../common/translations/Translation';
+const ThemeScreen = ({ navigation }: any) => {
   // const isDarkMode = useColorScheme() === 'dark';
   const dispatch = useDispatch();
   const [title, setTitle] = useState('');
@@ -63,7 +49,7 @@ const ThemeScreen = ({navigation}: any) => {
   const updateCurrency = async (currency: ICurrency) => {
     const result = await setCurrency(currency);
     if (result) {
-      dispatch({type: UPDATE_CURRENCY, payload: currency});
+      dispatch({ type: UPDATE_CURRENCY, payload: currency });
       // ShowSnackBar(`Currency is set to ${currency.code}: ${currency.symbol}`);
     }
   };
@@ -94,7 +80,11 @@ const ThemeScreen = ({navigation}: any) => {
   return (
     <SafeAreaView style={commonStyles.screen}>
       <View style={commonStyles.container}>
-        <AppHeader navigation={navigation} homeScreen={false} title="Theme" />
+        <AppHeader
+          navigation={navigation}
+          homeScreen={false}
+          title={t('theme')}
+        />
         <View />
       </View>
       {/* </ScrollView> */}

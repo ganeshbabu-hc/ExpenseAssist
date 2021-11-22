@@ -28,7 +28,6 @@ export const AccountsScreen = ({ navigation }: any) => {
   const currency: any = useSelector((state: any) => {
     return state.common.configuration.currency.value;
   });
-  // console.log('--curr-----', curr);
 
   return (
     <SafeAreaView style={commonStyles.screen}>
@@ -36,8 +35,9 @@ export const AccountsScreen = ({ navigation }: any) => {
         <AppHeader
           navigation={navigation}
           homeScreen={false}
-          title="Accounts"
+          title={t('accounts')}
           scrollY={scrollY}
+          backBtn={false}
         />
       </View>
       <ScrollViewWrapper scrollY={scrollY} style={styles.quickMenuContainer}>
@@ -51,7 +51,7 @@ export const AccountsScreen = ({ navigation }: any) => {
               />
             </View>
             <View style={styles.settingDesc}>
-              <Text style={styles.settingName}>Categories</Text>
+              <Text style={styles.settingName}>{t('categories')}</Text>
               <IconMap
                 name={'angle-right'}
                 size={28}
@@ -71,7 +71,7 @@ export const AccountsScreen = ({ navigation }: any) => {
               />
             </View>
             <View style={styles.settingDesc}>
-              <Text style={styles.settingName}>Payments</Text>
+              <Text style={styles.settingName}>{t('payments')}</Text>
               <IconMap
                 name={'angle-right'}
                 size={28}
@@ -91,7 +91,7 @@ export const AccountsScreen = ({ navigation }: any) => {
               />
             </View>
             <View style={styles.settingDesc}>
-              <Text style={styles.settingName}>Remainders</Text>
+              <Text style={styles.settingName}>{t('reminders')}</Text>
               <IconMap
                 name={'angle-right'}
                 size={28}
