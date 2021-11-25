@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useCallback, useMemo } from "react";
 
 export const TNAME_EXPENSE = 'EXPENSE';
@@ -39,16 +40,19 @@ export const INCOME_QUERY_LIMIT = 5;
 export const DATE_DB_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 export const DATE_DISPLAY_FORMAT = 'DD MMM YY';
 
-export const DEBOUNCE_RATE = 300;
-// const x = async () => {
-//   await AsyncStorage.setItem('@themekey', 'purple');
-//   const result = await AsyncStorage.getItem('@themekey');
-
-//   return result ?? 'red';
-// };
-// x();
-// export let THEME = 'deepPurple';
 export let THEME = 'yellow';
+
+export const DEBOUNCE_RATE = 300;
+const setTheme = async () => {
+  await AsyncStorage.setItem('@themekey', 'purple');
+  const result = await AsyncStorage.getItem('@themekey');
+  global.THEME = result;
+  return result ?? 'red';
+};
+// x();
+setTheme();
+// export let THEME = 'deepPurple';
+
 // export let THEME = 'purple';
 // const x = async () => {
 //   await AsyncStorage.setItem('@themekey', 'purple');
@@ -66,9 +70,10 @@ export let THEME = 'yellow';
 // };
 // setTheme();
 
-export const setTheme = (key?: string) => {
-  THEME = key ?? 'purple';
-};
+// const setTheme = (key?: string) => {
+//   await 
+//   THEME = key ?? 'purple';
+// };
 
 // const storeData = async (value) => {
 //   try {

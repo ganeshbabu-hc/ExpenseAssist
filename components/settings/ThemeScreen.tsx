@@ -21,7 +21,7 @@ const ThemeScreen = ({ navigation }: any) => {
   const dispatch = useDispatch();
   const [title, setTitle] = useState('');
   const setTheme = async (name: string) => {
-    const filePath = RNFS.DocumentDirectoryPath + '/config.json';
+    const filePath = await RNFS.readFileAssets('config.json', 'utf8');
     console.log('filePath', filePath);
     config.THEME = name;
     console.log('config', config);
