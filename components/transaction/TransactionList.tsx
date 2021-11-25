@@ -1,31 +1,21 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
-import {
-  Animated,
-  FlatList,
-  Pressable,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
-import { colors, commonStyles, formStyles, recentList } from '../styles/theme';
+import React, { useEffect, useRef, useState } from 'react';
+import { Animated, FlatList, Pressable, Text, View } from 'react-native';
+import { colors, commonStyles, recentList } from '../styles/theme';
 import IconMap from '../common/IconMap';
 import { getTransactions } from './TransactionController';
 import AppHeader from '../common/AppHeader';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ScrollViewWrapper from '../common/ScrollViewWrapper';
-import { DEBOUNCE_RATE, THEME } from '../utils/Constants';
+import { THEME } from '../utils/Constants';
 import t from '../common/translations/Translation';
-import { ITransaction, TransactionType } from './TransactionTypes';
+import {
+  ITransaction,
+  ITransactionTypes,
+  TransactionType,
+} from './TransactionTypes';
 import Empty from '../illustrations/Empty';
 import TransactionItem from './TransactionItem';
 import AddDoc from '../illustrations/AddDoc';
-import debounce from 'lodash.debounce';
 
 interface ITransactionList {
   limit?: number;
@@ -34,12 +24,6 @@ interface ITransactionList {
   header?: boolean;
   route?: any;
   scrollY?: Animated.Value;
-}
-
-interface ITransactionTypes {
-  id: number;
-  label: string;
-  type: TransactionType;
 }
 
 const transactionTypes: ITransactionTypes[] = [
@@ -86,31 +70,10 @@ const TransactionList = ({
   header = route?.params?.header || header || false;
   type = route?.params?.type || type;
   const animatedValue = useRef(new Animated.Value(0)).current;
-  const animatedSearch = useRef(new Animated.Value(1)).current;
   const [loading, setLoading] = useState(false);
   const [transactionType, setTransactionType] = useState<TransactionType>(type);
   const [transactionList, setTransactionList] = useState<ITransaction[]>([]);
-  const [enableSearch, setEnableSearch] = useState(false);
   const [title, setTitle] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
-
-  const searchDebounce = useCallback(
-    debounce((query: string) => {
-      handleTransactionSearch(query);
-    }, DEBOUNCE_RATE),
-    [enableSearch],
-  );
-
-  const onQueryChange = (query: string) => {
-    setSearchQuery(query);
-    searchDebounce(query);
-  };
-
-  const handleTransactionSearch = (query: string) => {
-    if (enableSearch) {
-      updateTransactions(true, transactionType, query);
-    }
-  };
 
   const refreshList = () => {
     updateTransactions(false);
@@ -123,7 +86,6 @@ const TransactionList = ({
         item={item}
         index={index}
         navigation={navigation}
-        type={transactionType}
       />
     );
   };
@@ -209,16 +171,6 @@ const TransactionList = ({
     //   }),
     // ]).start();
   };
-
-  const showSearch = (enable: boolean) => {
-    setEnableSearch(enable);
-    Animated.timing(animatedSearch, {
-      toValue: enable ? 0 : 1,
-      duration: 300,
-      useNativeDriver: false,
-    }).start();
-  };
-
   useEffect(() => {
     updateTransactions();
     animateAddButton();
@@ -233,7 +185,6 @@ const TransactionList = ({
     updateTitle();
     return () => {
       unsubscribe();
-      searchDebounce.cancel();
     };
   }, []);
 
@@ -257,36 +208,12 @@ const TransactionList = ({
         )}
       </View>
       <ScrollViewWrapper scrollY={scrollY}>
-        {header && (
-          <Animated.View
-            style={[
-              {
-                height: animatedSearch?.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [120, 0],
-                  extrapolate: 'clamp',
-                }),
-                opacity: animatedSearch?.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [1, 0],
-                  extrapolate: 'clamp',
-                }),
-              },
-            ]}>
-            <View style={[commonStyles.searchWrapper]}>
-              <View style={formStyles.inputWrapper}>
-                <TextInput
-                  placeholder={t('searchTransaction')}
-                  placeholderTextColor={colors.theme[THEME].textCardGray}
-                  style={formStyles.input}
-                  onChangeText={onQueryChange}
-                  value={searchQuery}
-                />
-              </View>
-            </View>
-          </Animated.View>
-        )}
-        <View style={[commonStyles.container, recentList.listWrapper]}>
+        <View
+          style={[
+            commonStyles.container,
+            recentList.listWrapper,
+            header ? recentList.mb50 : {},
+          ]}>
           <View style={recentList.listHeader}>
             <Text style={[commonStyles.title, recentList.listTitle]}>
               {t('transactions')}
@@ -318,34 +245,18 @@ const TransactionList = ({
                       transform: [{ translateX: animateTranslationSearch }],
                     },
                   ]}>
-                  {enableSearch ? (
-                    <Pressable
-                      onPress={() => {
-                        showSearch(false);
-                        setSearchQuery('');
-                      }}
-                      style={recentList.listHeaderIconWrapper}>
-                      <IconMap
-                        style={recentList.listHeaderIcon}
-                        name="close"
-                        size={32}
-                        color={colors.theme[THEME].textBrandMedium}
-                      />
-                    </Pressable>
-                  ) : (
-                    <Pressable
-                      onPress={() => {
-                        showSearch(true);
-                      }}
-                      style={recentList.listHeaderIconWrapper}>
-                      <IconMap
-                        style={recentList.listHeaderIcon}
-                        name="search"
-                        size={32}
-                        color={colors.theme[THEME].textBrandMedium}
-                      />
-                    </Pressable>
-                  )}
+                  <Pressable
+                    onPress={() => {
+                      navigation.navigate('TransactionSearch');
+                    }}
+                    style={recentList.listHeaderIconWrapper}>
+                    <IconMap
+                      style={recentList.listHeaderIcon}
+                      name="search"
+                      size={32}
+                      color={colors.theme[THEME].textBrandMedium}
+                    />
+                  </Pressable>
                 </Animated.View>
                 <Animated.View
                   style={[
@@ -379,6 +290,7 @@ const TransactionList = ({
             <FlatList
               // maxToRenderPerBatch={10}
               scrollEnabled
+              showsVerticalScrollIndicator={false}
               contentContainerStyle={commonStyles.contentContainerStyle}
               data={transactionList}
               renderItem={renderItem}
@@ -400,7 +312,9 @@ const TransactionList = ({
               {transactionType !== TransactionType.PINNED && (
                 <AddDoc style={commonStyles.illustration} />
               )}
-              {transactionType === TransactionType.PINNED && <Empty />}
+              {transactionType === TransactionType.PINNED && (
+                <Empty style={commonStyles.illustration} />
+              )}
               <Text style={commonStyles.illustrationTitle}>
                 {transactionType === TransactionType.PINNED
                   ? t('noPinned')
@@ -437,7 +351,7 @@ const TransactionList = ({
                 onPress={() => {
                   setTransactionType(transactionItem.type);
                 }}
-                style={commonStyles.bottomTabContainer}>
+                style={commonStyles.bottomTab}>
                 <Text
                   style={[
                     transactionType === transactionItem.type

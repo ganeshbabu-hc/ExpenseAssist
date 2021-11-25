@@ -18,7 +18,11 @@ import ScrollViewWrapper from '../common/ScrollViewWrapper';
 import { useRef } from 'react';
 import IconMap from '../common/IconMap';
 
-export const AccountsScreen = ({ navigation }: any) => {
+interface IAccountsScreen {
+  navigation: any;
+}
+
+export const AccountsScreen = ({ navigation }: IAccountsScreen) => {
   const scrollY = useRef(new Animated.Value(0)).current;
   // const isDarkMode = useColorScheme() === 'dark';
 
@@ -42,12 +46,16 @@ export const AccountsScreen = ({ navigation }: any) => {
       </View>
       <ScrollViewWrapper scrollY={scrollY} style={styles.quickMenuContainer}>
         <View style={commonStyles.container}>
-          <Pressable style={styles.settingWrapper}>
+          <Pressable
+            style={styles.settingWrapper}
+            onPress={() => {
+              navigation.navigate('CategoriesScreen', {});
+            }}>
             <View style={styles.settingIconWrapper}>
               <IconMap
                 name={'ul-li'}
                 size={28}
-                color={colors.theme[THEME].brandMedium}
+                color={colors.theme[THEME].textBrandMedium}
               />
             </View>
             <View style={styles.settingDesc}>
@@ -55,7 +63,7 @@ export const AccountsScreen = ({ navigation }: any) => {
               <IconMap
                 name={'angle-right'}
                 size={28}
-                color={colors.theme[THEME].brandMediumDark}
+                color={colors.theme[THEME].textBrandLightMedium}
               />
             </View>
           </Pressable>
@@ -67,7 +75,7 @@ export const AccountsScreen = ({ navigation }: any) => {
               <IconMap
                 name={'payments'}
                 size={28}
-                color={colors.theme[THEME].brandMedium}
+                color={colors.theme[THEME].textBrandMedium}
               />
             </View>
             <View style={styles.settingDesc}>
@@ -75,19 +83,23 @@ export const AccountsScreen = ({ navigation }: any) => {
               <IconMap
                 name={'angle-right'}
                 size={28}
-                color={colors.theme[THEME].brandMediumDark}
+                color={colors.theme[THEME].textBrandLightMedium}
               />
             </View>
           </Pressable>
           <View style={[recentList.dividerWrapper, styles.divider]}>
             <Text style={recentList.divider} />
           </View>
-          <Pressable style={styles.settingWrapper}>
+          <Pressable
+            style={styles.settingWrapper}
+            onPress={() => {
+              navigation.navigate('Reminders');
+            }}>
             <View style={styles.settingIconWrapper}>
               <IconMap
                 name={'alarm'}
                 size={28}
-                color={colors.theme[THEME].brandMedium}
+                color={colors.theme[THEME].textBrandMedium}
               />
             </View>
             <View style={styles.settingDesc}>
@@ -95,7 +107,7 @@ export const AccountsScreen = ({ navigation }: any) => {
               <IconMap
                 name={'angle-right'}
                 size={28}
-                color={colors.theme[THEME].brandMediumDark}
+                color={colors.theme[THEME].textBrandLightMedium}
               />
             </View>
           </Pressable>
@@ -107,7 +119,7 @@ export const AccountsScreen = ({ navigation }: any) => {
 
 const styles = StyleSheet.create({
   quickMenuContainer: {
-    backgroundColor: colors.theme[THEME].brandLight,
+    backgroundColor: colors.theme[THEME].brandBg,
     marginTop: 10,
   },
   divider: {

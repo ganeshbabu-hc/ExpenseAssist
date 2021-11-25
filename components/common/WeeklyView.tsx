@@ -20,6 +20,9 @@ interface IWeeklyView {
 
 const WeeklyView = ({ onChange, defaultValue }: IWeeklyView) => {
   const [date, setDate] = useState(() => {
+    if (!defaultValue) {
+      return moment(new Date(), DATE_DB_FORMAT).toDate();
+    }
     return moment(defaultValue, DATE_DB_FORMAT).toDate();
   });
   const [show, setShow] = useState(false);
@@ -143,7 +146,7 @@ const styles = StyleSheet.create({
   dateWrapper: {
     display: 'flex',
     overflow: 'scroll',
-    backgroundColor: colors.theme[THEME].textLight,
+    backgroundColor: colors.theme[THEME].brandLight,
     borderRadius: utils.inputRadius,
     minHeight: 100,
     marginBottom: 10,

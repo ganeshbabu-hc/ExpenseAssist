@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     borderRadius: utils.inputRadius,
     alignItems: 'center',
     justifyContent: 'space-between',
-    shadowColor: colors.theme[THEME].brandMedium,
+    shadowColor: colors.theme[THEME].shadowBrandMedium,
     shadowOffset: {
       width: 0,
       height: 0,

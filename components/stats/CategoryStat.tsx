@@ -28,7 +28,7 @@ const CategoryStat = ({ statlist }: ICategoryStat) => {
     <View style={styles.statContainer}>
       {statlist.map((stat: IStat, index: number) => {
         return (
-          <View style={styles.barWrapper}>
+          <View key={`category-stat-${index}`} style={styles.barWrapper}>
             <View style={styles.barLabelWrapper}>
               <View style={styles.barLabelContainer}>
                 <IconMap
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   },
   barContainer: {
     flex: 1,
-    backgroundColor: colors.theme[THEME].textCardGray,
+    backgroundColor: colors.theme[THEME].brandLightMedium,
     height: 14,
     borderRadius: 30,
     marginTop: 6,

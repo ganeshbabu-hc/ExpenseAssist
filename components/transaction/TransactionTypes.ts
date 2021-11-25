@@ -37,7 +37,7 @@ export interface ITransaction {
   transactionCategoryIcon?: string;
   paymentTitle?: string;
   currencySumbol?: string;
-  pinned?: boolean;
+  pinned?: number;
 }
 
 export interface ITransactionCategory {
@@ -48,6 +48,8 @@ export interface ITransactionCategory {
   transactionType: TransactionType;
   dateUpdatedTlm?: string;
   categoryIcon?: string;
+  editable?: number;
+  hot?: number;
 }
 
 export interface ITransactionImage extends Asset {
@@ -55,3 +57,10 @@ export interface ITransactionImage extends Asset {
   transactionId?: number;
   base64?: string;
 }
+
+export interface ITransactionTypes {
+  id: number;
+  label: string;
+  type: TransactionType;
+}
+

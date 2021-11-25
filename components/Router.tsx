@@ -2,32 +2,30 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import {
-  CardStyleInterpolators,
-  createStackNavigator,
-} from '@react-navigation/stack';
+import { CardStyleInterpolators } from '@react-navigation/stack';
 import { HomeScreen } from './home/HomeScreen';
-import { Animated, Easing, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Add from './home/Add';
 import { colors } from './styles/theme';
 import AddType from './common/add/AddType';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { UPDATE_CONFIGURATIONS } from '../redux/constants/StoreConstants';
 import AddEditCategory from './common/AddEditCategory';
 import StatsScreen1 from './stats/StatsScreen';
 import TransactionList from './transaction/TransactionList';
 import { SettingsScreen } from './settings/SettingsScreen';
 import CurrencyScreen from './settings/CurrencyScreen';
-import { getConfigurations } from './database/common/CommonController';
 import ThemeScreen from './settings/ThemeScreen';
 import { THEME } from './utils/Constants';
 import { AccountsScreen } from './settings/AccountsScreen';
 import AddEditTransaction from './transaction/AddEditTransaction';
 import IconMap from './common/IconMap';
-import ImageViewer from './common/ImageViewer';
-// const Stack = createNativeStackNavigator();
-const Stack = createStackNavigator();
+import ImageView from './common/ImageViewer';
+import TransactionSearch from './transaction/TransactionSearch';
+import RemindersScreen from './settings/RemindersScreen';
+import CategoriesScreen from './settings/CategoriesScreen';
+const Stack = createNativeStackNavigator();
+// const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 enum Routes {
@@ -57,7 +55,7 @@ const Home = ({ navigation }) => {
           tabBarStyle: {
             height: 64,
             borderTopWidth: 0,
-            shadowcolor: colors.theme[THEME].textBrandMedium,
+            shadowcolor: colors.theme[THEME].shadowBrandMedium,
             elevation: 20,
             shadowOffset: {
               width: 20,
@@ -94,6 +92,7 @@ const Home = ({ navigation }) => {
               return (
                 <IconMap
                   name={iconName}
+                  size={28}
                   color={
                     focused
                       ? colors.theme[THEME].textBrandMedium
@@ -210,12 +209,27 @@ const Router = () => {
             initialParams={{}}
           />
           <Stack.Screen
-            name="ImageViewer"
-            component={ImageViewer}
+            name="ImageView"
+            component={ImageView}
+            initialParams={{}}
+          />
+          <Stack.Screen
+            name="TransactionSearch"
+            component={TransactionSearch}
+            initialParams={{}}
+          />
+          <Stack.Screen
+            name="Reminders"
+            component={RemindersScreen}
             initialParams={{}}
           />
         </Stack.Group>
         <Stack.Group>
+          <Stack.Screen
+            name="CategoriesScreen"
+            component={CategoriesScreen}
+            initialParams={{}}
+          />
           <Stack.Screen
             name="CurrencyScreen"
             component={CurrencyScreen}

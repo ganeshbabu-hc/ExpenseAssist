@@ -168,6 +168,7 @@ const CurrencyScreen = ({ navigation }: any) => {
         </View>
         <FlatList
           ref={flatList}
+          showsVerticalScrollIndicator={false}
           maxToRenderPerBatch={10}
           contentInsetAdjustmentBehavior="automatic"
           keyboardDismissMode="interactive"
@@ -189,7 +190,7 @@ const CurrencyScreen = ({ navigation }: any) => {
 const styles = StyleSheet.create({
   iconWrapper: {},
   currencyList: {
-    backgroundColor: colors.theme[THEME].brandLight,
+    backgroundColor: colors.theme[THEME].brandBg,
   },
   listWrapper: {
     display: 'flex',

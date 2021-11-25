@@ -10,6 +10,8 @@ import { THEME } from '../utils/Constants';
 import { TransactionType } from '../transaction/TransactionTypes';
 import IconMap from '../common/IconMap';
 import t from '../common/translations/Translation';
+import PressableRipple from '../common/PressableRipple';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 // import {TransactionType} from '../database/transaction/TransactionTypes';
 // import UilHome from '@iconscout/react-native-unicons/icons/uil-home';
 // import UilAward from '@iconscout/react-native-unicons/icons/uil-award';
@@ -190,12 +192,12 @@ export default SummaryList;
 
 const styles = StyleSheet.create({
   summaryListWrapper: {
-    backgroundColor: colors.theme[THEME].textLight,
+    backgroundColor: colors.theme[THEME].brandBg,
     overflow: 'hidden',
   },
   summaryListContainer: {
     // marginBottom: 10,
-    backgroundColor: colors.theme[THEME].brandLight,
+    // backgroundColor: colors.theme[THEME].brandBg,
     // borderBottomRightRadius: 40,
     overflow: 'hidden',
     paddingBottom: 20,

@@ -97,6 +97,12 @@
 		01563288ABF24456ACA4590E /* Brandon_med.otf in Resources */ = {isa = PBXBuildFile; fileRef = 61401799281F440385EAC28A /* Brandon_med.otf */; };
 		5C1D1CF306CD4EEBB887AA03 /* Brandon_reg.otf in Resources */ = {isa = PBXBuildFile; fileRef = 509C108768D844108A8C4E0E /* Brandon_reg.otf */; };
 		3CB5F2221D014CD99045C884 /* Brandon_thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = CFFA8B43512A453AA72B68E4 /* Brandon_thin.otf */; };
+		2AD81CF0E1E94610B99FFD86 /* OpenSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 812DD48DA5674D5FA51F8AEA /* OpenSans-BoldItalic.ttf */; };
+		B8C1C9BC1C88437088BB62F4 /* OpenSans-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 178C2C51E9E04907A9F081A4 /* OpenSans-ExtraBoldItalic.ttf */; };
+		1F95507B13FC404393204A60 /* OpenSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FF22B098ED6E46D3833CB5E3 /* OpenSans-Italic.ttf */; };
+		01D1CE498C21438B86D16166 /* OpenSans-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A50FA34189A34D15A139A102 /* OpenSans-LightItalic.ttf */; };
+		5B8D0ABCBECC47D6BCBB8F49 /* OpenSans-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 36CE6AB32F07410694F26578 /* OpenSans-MediumItalic.ttf */; };
+		26A132C983304AD6B086A4B6 /* OpenSans-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2ABBAD7AC39B4A9DB8787599 /* OpenSans-SemiBoldItalic.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -210,6 +216,12 @@
 		61401799281F440385EAC28A /* Brandon_med.otf */ = {isa = PBXFileReference; name = "Brandon_med.otf"; path = "../assets/fonts/brandon/Brandon_med.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		509C108768D844108A8C4E0E /* Brandon_reg.otf */ = {isa = PBXFileReference; name = "Brandon_reg.otf"; path = "../assets/fonts/brandon/Brandon_reg.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		CFFA8B43512A453AA72B68E4 /* Brandon_thin.otf */ = {isa = PBXFileReference; name = "Brandon_thin.otf"; path = "../assets/fonts/brandon/Brandon_thin.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		812DD48DA5674D5FA51F8AEA /* OpenSans-BoldItalic.ttf */ = {isa = PBXFileReference; name = "OpenSans-BoldItalic.ttf"; path = "../assets/fonts/OpenSans/OpenSans-BoldItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		178C2C51E9E04907A9F081A4 /* OpenSans-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; name = "OpenSans-ExtraBoldItalic.ttf"; path = "../assets/fonts/OpenSans/OpenSans-ExtraBoldItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		FF22B098ED6E46D3833CB5E3 /* OpenSans-Italic.ttf */ = {isa = PBXFileReference; name = "OpenSans-Italic.ttf"; path = "../assets/fonts/OpenSans/OpenSans-Italic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		A50FA34189A34D15A139A102 /* OpenSans-LightItalic.ttf */ = {isa = PBXFileReference; name = "OpenSans-LightItalic.ttf"; path = "../assets/fonts/OpenSans/OpenSans-LightItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		36CE6AB32F07410694F26578 /* OpenSans-MediumItalic.ttf */ = {isa = PBXFileReference; name = "OpenSans-MediumItalic.ttf"; path = "../assets/fonts/OpenSans/OpenSans-MediumItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		2ABBAD7AC39B4A9DB8787599 /* OpenSans-SemiBoldItalic.ttf */ = {isa = PBXFileReference; name = "OpenSans-SemiBoldItalic.ttf"; path = "../assets/fonts/OpenSans/OpenSans-SemiBoldItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -402,6 +414,12 @@
 				61401799281F440385EAC28A /* Brandon_med.otf */,
 				509C108768D844108A8C4E0E /* Brandon_reg.otf */,
 				CFFA8B43512A453AA72B68E4 /* Brandon_thin.otf */,
+				812DD48DA5674D5FA51F8AEA /* OpenSans-BoldItalic.ttf */,
+				178C2C51E9E04907A9F081A4 /* OpenSans-ExtraBoldItalic.ttf */,
+				FF22B098ED6E46D3833CB5E3 /* OpenSans-Italic.ttf */,
+				A50FA34189A34D15A139A102 /* OpenSans-LightItalic.ttf */,
+				36CE6AB32F07410694F26578 /* OpenSans-MediumItalic.ttf */,
+				2ABBAD7AC39B4A9DB8787599 /* OpenSans-SemiBoldItalic.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -586,6 +604,12 @@
 				01563288ABF24456ACA4590E /* Brandon_med.otf in Resources */,
 				5C1D1CF306CD4EEBB887AA03 /* Brandon_reg.otf in Resources */,
 				3CB5F2221D014CD99045C884 /* Brandon_thin.otf in Resources */,
+				2AD81CF0E1E94610B99FFD86 /* OpenSans-BoldItalic.ttf in Resources */,
+				B8C1C9BC1C88437088BB62F4 /* OpenSans-ExtraBoldItalic.ttf in Resources */,
+				1F95507B13FC404393204A60 /* OpenSans-Italic.ttf in Resources */,
+				01D1CE498C21438B86D16166 /* OpenSans-LightItalic.ttf in Resources */,
+				5B8D0ABCBECC47D6BCBB8F49 /* OpenSans-MediumItalic.ttf in Resources */,
+				26A132C983304AD6B086A4B6 /* OpenSans-SemiBoldItalic.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

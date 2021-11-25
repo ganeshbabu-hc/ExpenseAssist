@@ -60,12 +60,20 @@ export const saveTransaction = async (
     // console.log('imageInsertQuery----', imageInsertQuery);
     result = await db.executeSql(imageInsertQuery);
 
+    // update category count
+
     console.log('Inserting the return', result);
   }
+  const updateQuery = `UPDATE ${TNAME_TRANSACTION_CATEGORIES} SET HOT = HOT + 1 where TRANSACTION_CATEGORY_ID=${transaction[0].transactionCategoryId}`;
+  await db.executeSql(updateQuery);
+
   return result;
 };
 
-export const updateTransaction = async (transaction: ITransaction) => {
+export const updateTransaction = async (
+  transaction: ITransaction,
+  imageList: ITransactionImage[],
+) => {
   const insertQuery = `UPDATE ${TNAME_TRANSACTIONS} 
   SET TITLE='${transaction.title}',
   AMOUNT=${transaction.amount},
@@ -78,8 +86,38 @@ export const updateTransaction = async (transaction: ITransaction) => {
   DATE_ADDED_TLM='${transaction.dateAddedTlm}',
   DATE_UPDATED_TLM=CURRENT_TIMESTAMP
   WHERE TRANSACTION_ID=${transaction.transactionId}`;
+
   const db = await getDBConnection();
-  return await db.executeSql(insertQuery);
+  let result = await db.executeSql(insertQuery);
+
+  if (result && imageList && imageList.length > 0) {
+    // const imageInsertQuery = `INSERT OR UPDATE INTO ${TNAME_TRANSACTION_IMAGES}
+    // SET IMAGE = '${imageList[0].base64}',
+    // DATE_UPDATED_TLM=CURRENT_TIMESTAMP
+    // WHERE TRANSACTION_ID=${transaction.transactionId} `;
+
+    const imageInsertQuery = `INSERT OR REPLACE INTO ${TNAME_TRANSACTION_IMAGES}(IMAGE_ID, TRANSACTION_ID, IMAGE, DATE_UPDATED_TLM) values 
+    ((SELECT IMAGE_ID FROM ${TNAME_TRANSACTION_IMAGES} WHERE TRANSACTION_ID=${transaction.transactionId}), '${transaction.transactionId}', '${imageList[0].base64}', CURRENT_TIMESTAMP)`;
+    result = await db.executeSql(imageInsertQuery);
+  }
+
+  const updateQuery = `UPDATE ${TNAME_TRANSACTION_CATEGORIES} SET HOT = HOT + 1 where TRANSACTION_CATEGORY_ID=${transaction.transactionCategoryId}`;
+  await db.executeSql(updateQuery);
+
+  return result;
+};
+
+export const updateTransactionCategory = async (
+  transactionCategory: ITransactionCategory,
+) => {
+  const insertQuery = `UPDATE ${TNAME_TRANSACTION_CATEGORIES} 
+  SET TITLE='${transactionCategory.title}',
+  DESCRIPTION='${transactionCategory.description}'
+  WHERE TRANSACTION_CATEGORY_ID=${transactionCategory.transactionCategoryId} `;
+
+  const db = await getDBConnection();
+  let result = await db.executeSql(insertQuery);
+  return result;
 };
 
 export const getTransactionImages = async (
@@ -103,6 +141,13 @@ export const getTransactionImages = async (
     }
   });
   return images;
+};
+
+export const removeImages = async (imageId: number): Promise<any> => {
+  const getQuery = `DELETE FROM  ${TNAME_TRANSACTION_IMAGES} 
+  WHERE IMAGE_ID=${imageId}`;
+  const db = await getDBConnection();
+  return db.executeSql(getQuery);
 };
 
 export const getTransactions = async (
@@ -178,7 +223,7 @@ export const getTransactionCategories = async (
     const categories: ITransactionCategory[] = [];
     const db = await getDBConnection();
     const results = await db.executeSql(
-      `SELECT TITLE as title, DESCRIPTION as decsription, TRANSACTION_CATEGORY_ID as transactionCategoryId, DATE_ADDED_TLM as dateAddedTlm, DATE_UPDATED_TLM as dateUpdatedTlm, CATEGORY_ICON as categoryIcon FROM ${TNAME_TRANSACTION_CATEGORIES} WHERE CATEGORY_TYPE='${type}' `,
+      `SELECT TITLE as title, EDITABLE as editable,HOT as hot, CATEGORY_TYPE as transactionType, DESCRIPTION as description, TRANSACTION_CATEGORY_ID as transactionCategoryId, DATE_ADDED_TLM as dateAddedTlm, DATE_UPDATED_TLM as dateUpdatedTlm, CATEGORY_ICON as categoryIcon FROM ${TNAME_TRANSACTION_CATEGORIES} WHERE CATEGORY_TYPE='${type}' ORDER BY HOT DESC`,
     );
     results.forEach((result: any) => {
       for (let index = 0; index < result.rows.length; index++) {
@@ -238,7 +283,7 @@ const getQueryByConditions = (queryParams: IQueryParams): string => {
 };
 
 const base64ToBlob = async (base64: any) => {
-  // let url = `data:image/png;base64,${base64}`;
+  // let url = `data:image/jpeg;base64,${base64}`;
   // console.log('--------------url------', url);
   // let res = await fetch(url);
   // console.log('--------------res------', res);

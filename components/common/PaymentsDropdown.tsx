@@ -1,10 +1,13 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, Modal, StyleSheet, Pressable} from 'react-native';
-import {getPaymentTypes, IPayment} from '../database/common/PaymentController';
-import {colors, formStyles, utils} from '../styles/theme';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Modal, StyleSheet, Pressable } from 'react-native';
+import {
+  getPaymentTypes,
+  IPayment,
+} from '../database/common/PaymentController';
+import { colors, formStyles, utils } from '../styles/theme';
 import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import IconMap from './IconMap';
-import {THEME} from '../utils/Constants';
+import { THEME } from '../utils/Constants';
 import t from './translations/Translation';
 
 interface IpaymentDropdown {
@@ -12,7 +15,7 @@ interface IpaymentDropdown {
   defaultValue?: number;
 }
 
-const PaymentsDropdown = ({onChange, defaultValue}: IpaymentDropdown) => {
+const PaymentsDropdown = ({ onChange, defaultValue }: IpaymentDropdown) => {
   const [paymentId, setPaymentId] = useState(defaultValue);
   const [paymentList, setPaymentList] = useState<IPayment[]>([]);
   const [showModal, setShowModal] = useState(false);
@@ -58,6 +61,13 @@ const PaymentsDropdown = ({onChange, defaultValue}: IpaymentDropdown) => {
         onRequestClose={() => {}}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
+            <View style={styles.paymentHeader}>
+              <Text style={formStyles.inputLabel}>Paid by</Text>
+              <IconMap
+                name={'close'}
+                color={colors.theme[THEME].textCardGray}
+              />
+            </View>
             {paymentList.map((payment: IPayment) => {
               return (
                 <Pressable
@@ -71,14 +81,14 @@ const PaymentsDropdown = ({onChange, defaultValue}: IpaymentDropdown) => {
                       {payment.paymentId === paymentId && (
                         <IconMap
                           name="check-circle"
-                          color={colors.theme[THEME].brandDark}
+                          color={colors.theme[THEME].textBrandMedium}
                           size={28}
                         />
                       )}
                     </View>
                     <IconMap
                       name={payment.paymentIcon}
-                      color={colors.theme[THEME].textBrandMedium}
+                      color={colors.theme[THEME].textCardGray}
                     />
                     <Text style={styles.paymentTitle}>{t(payment.title)}</Text>
                   </View>
@@ -105,7 +115,7 @@ const styles = StyleSheet.create({
     borderRadius: utils.inputRadius,
     paddingHorizontal: 20,
     alignItems: 'flex-start',
-    shadowColor: colors.theme[THEME].brandMedium,
+    shadowColor: colors.theme[THEME].shadowBrandMedium,
     paddingVertical: 10,
     shadowOffset: {
       width: 0,
@@ -128,10 +138,16 @@ const styles = StyleSheet.create({
     width: 30,
   },
   paymentTitle: {
-    color: colors.theme[THEME].textDark,
+    color: colors.theme[THEME].brandMedium,
     fontFamily: utils.fontFamily.Bold,
     fontSize: utils.fontSize.large,
     marginLeft: 10,
+  },
+  paymentHeader: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 });
 

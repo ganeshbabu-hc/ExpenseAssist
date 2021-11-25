@@ -1,13 +1,13 @@
 import React from 'react';
-import {Pressable, PressableProps, StyleSheet, View} from 'react-native';
-import {ripple} from '../styles/theme';
+import { Pressable, PressableProps, StyleSheet, View } from 'react-native';
+import { colors, ripple, utils } from '../styles/theme';
+import { THEME } from '../utils/Constants';
 interface PressableWrapper extends PressableProps {
   borderRadius?: number;
 }
 const PressableRipple = (props: PressableWrapper) => {
-  const br = props.borderRadius ?? 0;
   return (
-    <View style={[{borderRadius: br}, styles.buttonView]}>
+    <View style={styles.buttonView}>
       <Pressable android_ripple={ripple} {...props} />
     </View>
   );
@@ -15,10 +15,13 @@ const PressableRipple = (props: PressableWrapper) => {
 
 const styles = StyleSheet.create({
   buttonView: {
+    // flex: 1,
     alignSelf: 'stretch',
     justifyContent: 'center',
     overflow: 'hidden',
-    borderRadius: 20,
+    shadowColor: colors.theme[THEME].shadowBrandMedium,
+    borderRadius: utils.inputRadius,
+    // elevation: 5,
   },
 });
 

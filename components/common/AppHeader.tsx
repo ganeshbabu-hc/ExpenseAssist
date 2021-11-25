@@ -39,7 +39,7 @@ const AppHeader = ({
 
   const fontSizing = scrollY?.interpolate({
     inputRange: [0, MIN_HEIGHT - MAX_HEIGHT],
-    outputRange: [utils.fontSize.xxlarge, utils.fontSize.large],
+    outputRange: [utils.fontSize.xxxlarge, utils.fontSize.xlarge],
     extrapolate: 'clamp',
   });
 
@@ -58,8 +58,8 @@ const AppHeader = ({
         },
       ]}>
       <StatusBar
-        backgroundColor={colors.theme[THEME].brandLight}
-        barStyle={'dark-content'}
+        backgroundColor={colors.theme[THEME].brandBg}
+        barStyle={colors.theme[THEME].content}
       />
       {homeScreen && (
         <View style={styles.headerDesc}>
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 20,
     marginBottom: 10,
-    shadowcolor: colors.theme[THEME].textBrandMedium,
+    shadowcolor: colors.theme[THEME].shadowBrandMedium,
     shadowOffset: {
       width: 20,
       height: 20,

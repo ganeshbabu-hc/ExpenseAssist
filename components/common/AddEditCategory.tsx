@@ -14,7 +14,10 @@ import {
   UPDATE_EXPENSE_CATEGORIES_LIST,
 } from '../../redux/constants/StoreConstants';
 import AppHeader from './AppHeader';
-import { getTransactionCategories } from '../transaction/TransactionController';
+import {
+  getTransactionCategories,
+  updateTransactionCategory,
+} from '../transaction/TransactionController';
 import { colors, commonStyles, formStyles } from '../styles/theme';
 // import {ShowSnackBar} from './Util';
 import { saveTransactionCategory } from '../database/common/CommonController';
@@ -42,11 +45,11 @@ const defaultErrMsg: IErrorMessages = {
 };
 
 const AddEditCategory = ({ navigation, route, type }: IAddEditCategory) => {
-  const { transactionCategory }: { transactionCategory: ITransactionCategory } =
-    route.params.transactionCategory ?? { undefined };
+  const transactionCategory: ITransactionCategory =
+    route?.params?.transactionCategory ?? null;
   // const {expense}: {expense: IExpense} = route.params;
-
-  const categoryType: TransactionType = route?.params?.type || type;
+  console.log(transactionCategory);
+  const categoryType: TransactionType = route?.params?.transactionType || type;
 
   const [errMsg, setErrMsg] = useState<IErrorMessages>(defaultErrMsg);
 
@@ -89,16 +92,24 @@ const AddEditCategory = ({ navigation, route, type }: IAddEditCategory) => {
       transactionCategoryId:
         transactionCategory?.transactionCategoryId ?? undefined,
       title,
+      editable: 1,
       transactionType: categoryType,
       description,
     };
     let result = null;
     if (editMode) {
-      // result = await updateTransaction(modExpense);
-      // if (result) {
-      //   ShowSnackBar(`${modExpense.title} is updated`);
-      //   navigation.goBack();
-      // }
+      result = await updateTransactionCategory(modCategory);
+      if (result) {
+        dispatch({
+          type: SHOW_TOAST,
+          payload: [
+            {
+              title: t('categoryUpdated', { name: modCategory.title }),
+            },
+          ],
+        });
+        navigation.goBack();
+      }
     } else {
       result = await saveTransactionCategory(modCategory);
       if (result) {
@@ -170,7 +181,11 @@ const AddEditCategory = ({ navigation, route, type }: IAddEditCategory) => {
             </View>
           </View>
           <Pressable
-            style={[formStyles.button, formStyles.fullWidth]}
+            style={[
+              formStyles.button,
+              formStyles.fullWidth,
+              formStyles.saveButton,
+            ]}
             onPress={() => {
               saveTransactionCategoryHandler();
             }}>
@@ -186,7 +201,7 @@ const AddEditCategory = ({ navigation, route, type }: IAddEditCategory) => {
 
 const styles = StyleSheet.create({
   categoryWrapper: {
-    backgroundColor: colors.theme[THEME].brandLight,
+    backgroundColor: colors.theme[THEME].brandBg,
     display: 'flex',
     overflow: 'scroll',
   },

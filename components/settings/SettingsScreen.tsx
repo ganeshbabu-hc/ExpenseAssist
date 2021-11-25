@@ -49,7 +49,7 @@ export const SettingsScreen = ({ navigation }: any) => {
               <IconMap
                 name={'swatch-book'}
                 size={28}
-                color={colors.theme[THEME].brandMedium}
+                color={colors.theme[THEME].textBrandMedium}
               />
             </View>
             <View style={styles.settingDesc}>
@@ -59,7 +59,7 @@ export const SettingsScreen = ({ navigation }: any) => {
                 <IconMap
                   name={'angle-right'}
                   size={28}
-                  color={colors.theme[THEME].brandMediumDark}
+                  color={colors.theme[THEME].textBrandLightMedium}
                 />
               </View>
             </View>
@@ -76,7 +76,7 @@ export const SettingsScreen = ({ navigation }: any) => {
               <IconMap
                 name={'usd-circle'}
                 size={28}
-                color={colors.theme[THEME].brandMedium}
+                color={colors.theme[THEME].textBrandMedium}
               />
             </View>
             <View style={styles.settingDesc}>
@@ -86,7 +86,7 @@ export const SettingsScreen = ({ navigation }: any) => {
                 <IconMap
                   name={'angle-right'}
                   size={28}
-                  color={colors.theme[THEME].brandMediumDark}
+                  color={colors.theme[THEME].textBrandLightMedium}
                 />
               </View>
             </View>
@@ -99,7 +99,7 @@ export const SettingsScreen = ({ navigation }: any) => {
               <IconMap
                 name={'language'}
                 size={28}
-                color={colors.theme[THEME].brandMedium}
+                color={colors.theme[THEME].textBrandMedium}
               />
             </View>
             <View style={styles.settingDesc}>
@@ -107,7 +107,7 @@ export const SettingsScreen = ({ navigation }: any) => {
               <IconMap
                 name={'angle-right'}
                 size={28}
-                color={colors.theme[THEME].brandMediumDark}
+                color={colors.theme[THEME].textBrandLightMedium}
               />
             </View>
           </Pressable>
@@ -119,7 +119,7 @@ export const SettingsScreen = ({ navigation }: any) => {
               <IconMap
                 name={'image'}
                 size={28}
-                color={colors.theme[THEME].brandMedium}
+                color={colors.theme[THEME].textBrandMedium}
               />
             </View>
             <View style={styles.settingDesc}>
@@ -127,7 +127,7 @@ export const SettingsScreen = ({ navigation }: any) => {
               <IconMap
                 name={'angle-right'}
                 size={28}
-                color={colors.theme[THEME].brandMediumDark}
+                color={colors.theme[THEME].textBrandLightMedium}
               />
             </View>
           </Pressable>
@@ -139,7 +139,7 @@ export const SettingsScreen = ({ navigation }: any) => {
               <IconMap
                 name={'data-sharing'}
                 size={28}
-                color={colors.theme[THEME].brandMedium}
+                color={colors.theme[THEME].textBrandMedium}
               />
             </View>
             <View style={styles.settingDesc}>
@@ -147,7 +147,7 @@ export const SettingsScreen = ({ navigation }: any) => {
               <IconMap
                 name={'angle-right'}
                 size={28}
-                color={colors.theme[THEME].brandMediumDark}
+                color={colors.theme[THEME].textBrandLightMedium}
               />
             </View>
           </Pressable>
@@ -159,7 +159,7 @@ export const SettingsScreen = ({ navigation }: any) => {
               <IconMap
                 name={'help-circle'}
                 size={28}
-                color={colors.theme[THEME].brandMedium}
+                color={colors.theme[THEME].textBrandMedium}
               />
             </View>
             <View style={styles.settingDesc}>
@@ -167,7 +167,7 @@ export const SettingsScreen = ({ navigation }: any) => {
               <IconMap
                 name={'angle-right'}
                 size={28}
-                color={colors.theme[THEME].brandMediumDark}
+                color={colors.theme[THEME].textBrandLightMedium}
               />
             </View>
           </Pressable>
@@ -179,7 +179,7 @@ export const SettingsScreen = ({ navigation }: any) => {
 
 const styles = StyleSheet.create({
   quickMenuContainer: {
-    backgroundColor: colors.theme[THEME].brandLight,
+    backgroundColor: colors.theme[THEME].brandBg,
     marginTop: 10,
   },
   divider: {

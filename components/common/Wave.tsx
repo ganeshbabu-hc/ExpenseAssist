@@ -27,6 +27,6 @@ export default Wave;
 const styles = StyleSheet.create({
   waveContainer: {
     paddingTop: 20,
-    backgroundColor: colors.theme[THEME].brandLight,
+    backgroundColor: colors.theme[THEME].brandBg,
   },
 });

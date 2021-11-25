@@ -51,6 +51,8 @@ import UniconMobile from '../icons/unicons/UniconMobile';
 import UniconScenary from '../icons/unicons/UniconScenary';
 import UniconCamera from '../icons/unicons/UniconCamera';
 import UniconDataSharing from '../icons/unicons/UniconDataSharing';
+import UniconTrashAlt from '../icons/unicons/UniconTrashAlt';
+import UniconEdit from '../icons/unicons/UniconEdit';
 interface IconMap {
   name: string;
   color?: string;
@@ -62,6 +64,24 @@ interface IconMap {
 const IconMap = ({ name, color, style, size, active = false }: IconMap) => {
   let IconComponent = null;
   switch (name) {
+    case 'edit':
+      return (
+        <UniconEdit
+          style={style}
+          active={active}
+          size={size ?? 24}
+          color={color ? color : colors.theme[THEME].textDark}
+        />
+      );
+    case 'trash':
+      return (
+        <UniconTrashAlt
+          style={style}
+          active={active}
+          size={size ?? 24}
+          color={color ? color : colors.theme[THEME].textDark}
+        />
+      );
     case 'scenary':
       return (
         <UniconScenary
@@ -381,6 +401,7 @@ const IconMap = ({ name, color, style, size, active = false }: IconMap) => {
         />
       );
     case 'chart-line':
+    case 'arrow-growth':
       return (
         <UniconArrowGrowth
           style={style}

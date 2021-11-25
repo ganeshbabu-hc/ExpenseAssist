@@ -112,17 +112,17 @@ export default TypeList;
 
 const styles = StyleSheet.create({
   typeListContainer: {
-    backgroundColor: colors.theme[THEME].brandLight,
+    backgroundColor: colors.theme[THEME].brandBg,
     overflow: 'hidden',
   },
   typeCard: {
     display: 'flex',
     icon: {
-      marginTop: 12,
+      marginTop: 8,
     },
     title: {
       marginTop: 10,
-      fontSize: utils.fontSize.xsmall,
+      fontSize: utils.fontSize.small,
       fontFamily: utils.fontFamily.Bold,
     },
   },

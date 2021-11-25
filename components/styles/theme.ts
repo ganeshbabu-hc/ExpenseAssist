@@ -1,4 +1,4 @@
-import { ColorSchemeName, StyleSheet } from 'react-native';
+import { ColorSchemeName, StatusBarStyle, StyleSheet } from 'react-native';
 import { deepOrange, deepPurple, grey, pink } from 'material-ui-colors';
 import color from 'material-ui-colors/dist/amber';
 import { THEME } from '../utils/Constants';
@@ -16,9 +16,11 @@ import { THEME } from '../utils/Constants';
 // export const hue = 297; //#f200ff
 
 interface IColorMapping {
+  content: StatusBarStyle;
   brandLight: string;
+  brandBg: string;
   brandMedium: string;
-  brandMediumDark: string;
+  brandLightMedium: string;
   brandDark: string;
   brandDanger: string;
   textDark: string;
@@ -28,7 +30,11 @@ interface IColorMapping {
   bgLight: string;
   graphColorScheme: string[];
   textBrandMedium: string;
+  textBrandLightMedium: string;
   textBrandDark: string;
+  shadowBrandLight: string;
+  shadowBrandMedium: string;
+  shadowBrandDark: string;
 }
 interface ITheme {
   [key: string]: IColorMapping;
@@ -36,7 +42,7 @@ interface ITheme {
 
 interface IColors {
   theme: ITheme;
-  brand: any;
+  // brand: any;
 }
 
 export let colors: IColors = {
@@ -47,20 +53,26 @@ export let colors: IColors = {
 
   //Brand Purple-current--
   theme: {
-    purple: {
+    darkPurple: {
+      content: 'light-content',
       // brandLight: deepPurple[50],
-      brandLight: 'hsla(230, 0%, 98%, 1)',
-      brandMedium: deepPurple.A700,
-      brandMediumDark: deepPurple[200],
-      brandDark: deepPurple[900],
+      brandBg: '#212121',
+      brandLight: '#2f2f2f',
+      brandMedium: '#19161b',
+      brandLightMedium: '#251e2d',
+      brandDark: '#121212',
       brandDanger: pink[600],
-      textDark: '#000',
+      textDark: '#fff',
       textGray: grey[500],
       textCardGray: grey[400],
       textLight: '#fff',
-      bgLight: '#fff',
-      textBrandMedium: deepPurple.A700,
+      bgLight: '#292929',
+      textBrandLightMedium: deepPurple[200],
+      textBrandMedium: deepPurple[200],
       textBrandDark: deepPurple[900],
+      shadowBrandLight: '#212121',
+      shadowBrandMedium: '#19161b',
+      shadowBrandDark: '#121212',
       graphColorScheme: [
         // deepPurple[900],
         // deepPurple[800],
@@ -73,20 +85,58 @@ export let colors: IColors = {
         deepPurple[700],
       ],
     },
-    red: {
+    yellow: {
+      content: 'light-content',
       // brandLight: deepPurple[50],
-      brandLight: 'hsla(230, 0%, 98%, 1)',
-      brandMedium: 'black',
-      brandMediumDark: deepPurple[200],
-      brandDark: 'black',
+      brandBg: '#212328',
+      brandLight: '#2b3137',
+      brandMedium: '#fdd42a',
+      brandLightMedium: '#251e2d',
+      brandDark: '#fee890',
+      brandDanger: pink[600],
+      textDark: '#fff',
+      textGray: grey[500],
+      textCardGray: grey[400],
+      textLight: '#000',
+      bgLight: '#292929',
+      textBrandLightMedium: deepPurple[200],
+      textBrandMedium: '#fdd42a',
+      textBrandDark: deepPurple[900],
+      shadowBrandLight: '#212121',
+      shadowBrandMedium: '#19161b',
+      shadowBrandDark: '#121212',
+      graphColorScheme: [
+        // deepPurple[900],
+        // deepPurple[800],
+        deepPurple[900],
+        deepPurple[700],
+        deepPurple[500],
+        deepPurple[300],
+        deepPurple[100],
+        deepPurple[600],
+        deepPurple[700],
+      ],
+    },
+    purple: {
+      content: 'dark-content',
+      // brandLight: deepPurple[50],
+      brandBg: 'hsla(230, 0%, 98%, 1)',
+      brandLight: '#fff',
+      brandMedium: deepPurple.A700,
+      brandLightMedium: deepPurple[200],
+      brandDark: deepPurple[900],
       brandDanger: pink[600],
       textDark: '#000',
       textGray: grey[500],
       textCardGray: grey[400],
       textLight: '#fff',
       bgLight: '#fff',
-      textBrandMedium: 'black',
+      textBrandMedium: deepPurple.A700,
       textBrandDark: deepPurple[900],
+      textBrandLightMedium: deepPurple[200],
+      shadowBrandLight: grey[400],
+      shadowBrandMedium: deepPurple[900],
+      shadowBrandDark: deepPurple.A700,
       graphColorScheme: [
         // deepPurple[900],
         // deepPurple[800],
@@ -103,7 +153,7 @@ export let colors: IColors = {
     //     // brandLight: deepPurple[50],
     //     brandLight: 'hsla(230, 0%, 98%, 1)',
     //     brandMedium: deepPurple.A700,
-    //     brandMediumDark: deepPurple[200],
+    //     brandLightMedium: deepPurple[200],
     //     brandDark: deepPurple[900],
     //     brandDanger: pink[600],
     //     textDark: '#f45',
@@ -137,7 +187,7 @@ export let colors: IColors = {
     //   // brandLight: deepPurple[50],
     //   brandLight: 'hsla(230, 0%, 98%, 1)',
     //   brandMedium: deepPurple.A700,
-    //   brandMediumDark: deepPurple[200],
+    //   brandLightMedium: deepPurple[200],
     //   brandDark: deepPurple[900],
     //   brandDanger: pink[600],
     //   textDark: '#000',
@@ -169,7 +219,7 @@ export let colors: IColors = {
     //   // brandLight: deepPurple[50],
     //   brandLight: '#131d2a',
     //   brandMedium: '#2e4765',
-    //   brandMediumDark: '#172231',
+    //   brandLightMedium: '#172231',
     //   brandDark: '#172231',
     //   brandDanger: pink[600],
     // },
@@ -178,7 +228,7 @@ export let colors: IColors = {
     // brand: {
     //   brandLight: `hsla(${hue}, 100%, 98%, 1)`,
     //   brandMedium: `hsla(${hue}, 100%, 65%, 1)`,
-    //   brandMediumDark: `hsla(${hue}, 100%, 45%, 1)`,
+    //   brandLightMedium: `hsla(${hue}, 100%, 45%, 1)`,
     //   brandDark: `hsla(${hue}, 100%, 30%, 1)`,
     //   brandDanger: pink[600],
     // },
@@ -186,28 +236,28 @@ export let colors: IColors = {
     //Brand Orance
     // brandLight: deepOrange[50],
     // brandMedium: deepOrange.A700,
-    // brandMediumDark: deepOrange[200],
+    // brandLightMedium: deepOrange[200],
     // brandDark: deepOrange[900],
     // brandDanger: pink[600],
 
     //Brand Orance
     // brandLight: '#e5e5e5',
     // brandMedium: '#fca311',
-    // brandMediumDark: '#14213d',
+    // brandLightMedium: '#14213d',
     // brandDark: '#000000',
     // brandDanger: '#E83641',
 
     //Brand violet
     // brandLight: '#EEF9EC',
     // brandMedium: '#3B6E91',
-    // brandMediumDark: '#9BD4D6',
+    // brandLightMedium: '#9BD4D6',
     // brandDark: '#1C2D4C',
     // brandDanger: '#E83641',
 
     //Sky blue
     // brandLight: '#f2ffff',
     // brandMedium: '#00b4d8',
-    // brandMediumDark: '#023e8a',
+    // brandLightMedium: '#023e8a',
     // brandDark: '#03045e',
     // brandDanger: '#E83641',
 
@@ -226,7 +276,7 @@ export let colors: IColors = {
 //   colors.theme[THEME] = {
 //     brandLight: '#f2ffff',
 //     brandMedium: '#00b4d8',
-//     brandMediumDark: '#023e8a',
+//     brandLightMedium: '#023e8a',
 //     brandDark: '#03045e',
 //     brandDanger: '#E83641',
 //   };
@@ -285,7 +335,7 @@ export const utils = {
   inputRadius: 15,
   inputElevation: {
     elevation: 10,
-    shadowColor: colors.theme[THEME].textCardGray,
+    shadowColor: colors.theme[THEME].shadowBrandLight,
     shadowOpacity: 1,
   },
   bgWhite: {
@@ -294,7 +344,7 @@ export const utils = {
 };
 
 export const ripple = {
-  color: colors.theme[THEME].textBrandMedium,
+  color: colors.theme[THEME].textBrandDark,
 };
 
 export const formStyles = StyleSheet.create({
@@ -315,7 +365,7 @@ export const formStyles = StyleSheet.create({
   },
   input: {
     color: colors.theme[THEME].textDark,
-    backgroundColor: colors.theme[THEME].textLight,
+    backgroundColor: colors.theme[THEME].brandLight,
     borderRadius: utils.inputRadius,
     fontSize: utils.fontSize.medium,
     fontFamily: utils.fontFamily.Bold,
@@ -330,7 +380,7 @@ export const formStyles = StyleSheet.create({
     fontSize: utils.fontSize.small,
   },
   select: {
-    backgroundColor: colors.theme[THEME].textLight,
+    backgroundColor: colors.theme[THEME].brandLight,
     borderRadius: utils.inputRadius,
     fontSize: utils.fontSize.large,
     padding: 5,
@@ -340,7 +390,7 @@ export const formStyles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 16,
     ...utils.inputElevation,
-    backgroundColor: colors.theme[THEME].textLight,
+    backgroundColor: colors.theme[THEME].brandLight,
     borderRadius: utils.inputRadius,
   },
   selectBtnLabel: {
@@ -363,14 +413,15 @@ export const formStyles = StyleSheet.create({
     flex: 1,
   },
   button: {
-    marginVertical: 20,
     paddingVertical: 10,
     paddingHorizontal: 20,
     backgroundColor: colors.theme[THEME].brandMedium,
     borderRadius: utils.inputRadius,
-    shadowColor: colors.theme[THEME].brandMedium,
+    shadowColor: colors.theme[THEME].shadowBrandMedium,
     display: 'flex',
     justifyContent: 'center',
+    flex: 1,
+    overflow: 'hidden',
     alignItems: 'center',
   },
   actionBtn: {
@@ -388,7 +439,7 @@ export const formStyles = StyleSheet.create({
     borderWidth: 1,
   },
   saveButton: {
-    // marginLeft: 10,
+    marginVertical: 20,
   },
   buttonLabel: {
     color: colors.theme[THEME].textLight,
@@ -411,15 +462,21 @@ export const formStyles = StyleSheet.create({
 
 export const containerLeftMargin = 50;
 export const commonStyles = StyleSheet.create({
+  mb160: {
+    marginBottom: 160,
+  },
+  mt0: {
+    marginTop: 0,
+  },
   screen: {
     flex: 1,
     display: 'flex',
-    backgroundColor: colors.theme[THEME].brandLight,
+    backgroundColor: colors.theme[THEME].brandBg,
   },
   container: {
     paddingHorizontal: 20,
     paddingLeft: containerLeftMargin,
-    backgroundColor: colors.theme[THEME].brandLight,
+    backgroundColor: colors.theme[THEME].brandBg,
     fontFamily: utils.fontFamily,
   },
   icon: {
@@ -453,8 +510,8 @@ export const commonStyles = StyleSheet.create({
     },
     brandWhite: {
       elevation: 10,
-      shadowColor: colors.theme[THEME].textGray,
-      backgroundColor: colors.theme[THEME].textLight,
+      shadowColor: colors.theme[THEME].shadowBrandLight,
+      backgroundColor: colors.theme[THEME].brandLight,
       text: {
         fontSize: utils.fontSize.small,
         color: colors.theme[THEME].textGray,
@@ -466,7 +523,7 @@ export const commonStyles = StyleSheet.create({
     },
     brandMedium: {
       elevation: 10,
-      shadowcolor: colors.theme[THEME].textBrandMedium,
+      shadowcolor: colors.theme[THEME].shadowBrandMedium,
       backgroundColor: colors.theme[THEME].brandMedium,
       text: {
         fontSize: utils.fontSize.small,
@@ -479,7 +536,7 @@ export const commonStyles = StyleSheet.create({
     },
     brandDark: {
       elevation: 10,
-      shadowColor: colors.theme[THEME].brandDark,
+      shadowColor: colors.theme[THEME].shadowBrandMedium,
       backgroundColor: colors.theme[THEME].brandDark,
       text: {
         fontSize: utils.fontSize.small,
@@ -498,7 +555,7 @@ export const commonStyles = StyleSheet.create({
   },
   shadowGray: {
     elevation: 1,
-    shadowColor: '#52006A',
+    shadowColor: colors.theme[THEME].shadowBrandMedium,
   },
   categoryTitle: {
     color: colors.theme[THEME].textDark,
@@ -512,9 +569,12 @@ export const commonStyles = StyleSheet.create({
     justifyContent: 'center',
     display: 'flex',
     flex: 1,
-    height: '100%',
   },
-  illustration: {},
+  illustration: {
+    height: '100%',
+    width: '100%',
+    aspectRatio: 1,
+  },
   illustrationTitle: {
     color: colors.theme[THEME].textBrandMedium,
     fontSize: utils.fontSize.medium,
@@ -531,19 +591,23 @@ export const commonStyles = StyleSheet.create({
     marginBottom: 20,
   },
   bottomTabContainer: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    backgroundColor: colors.theme[THEME].brandBg,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
     elevation: 10,
-    shadowcolor: colors.theme[THEME].brandMedium,
+    shadowcolor: colors.theme[THEME].shadowBrandMedium,
     shadowOffset: {
       width: -10,
       height: -10,
     },
   },
   bottomTab: {
-    padding: 14,
+    // padding: 14,
   },
   bottomTabTextActive: {
     fontSize: utils.fontSize.medium,
@@ -574,6 +638,12 @@ export const uploadMenu = StyleSheet.create({
     display: 'flex',
     flex: 1,
     elevation: 10,
+    zIndex: 100,
+    shadowColor: colors.theme[THEME].shadowBrandMedium,
+    shadowOffset: {
+      width: -10,
+      height: -10,
+    },
   },
   elevationWrapper: {
     display: 'flex',
@@ -601,7 +671,7 @@ export const uploadMenu = StyleSheet.create({
   },
   uploadContainer: {
     paddingBottom: 20,
-    backgroundColor: colors.theme[THEME].brandLight,
+    backgroundColor: colors.theme[THEME].brandBg,
   },
   uploadMenu: {
     display: 'flex',
@@ -635,6 +705,11 @@ export const uploadMenu = StyleSheet.create({
     flexWrap: 'wrap',
     flexDirection: 'row',
   },
+  imageListItemWrapper: {
+    display: 'flex',
+    flex: 1,
+    position: 'relative',
+  },
   imageListItem: {
     borderRadius: utils.inputRadius,
     // borderWidth: 1,
@@ -644,6 +719,15 @@ export const uploadMenu = StyleSheet.create({
     width: '100%',
     height: 120,
   },
+  imageListItemRemove: {
+    backgroundColor: colors.theme[THEME].brandMedium,
+    margin: 4,
+    borderRadius: utils.inputRadius,
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    zIndex: 1,
+  },
 });
 
 export const recentList = StyleSheet.create({
@@ -651,24 +735,30 @@ export const recentList = StyleSheet.create({
     paddingHorizontal: commonStyles.container.paddingHorizontal,
     paddingBottom: 20,
   },
+  dividerMargin: {
+    paddingTop: 16,
+  },
   dividerWrapper: {
     display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    height: 1,
     marginVertical: 8,
+    opacity: 0.05,
   },
   divider: {
-    borderBottomWidth: 1,
-    borderBottomColor: grey[100],
-    height: 1,
-    // width: '80%',
+    // textAlign: 'left',
+    // borderBottomWidth: 1,
+    // borderBottomColor: colors.theme[THEME].textBrandMedium,
+    // left: '20%',
+    // width: '30%',
   },
   swiper: {
-    backgroundColor: colors.theme[THEME].brandLight,
+    backgroundColor: colors.theme[THEME].brandBg,
     display: 'flex',
   },
   swipeIcon: {
-    backgroundColor: colors.theme[THEME].brandLight,
+    backgroundColor: colors.theme[THEME].brandBg,
     position: 'relative',
     flex: 1,
     display: 'flex',
@@ -685,7 +775,7 @@ export const recentList = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.theme[THEME].brandLight,
+    backgroundColor: colors.theme[THEME].brandBg,
     borderRadius: utils.inputRadius,
     paddingLeft: 10,
   },
@@ -723,7 +813,7 @@ export const recentList = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: colors.theme[THEME].brandLight,
+    backgroundColor: colors.theme[THEME].brandBg,
     marginVertical: 10,
     marginRight: 20,
     borderRadius: utils.inputRadius,
@@ -737,7 +827,7 @@ export const recentList = StyleSheet.create({
   },
   listItemTitle: {
     color: colors.theme[THEME].textDark,
-    fontSize: utils.fontSize.small,
+    fontSize: utils.fontSize.medium,
     fontFamily: utils.fontFamily.Bold,
     // maxWidth: '90%',
   },
@@ -791,11 +881,14 @@ export const recentList = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'row',
   },
+  mb50: {
+    marginBottom: 50,
+  },
 });
 
 export const categoryList = StyleSheet.create({
   expensitureWrapper: {
-    backgroundColor: colors.theme[THEME].brandLight,
+    backgroundColor: colors.theme[THEME].brandBg,
     display: 'flex',
     overflow: 'scroll',
     marginLeft: -commonStyles.container.paddingLeft,
@@ -814,13 +907,13 @@ export const categoryList = StyleSheet.create({
     borderColor: colors.theme[THEME].textCardGray,
     borderStyle: 'dotted',
     width: 80,
-    paddingVertical: 3,
+    paddingVertical: 2,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
   },
   activeCategory: {
-    color: colors.theme[THEME].brandLight,
+    color: colors.theme[THEME].brandBg,
     position: 'relative',
     marginRight: 8,
   },

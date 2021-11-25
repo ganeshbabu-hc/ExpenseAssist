@@ -74,8 +74,8 @@ const QuickMenu = ({ navigation }) => {
               name={item.icon}
               color={
                 index % 2 === 0
-                  ? colors.theme[THEME].textLight
-                  : colors.theme[THEME].textBrandDark
+                  ? colors.theme[THEME].textBrandMedium
+                  : colors.theme[THEME].textBrandMedium
               }
               size={commonStyles.icon.width}
             />
@@ -122,7 +122,7 @@ export default QuickMenu;
 
 const styles = StyleSheet.create({
   quickMenuContainer: {
-    backgroundColor: colors.theme[THEME].brandLight,
+    backgroundColor: colors.theme[THEME].brandBg,
     // borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     overflow: 'hidden',
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   img: {
-    backgroundColor: colors.theme[THEME].brandLight,
+    backgroundColor: colors.theme[THEME].brandBg,
     width: '100%',
     height: 29,
   },
@@ -152,10 +152,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   lightBg: {
-    backgroundColor: 'rgba(225,225,225,0.3)',
+    backgroundColor: colors.theme[THEME].brandLight,
   },
   darKbg: {
-    backgroundColor: colors.theme[THEME].brandLight,
+    backgroundColor: colors.theme[THEME].brandBg,
   },
   typeCard: {
     display: 'flex',

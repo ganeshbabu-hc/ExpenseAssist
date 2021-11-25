@@ -1,81 +1,24 @@
 import * as React from 'react';
-import { FlatList, SafeAreaView, StyleSheet, View } from 'react-native';
+import {
+  Image,
+  Pressable,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import AppHeader from '../common/AppHeader';
 import { colors, commonStyles, utils } from '../styles/theme';
-import { useEffect, useRef, useState } from 'react';
-import {
-  getCurrncyTypes,
-  ICurrency,
-  setCurrency,
-} from '../database/common/CurrencyController';
-import { useDispatch, useSelector } from 'react-redux';
-import { UPDATE_CURRENCY } from '../../redux/constants/StoreConstants';
-import { THEME } from '../utils/Constants';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import t from '../common/translations/Translation';
+import { THEME } from '../utils/Constants';
 const ThemeScreen = ({ navigation }: any) => {
   // const isDarkMode = useColorScheme() === 'dark';
   const dispatch = useDispatch();
   const [title, setTitle] = useState('');
-  const [currencyList, setCurrencyList] = useState<ICurrency[]>([]);
-  const [filteredList, setFilteredList] = useState<ICurrency[]>([]);
-  const userCurrency: ICurrency = useSelector((state: any) => {
-    return state.common.configuration.currency.value;
-  });
-  const flatList = useRef<FlatList>(null);
 
-  const scrollToSeletedCategory = (list: ICurrency[]) => {
-    setTimeout(() => {
-      let scrollIndex = 0;
-      list.forEach((currency: ICurrency, index: number) => {
-        if (currency.currencyId === userCurrency.currencyId) {
-          scrollIndex = index;
-        }
-      });
-      if (scrollIndex !== 0) {
-        flatList?.current?.scrollToIndex({
-          index: scrollIndex,
-          animated: true,
-        });
-      }
-    }, 1000);
-  };
-  const getCurrecyList = async () => {
-    const curList: ICurrency[] = await getCurrncyTypes();
-    setCurrencyList(curList);
-    setFilteredList(curList);
-    // scrollToSeletedCategory(curList);
-  };
-
-  const updateCurrency = async (currency: ICurrency) => {
-    const result = await setCurrency(currency);
-    if (result) {
-      dispatch({ type: UPDATE_CURRENCY, payload: currency });
-      // ShowSnackBar(`Currency is set to ${currency.code}: ${currency.symbol}`);
-    }
-  };
-
-  const updateFilteredList = async () => {
-    const query = title.trim().toLocaleLowerCase();
-    if (query !== '') {
-      const filtered = currencyList.filter((item: ICurrency) => {
-        return (
-          item.name.toLocaleLowerCase().includes(query) ||
-          item.code.toLocaleLowerCase().includes(query)
-        );
-      });
-      setFilteredList(filtered);
-    } else {
-      setFilteredList(currencyList);
-    }
-  };
-
-  useEffect(() => {
-    getCurrecyList();
-  }, []);
-
-  useEffect(() => {
-    updateFilteredList();
-  }, [title]);
+  useEffect(() => {}, []);
 
   return (
     <SafeAreaView style={commonStyles.screen}>
@@ -87,43 +30,65 @@ const ThemeScreen = ({ navigation }: any) => {
         />
         <View />
       </View>
-      {/* </ScrollView> */}
+      <View style={[styles.themeWrapper, commonStyles.container]}>
+        <Pressable style={styles.themeItem} onPress={() => {}}>
+          {/* <View style={styles.themeType} /> */}
+          <Image
+            resizeMethod="auto"
+            resizeMode="cover"
+            style={[styles.themeType, styles.themeTypeActive]}
+            source={require('../../assets/img/light.jpg')}
+          />
+          <Text style={styles.themeName}>{t('light')}</Text>
+        </Pressable>
+        <Pressable style={styles.themeItem} onPress={() => {}}>
+          {/* <View style={styles.themeType} /> */}
+          <Image
+            resizeMethod="auto"
+            resizeMode="cover"
+            style={[styles.themeType]}
+            source={require('../../assets/img/dark.jpg')}
+          />
+          <Text style={styles.themeName}>{t('dark')}</Text>
+        </Pressable>
+      </View>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  iconWrapper: {},
-  themeList: {},
-  listWrapper: {
+  themeWrapper: {
     display: 'flex',
-    flexDirection: 'row',
     alignItems: 'flex-start',
-    justifyContent: 'center',
-  },
-  themeDescWrapper: {
+    justifyContent: 'space-evenly',
     flex: 1,
-    display: 'flex',
     flexDirection: 'row',
+    marginVertical: 20,
+  },
+  themeItem: {
+    display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    marginLeft: 14,
+    justifyContent: 'flex-start',
+    flex: 1,
+    // flexDirection: 'row',
   },
-  themeDesc: {},
   themeName: {
-    fontFamily: utils.fontFamily.Bold,
-    color: colors.theme[THEME].textCardGray,
-  },
-  themeCode: {
-    fontFamily: utils.fontFamily.Bold,
     color: colors.theme[THEME].textDark,
+    fontSize: utils.fontSize.large,
+    fontFamily: utils.fontFamily.Bold,
+    paddingVertical: 20,
   },
-  themeSymbol: {
-    fontFamily: utils.fontFamily.Black,
-    color: colors.theme[THEME].textDark,
+  themeTypeActive: {
+    borderColor: colors.theme[THEME].brandMedium,
+    borderWidth: 3,
   },
-  inputWrapper: {
-    marginBottom: 30,
+  themeType: {
+    width: '90%',
+    height: 200,
+    borderWidth: 1,
+    borderColor: colors.theme[THEME].textCardGray,
+    borderRadius: utils.inputRadius,
+    backgroundColor: colors.theme[THEME].brandMedium,
   },
 });
 

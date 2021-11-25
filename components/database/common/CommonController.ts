@@ -40,8 +40,8 @@ export const saveTransactionCategory = async (
   category: ITransactionCategory,
 ) => {
   const insertQuery =
-    `INSERT OR REPLACE INTO ${TNAME_TRANSACTION_CATEGORIES}(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_TYPE) values` +
-    `('${category.title}', '${category.description}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '${category.transactionType}')`;
+    `INSERT OR REPLACE INTO ${TNAME_TRANSACTION_CATEGORIES}(TITLE, DESCRIPTION, DATE_ADDED_TLM, DATE_UPDATED_TLM, CATEGORY_TYPE, EDITABLE) values` +
+    `('${category.title}', '${category.description}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '${category.transactionType}', ${category.editable})`;
   const db = await getDBConnection();
   return db.executeSql(insertQuery);
 };

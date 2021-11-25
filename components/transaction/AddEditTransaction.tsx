@@ -14,6 +14,7 @@ import { SHOW_TOAST } from '../../redux/constants/StoreConstants';
 import AppHeader from '../common/AppHeader';
 import {
   getTransactionImages,
+  removeImages,
   saveTransaction,
   updateTransaction,
 } from '../transaction/TransactionController';
@@ -130,6 +131,7 @@ const AddEditTransaction = ({ navigation, route }: IAddEditTransaction) => {
     setDescription('');
     // setTransactionCategoryId(null);
     setDateAddedTlm(dateFormatter(new Date()));
+    setImageList([]);
   };
 
   const saveEditTransactioneHandler = async () => {
@@ -151,7 +153,7 @@ const AddEditTransaction = ({ navigation, route }: IAddEditTransaction) => {
     };
     let result = null;
     if (editMode) {
-      result = await updateTransaction(modTransaction);
+      result = await updateTransaction(modTransaction, imageList);
       const titleType =
         transactionType === TransactionType.INCOME
           ? 'incomeUpdated'
@@ -217,9 +219,28 @@ const AddEditTransaction = ({ navigation, route }: IAddEditTransaction) => {
         transaction.transactionId,
       );
       setImageList(result);
-      // console.log('Image results---', result);
     }
     return [];
+  };
+
+  const removeImage = async (imageId?: number) => {
+    console.log(imageId);
+    if (!imageId) {
+      setImageList([]);
+      return;
+    }
+    const result = await removeImages(imageId);
+    if (result) {
+      setImageList([]);
+      dispatch({
+        type: SHOW_TOAST,
+        payload: [
+          {
+            title: t('removeImage'),
+          },
+        ],
+      });
+    }
   };
 
   useEffect(() => {
@@ -315,22 +336,38 @@ const AddEditTransaction = ({ navigation, route }: IAddEditTransaction) => {
               <View>
                 <Text style={formStyles.inputLabel}>{t('uploads')}</Text>
               </View>
-              <TouchableOpacity
+              <Pressable
                 style={uploadMenu.imageListContainer}
                 onPress={() => {
-                  navigation.navigate('ImageViewer', imageList);
+                  navigation.navigate('ImageView', { imageList });
                 }}>
                 {imageList.map((image: ITransactionImage, index: number) => {
                   return (
-                    <Image
-                      key={`image-${index}`}
-                      style={uploadMenu.imageListItem}
-                      resizeMode="cover"
-                      source={{ uri: 'data:image/png;base64,' + image.base64 }}
-                    />
+                    <View
+                      style={uploadMenu.imageListItemWrapper}
+                      key={`image-${index}`}>
+                      <Image
+                        style={uploadMenu.imageListItem}
+                        resizeMode="cover"
+                        source={{
+                          uri: image.base64,
+                        }}
+                      />
+                      <Pressable
+                        onPress={() => {
+                          removeImage(image.imageId);
+                        }}
+                        style={uploadMenu.imageListItemRemove}>
+                        <IconMap
+                          size={32}
+                          name={'close'}
+                          color={colors.theme[THEME].textBrandLightMedium}
+                        />
+                      </Pressable>
+                    </View>
                   );
                 })}
-              </TouchableOpacity>
+              </Pressable>
             </View>
           )}
           <View style={formStyles.actionContainer}>
@@ -342,11 +379,13 @@ const AddEditTransaction = ({ navigation, route }: IAddEditTransaction) => {
                 style={[formStyles.actionBtn, formStyles.pinnedActive]}>
                 <IconMap
                   name="image"
-                  color={colors.theme[THEME].brandMedium}
+                  color={colors.theme[THEME].textBrandMedium}
                   size={28}
                 />
               </Pressable>
               <Pressable
+                // activeOpacity={0.8}
+                // extraButtonProps={{ rippleColor: 'red' }}
                 onPress={() => {
                   const msg = pinned ? t('txUnpinned') : t('txPinned');
                   dispatch({
@@ -364,8 +403,8 @@ const AddEditTransaction = ({ navigation, route }: IAddEditTransaction) => {
                   pinned ? formStyles.pinnedActive : formStyles.pinnedInactive,
                   {
                     backgroundColor: pinned
-                      ? colors.theme[THEME].textBrandMedium
-                      : colors.theme[THEME].textLight,
+                      ? colors.theme[THEME].brandMedium
+                      : colors.theme[THEME].brandLight,
                   },
                 ]}>
                 <IconMap
@@ -380,6 +419,9 @@ const AddEditTransaction = ({ navigation, route }: IAddEditTransaction) => {
               </Pressable>
             </View>
             <Pressable
+              // activeOpacity={0.8}
+              // extraButtonProps={{ rippleColor: 'red' }}
+              // activeOpacity={0.6}
               style={[
                 formStyles.button,
                 formStyles.saveButton,
@@ -410,7 +452,6 @@ const AddEditTransaction = ({ navigation, route }: IAddEditTransaction) => {
             ],
           },
         ]}>
-        {/* <View style={uploadMenu.elevationWrapper} /> */}
         <View style={[commonStyles.container, uploadMenu.uploadMenuHeader]}>
           <View>
             <Text style={uploadMenu.uploadMenuTitle}>{t('uploadImages')}</Text>
@@ -426,13 +467,13 @@ const AddEditTransaction = ({ navigation, route }: IAddEditTransaction) => {
             <IconMap
               size={34}
               name="close"
-              color={colors.theme[THEME].brandMedium}
+              color={colors.theme[THEME].textBrandMedium}
             />
           </Pressable>
         </View>
         <UploadMenu
           menuHandler={showUploadMenu}
-          imageListHandler={setImageList}
+          imageListCallback={setImageList}
         />
       </Animated.View>
     </SafeAreaView>
@@ -441,7 +482,7 @@ const AddEditTransaction = ({ navigation, route }: IAddEditTransaction) => {
 
 const styles = StyleSheet.create({
   expenseWrapper: {
-    backgroundColor: colors.theme[THEME].brandLight,
+    backgroundColor: colors.theme[THEME].brandBg,
     display: 'flex',
     flex: 1,
     marginTop: 30,

@@ -22,16 +22,14 @@ import { TransactionType, ITransaction } from './TransactionTypes';
 
 interface ITransactionItem {
   index: number;
-  item: any;
+  item: ITransaction;
   navigation?: any;
-  type?: TransactionType;
   onUpdate: Function;
 }
 
 const TransactionItem = ({
   item,
   navigation,
-  type,
   index,
   onUpdate,
 }: ITransactionItem) => {
@@ -126,7 +124,11 @@ const TransactionItem = ({
               pinTransaction(item);
             },
             component: (
-              <View style={recentList.swipeIcon}>
+              <View
+                style={[
+                  recentList.swipeIcon,
+                  index !== 0 ? recentList.dividerMargin : {},
+                ]}>
                 <UniconPaperClip color={colors.theme[THEME].textBrandMedium} />
               </View>
             ),
@@ -138,7 +140,11 @@ const TransactionItem = ({
               removeTransactions(item);
             },
             component: (
-              <View style={recentList.swipeIcon}>
+              <View
+                style={[
+                  recentList.swipeIcon,
+                  index !== 0 ? recentList.dividerMargin : {},
+                ]}>
                 <UniconTrashAlt color={colors.theme[THEME].textBrandMedium} />
               </View>
             ),
@@ -148,7 +154,11 @@ const TransactionItem = ({
               editTransaction(item);
             },
             component: (
-              <View style={recentList.swipeIcon}>
+              <View
+                style={[
+                  recentList.swipeIcon,
+                  index !== 0 ? recentList.dividerMargin : {},
+                ]}>
                 <UniconEdit color={colors.theme[THEME].textBrandMedium} />
               </View>
             ),
@@ -160,70 +170,70 @@ const TransactionItem = ({
               <Text style={recentList.divider} />
             </View>
           )}
-        </View>
-        <Pressable
-          onLongPress={() => {
-            dispatch({
-              type: SHOW_MODAL,
-              payload: {
-                modalContent: () => (
-                  <ModalContent header={'Expense : ' + item.title}>
-                    <Text>Hai</Text>
-                  </ModalContent>
-                ),
-              },
-            });
-          }}
-          style={recentList.listItem}>
-          <View style={recentList.listItemInfo}>
-            <View
-              style={[
-                recentList.listItemIconWrapper,
-                {
-                  backgroundColor:
-                    index % 2 === 0
-                      ? colors.theme[THEME].brandMedium
-                      : colors.theme[THEME].brandMediumDark,
+          <Pressable
+            onLongPress={() => {
+              dispatch({
+                type: SHOW_MODAL,
+                payload: {
+                  modalContent: () => (
+                    <ModalContent header={'Expense : ' + item.title}>
+                      <Text>Hai</Text>
+                    </ModalContent>
+                  ),
                 },
-              ]}>
-              <IconMap
-                name={
-                  type === TransactionType.INCOME
-                    ? item.transactionCategoryIcon ?? 'payment'
-                    : item.transactionCategoryIcon ?? 'payment'
-                }
-                color={colors.theme[THEME].textLight}
-              />
-            </View>
-            <View style={recentList.listItemInfoWrapper}>
-              <View>
-                <View style={recentList.listItemDescription}>
-                  <Text style={recentList.listItemPayment}>
-                    {`${t(item.paymentTitle)} • `}
-                  </Text>
-                  <Text style={recentList.listItemDate}>
-                    {`${t(item.transactionType)} • `}
-                  </Text>
-                  <Text style={recentList.listItemDate}>
-                    {displayDateFormat(item.dateAddedTlm)}
+              });
+            }}
+            style={recentList.listItem}>
+            <View style={recentList.listItemInfo}>
+              <View
+                style={[
+                  recentList.listItemIconWrapper,
+                  {
+                    backgroundColor:
+                      index % 2 === 0
+                        ? colors.theme[THEME].brandMedium
+                        : colors.theme[THEME].brandMedium,
+                  },
+                ]}>
+                <IconMap
+                  name={
+                    item.transactionType === TransactionType.INCOME
+                      ? item.transactionCategoryIcon ?? 'payment'
+                      : item.transactionCategoryIcon ?? 'payment'
+                  }
+                  color={colors.theme[THEME].textLight}
+                />
+              </View>
+              <View style={recentList.listItemInfoWrapper}>
+                <View>
+                  <View style={recentList.listItemDescription}>
+                    <Text style={recentList.listItemPayment}>
+                      {`${t(item.paymentTitle ?? '')} • `}
+                    </Text>
+                    <Text style={recentList.listItemDate}>
+                      {`${t(item.transactionType)} • `}
+                    </Text>
+                    <Text style={recentList.listItemDate}>
+                      {displayDateFormat(item.dateAddedTlm)}
+                    </Text>
+                  </View>
+                  <Text style={recentList.listItemTitle}>{item.title}</Text>
+                  <Text style={recentList.listItemAmount}>
+                    {currency.symbol} {item.amount}
                   </Text>
                 </View>
-                <Text style={recentList.listItemTitle}>{item.title}</Text>
-                <Text style={recentList.listItemAmount}>
-                  {currency.symbol} {item.amount}
-                </Text>
-              </View>
-              <View style={recentList.listItemInfoIcon}>
-                {item.pinned == true && (
-                  <IconMap
-                    name={'paper-clip'}
-                    color={colors.theme[THEME].textBrandMedium}
-                  />
-                )}
+                <View style={recentList.listItemInfoIcon}>
+                  {item.pinned === true && (
+                    <IconMap
+                      name={'paper-clip'}
+                      color={colors.theme[THEME].textCardGray}
+                    />
+                  )}
+                </View>
               </View>
             </View>
-          </View>
-        </Pressable>
+          </Pressable>
+        </View>
       </Swipeout>
     </Animated.View>
   );

@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.theme[THEME].brandDark,
     padding: 20,
     borderRadius: utils.inputRadius,
-    shadowcolor: colors.theme[THEME].textBrandMedium,
+    shadowcolor: colors.theme[THEME].shadowBrandMedium,
     shadowOffset: {
       width: 0,
       height: 3,

@@ -70,6 +70,6 @@ export const HomeScreen = ({navigation}: any) => {
 
 const styles = StyleSheet.create({
   quickMenuContainer: {
-    backgroundColor: colors.theme[THEME].brandLight,
+    backgroundColor: colors.theme[THEME].brandBg,
   },
 });

@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 10,
-    shadowColor: colors.theme[THEME].brandMedium,
+    shadowColor: colors.theme[THEME].shadowBrandMedium,
     shadowOffset: {
       width: 10,
       height: 10,

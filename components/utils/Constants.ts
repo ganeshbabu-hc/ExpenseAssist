@@ -1,3 +1,5 @@
+import { useCallback, useMemo } from "react";
+
 export const TNAME_EXPENSE = 'EXPENSE';
 export const TNAME_TRANSACTIONS = 'TRANSACTIONS';
 export const TNAME_TRANSACTION_CATEGORIES = 'TRANSACTION_CATEGORIES';
@@ -45,7 +47,9 @@ export const DEBOUNCE_RATE = 300;
 //   return result ?? 'red';
 // };
 // x();
-export let THEME = 'purple';
+// export let THEME = 'deepPurple';
+export let THEME = 'yellow';
+// export let THEME = 'purple';
 // const x = async () => {
 //   await AsyncStorage.setItem('@themekey', 'purple');
 //   const result = await AsyncStorage.getItem('@themekey');

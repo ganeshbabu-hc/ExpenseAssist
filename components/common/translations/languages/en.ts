@@ -25,6 +25,7 @@ export default {
   expenseRemoved: 'Expense %{name} has been removed',
   invalidtransactionCatgoeryId: 'Select a valid category',
   categoryAdded: 'Category %{name} is added',
+  categoryUpdated: 'Category %{name} is updated',
   categoryRemoved: 'Category %{name} is removed',
   noTransaction: 'Start by adding transaction',
   noPinned: "You don't have pinned transactions",
@@ -113,4 +114,12 @@ export default {
   uploadImagesNotification: 'You can upload maximum 2 images',
   uploadImages: 'Upload images from',
   uploads: 'Uploads',
+  removeImage: 'Image has been removed from the transaction',
+
+  //theme
+  light: 'Light',
+  dark: 'Dark',
+
+  //reminders
+  repeat: 'Repeat',
 };
