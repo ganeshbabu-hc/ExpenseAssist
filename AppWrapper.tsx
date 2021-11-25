@@ -61,7 +61,7 @@ const AppWrapper = () => {
     //   timestamp: Date.now() + 1000 * 5, // next five minutes from current time (milliseconds)
     // });
     setTimeout(async () => {
-      addReminder();
+      // addReminder();
       // Constants.THEME = 'purple';
       // Request permission
       // Notifications.schduleNotification(new Date(Date.now() + 5 * 1000));

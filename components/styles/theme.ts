@@ -32,6 +32,7 @@ interface IColorMapping {
   textBrandMedium: string;
   textBrandLightMedium: string;
   textBrandDark: string;
+  textLightGray: string;
   shadowBrandLight: string;
   shadowBrandMedium: string;
   shadowBrandDark: string;
@@ -53,38 +54,38 @@ export let colors: IColors = {
 
   //Brand Purple-current--
   theme: {
-    darkPurple: {
-      content: 'light-content',
-      // brandLight: deepPurple[50],
-      brandBg: '#212121',
-      brandLight: '#2f2f2f',
-      brandMedium: '#19161b',
-      brandLightMedium: '#251e2d',
-      brandDark: '#121212',
-      brandDanger: pink[600],
-      textDark: '#fff',
-      textGray: grey[500],
-      textCardGray: grey[400],
-      textLight: '#fff',
-      bgLight: '#292929',
-      textBrandLightMedium: deepPurple[200],
-      textBrandMedium: deepPurple[200],
-      textBrandDark: deepPurple[900],
-      shadowBrandLight: '#212121',
-      shadowBrandMedium: '#19161b',
-      shadowBrandDark: '#121212',
-      graphColorScheme: [
-        // deepPurple[900],
-        // deepPurple[800],
-        deepPurple[900],
-        deepPurple[700],
-        deepPurple[500],
-        deepPurple[300],
-        deepPurple[100],
-        deepPurple[600],
-        deepPurple[700],
-      ],
-    },
+    // darkPurple: {
+    //   content: 'light-content',
+    //   // brandLight: deepPurple[50],
+    //   brandBg: '#212121',
+    //   brandLight: '#2f2f2f',
+    //   brandMedium: '#19161b',
+    //   brandLightMedium: '#251e2d',
+    //   brandDark: '#121212',
+    //   brandDanger: pink[600],
+    //   textDark: '#fff',
+    //   textGray: grey[500],
+    //   textCardGray: grey[400],
+    //   textLight: '#fff',
+    //   bgLight: '#292929',
+    //   textBrandLightMedium: deepPurple[200],
+    //   textBrandMedium: deepPurple[200],
+    //   textBrandDark: deepPurple[900],
+    //   shadowBrandLight: '#212121',
+    //   shadowBrandMedium: '#19161b',
+    //   shadowBrandDark: '#121212',
+    //   graphColorScheme: [
+    //     // deepPurple[900],
+    //     // deepPurple[800],
+    //     deepPurple[900],
+    //     deepPurple[700],
+    //     deepPurple[500],
+    //     deepPurple[300],
+    //     deepPurple[100],
+    //     deepPurple[600],
+    //     deepPurple[700],
+    //   ],
+    // },
     yellow: {
       content: 'light-content',
       // brandLight: deepPurple[50],
@@ -98,8 +99,9 @@ export let colors: IColors = {
       textGray: grey[500],
       textCardGray: grey[400],
       textLight: '#000',
+      textLightGray: 'hsla(0, 0%, 100%, 0.15)',
       bgLight: '#292929',
-      textBrandLightMedium: deepPurple[200],
+      textBrandLightMedium: '#feeca4',
       textBrandMedium: '#fdd42a',
       textBrandDark: deepPurple[900],
       shadowBrandLight: '#212121',
@@ -130,6 +132,7 @@ export let colors: IColors = {
       textGray: grey[500],
       textCardGray: grey[400],
       textLight: '#fff',
+      textLightGray: 'hsla(0, 0%, 100%, 0.15)',
       bgLight: '#fff',
       textBrandMedium: deepPurple.A700,
       textBrandDark: deepPurple[900],

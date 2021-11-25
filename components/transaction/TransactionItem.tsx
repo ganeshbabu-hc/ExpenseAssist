@@ -223,7 +223,7 @@ const TransactionItem = ({
                   </Text>
                 </View>
                 <View style={recentList.listItemInfoIcon}>
-                  {item.pinned === true && (
+                  {item.pinned === 1 && (
                     <IconMap
                       name={'paper-clip'}
                       color={colors.theme[THEME].textCardGray}

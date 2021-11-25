@@ -43,10 +43,12 @@ const transactionTypes: ITransactionTypes[] = [
 
 interface ICategoriesScreen {
   navigation: any;
+  route: any;
 }
 
-const CategoriesScreen = ({ navigation }: ICategoriesScreen) => {
+const CategoriesScreen = ({ navigation, route }: ICategoriesScreen) => {
   // const isDarkMode = useColorScheme() === 'dark';
+  console.log(route);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [transactionType, setTransactionType] = useState<TransactionType>(

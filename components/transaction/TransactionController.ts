@@ -252,6 +252,20 @@ export const removeTransaction = async (
   }
 };
 
+export const removeTransactionCategory = async (
+  transactionCategoryId?: number,
+): Promise<any> => {
+  try {
+    const db = await getDBConnection();
+    const deleteQuery = `DELETE from ${TNAME_TRANSACTION_CATEGORIES} where TRANSACTION_CATEGORY_ID = ${transactionCategoryId}`;
+    const results = await db.executeSql(deleteQuery);
+    return results;
+  } catch (error) {
+    console.error(error);
+    throw Error('Failed to category !!!');
+  }
+};
+
 export const togglePinTransaction = async (
   transaction?: ITransaction,
 ): Promise<any> => {

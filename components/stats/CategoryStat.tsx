@@ -1,9 +1,8 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useMemo } from 'react';
 import { Animated, StyleSheet, Text, View } from 'react-native';
 import { IStat } from '../database/common/StatsController';
 import { colors, utils } from '../styles/theme';
 import { THEME } from '../utils/Constants';
-import { ProgressBar } from '@react-native-community/progress-bar-android';
 import IconMap from '../common/IconMap';
 interface ICategoryStat {
   statlist: IStat[];
@@ -18,11 +17,11 @@ const CategoryStat = ({ statlist }: ICategoryStat) => {
   };
 
   const total = useMemo(() => {
-    let total = 0;
+    let totalVal = 0;
     statlist.forEach((stat: IStat) => {
-      total += stat.amount;
+      totalVal += stat.amount;
     });
-    return total;
+    return totalVal;
   }, [statlist]);
   return (
     <View style={styles.statContainer}>
@@ -33,7 +32,7 @@ const CategoryStat = ({ statlist }: ICategoryStat) => {
               <View style={styles.barLabelContainer}>
                 <IconMap
                   style={styles.barIcon}
-                  color={colors.theme[THEME].graphColorScheme[index]}
+                  color={colors.theme[THEME].textBrandLightMedium}
                   name={stat.transactionCategoryIcon}
                   size={24}
                 />
@@ -115,7 +114,7 @@ const styles = StyleSheet.create({
   },
   barContainer: {
     flex: 1,
-    backgroundColor: colors.theme[THEME].brandLightMedium,
+    backgroundColor: colors.theme[THEME].textLightGray,
     height: 14,
     borderRadius: 30,
     marginTop: 6,

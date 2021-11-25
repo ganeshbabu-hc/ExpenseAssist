@@ -1,26 +1,20 @@
 import React, { useRef, useEffect } from 'react';
 import { Animated, Easing, Pressable, Text, View } from 'react-native';
 import Swipeout from 'react-native-swipeout';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { SHOW_TOAST, SHOW_MODAL } from '../../redux/constants/StoreConstants';
 import IconMap from '../common/IconMap';
 import ModalContent from '../common/modal/ModalContent';
 import { ToastType } from '../common/ToastNotification';
 import t from '../common/translations/Translation';
-import UniconEdit from '../icons/unicons/UniconEdit';
-import UniconPaperClip from '../icons/unicons/UniconPaperClip';
-import UniconTrashAlt from '../icons/unicons/UniconTrashAlt';
 import { recentList, colors, commonStyles } from '../styles/theme';
 import { THEME } from '../utils/Constants';
-import { displayDateFormat } from '../utils/Formatter';
-import { ICurrency } from '../database/common/CurrencyController';
 import {
   removeTransaction,
-  togglePinTransaction,
+  removeTransactionCategory,
 } from '../transaction/TransactionController';
 import {
   TransactionType,
-  ITransaction,
   ITransactionCategory,
 } from '../transaction/TransactionTypes';
 
@@ -40,7 +34,7 @@ const TransactionCategoryItem = ({
   const dispatch = useDispatch();
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const removeAnimation = useRef(new Animated.Value(0)).current;
-  console.log(category);
+  // console.log(category);
 
   const removeTranslate = removeAnimation?.interpolate({
     inputRange: [0, 1],
@@ -48,21 +42,18 @@ const TransactionCategoryItem = ({
     extrapolate: 'clamp',
   });
 
-  const currency: ICurrency = useSelector((state: any) => {
-    return state.common.configuration.currency.value;
-  });
-
-  const removeTransactions = async (transaction: ITransaction) => {
-    const result = await removeTransaction(transaction.transactionId);
+  const removeTransactionCategories = async (
+    txnCategory: ITransactionCategory,
+  ) => {
+    const result = await removeTransactionCategory(
+      txnCategory.transactionCategoryId,
+    );
     if (result) {
       dispatch({
         type: SHOW_TOAST,
         payload: [
           {
-            title:
-              transaction.transactionType === TransactionType.EXPENSE
-                ? t('expenseRemoved', { name: transaction.title })
-                : t('incomeRemoved', { name: transaction.title }),
+            title: t('categoryRemoved', { name: txnCategory.title }),
             toastType: ToastType.WARNING,
           },
         ],
@@ -75,12 +66,6 @@ const TransactionCategoryItem = ({
     navigation.navigate('AddEditCategory', { transactionCategory: txCategory });
   };
 
-  const pinTransaction = async (txn: ITransaction) => {
-    const result = await togglePinTransaction(txn);
-    if (result) {
-      onUpdate();
-    }
-  };
   useEffect(() => {
     Animated.timing(fadeAnim, {
       useNativeDriver: true,
@@ -110,40 +95,10 @@ const TransactionCategoryItem = ({
       <Swipeout
         autoClose={true}
         style={recentList.swiper}
-        // left={[
-        //   {
-        //     onPress: () => {
-        //       pinTransaction(category);
-        //     },
-        //     component: (
-        //       <View
-        //         style={[
-        //           recentList.swipeIcon,
-        //           index !== 0 ? recentList.dividerMargin : {},
-        //         ]}>
-        //         <UniconPaperClip color={colors.theme[THEME].textBrandMedium} />
-        //       </View>
-        //     ),
-        //   },
-        // ]}
         right={[
-          //   {
-          //     onPress: () => {
-          //       removeTransactions(category);
-          //     },
-          //     component: (
-          //       <View
-          //         style={[
-          //           recentList.swipeIcon,
-          //           index !== 0 ? recentList.dividerMargin : {},
-          //         ]}>
-          //         <UniconTrashAlt color={colors.theme[THEME].textBrandMedium} />
-          //       </View>
-          //     ),
-          //   },
           {
             onPress: () => {
-              editTransactionCategory(category);
+              removeTransactionCategories(category);
             },
             component: (
               <View
@@ -203,25 +158,26 @@ const TransactionCategoryItem = ({
               <View style={recentList.listItemInfoWrapper}>
                 <View>
                   <Text style={recentList.listItemTitle}>{category.title}</Text>
-                  {category.description && (
+                  {category.description !== null && (
                     <Text style={recentList.listItemDate}>
                       {category.description}
                     </Text>
                   )}
                 </View>
+                <View style={recentList.listItemInfoIcon}>
+                  {category.editable === 1 && (
+                    <Pressable
+                      onPress={() => {
+                        editTransactionCategory(category);
+                      }}>
+                      <IconMap
+                        name={'edit'}
+                        color={colors.theme[THEME].textBrandMedium}
+                      />
+                    </Pressable>
+                  )}
+                </View>
               </View>
-              {category.editable === 1 && (
-                <Pressable
-                  onPress={() => {
-                    editTransactionCategory(category);
-                  }}
-                  style={recentList.listItemInfoIcon}>
-                  <IconMap
-                    name={'edit'}
-                    color={colors.theme[THEME].textBrandMedium}
-                  />
-                </Pressable>
-              )}
             </View>
           </Pressable>
         </View>

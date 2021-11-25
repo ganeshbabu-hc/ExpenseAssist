@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {
   Image,
+  Platform,
   Pressable,
   SafeAreaView,
   StyleSheet,
@@ -16,21 +17,40 @@ import { THEME } from '../utils/Constants';
 import RNFS from 'react-native-fs';
 import config from '../../config.json';
 
+const basePath = Platform.select({
+  ios: RNFS.MainBundlePath,
+  android: RNFS.ExternalDirectoryPath,
+});
+
 const ThemeScreen = ({ navigation }: any) => {
   // const isDarkMode = useColorScheme() === 'dark';
   const dispatch = useDispatch();
   const [title, setTitle] = useState('');
   const setTheme = async (name: string) => {
-    const filePath = await RNFS.readFileAssets('config.json', 'utf8');
-    console.log('filePath', filePath);
-    config.THEME = name;
-    console.log('config', config);
-    const result = await RNFS.writeFile(
-      filePath,
-      JSON.stringify(config),
-      'utf8',
-    );
+    const path = basePath + '/config.json';
+    // const filePath = await RNFS.readFileAssets('config.json', 'utf8');
+    // console.log('filePath', filePath);
+    // config.THEME = name;
+    // console.log('config', config);
+
+    // const input = JSON.stringify();
+    const result = await RNFS.readFile(path); // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
+    // console.log(JSON.parse(result));
+    // await RNFS.writeFile(path, '', 'ascii');
     console.log('result', result);
+    RNFS.writeFile(path, '----')
+      .then((success: any) => {
+        console.log('FILE WRITTEN!');
+      })
+      .catch(err => {
+        console.log(err.message);
+      });
+    // .then(result => {
+    //   console.log('GOT RESULT', result);
+
+    //   // stat the first file
+    //   // return Promise.all([RNFS.stat(result[0].path), result[0].path]);
+    // });
   };
 
   useEffect(() => {}, []);

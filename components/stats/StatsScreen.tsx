@@ -26,16 +26,15 @@ const StatsScreen = ({ navigation }) => {
     key: 0,
   });
   const [statList, setStatList] = useState<IStat[]>([]);
-  // const colors = ['#600080', '#9900cc', '#c61aff', '#d966ff', '#ecb3ff'];
   const scrollY = useRef(new Animated.Value(0)).current;
   const [type, setType] = useState<TransactionType>(TransactionType.EXPENSE);
   const [data, setData] = useState<any[]>([]);
   const rotateVal = new Animated.Value(0);
 
   const getStats = async () => {
-    const statList = await getMonthlyStats(type);
+    const statsList = await getMonthlyStats(type);
 
-    const sorted = statList.sort((stat1: IStat, stat2: IStat) => {
+    const sorted = statsList.sort((stat1: IStat, stat2: IStat) => {
       if (stat1.amount > stat2.amount) {
         return -1;
       } else if (stat1.amount < stat2.amount) {
@@ -46,7 +45,6 @@ const StatsScreen = ({ navigation }) => {
     setStatList(sorted);
   };
   const getGraphColor = (index: number) => {
-    // return 'hsla(251, 69%, 34%, 1)';
     return colors.theme[THEME].graphColorScheme[index];
   };
 
@@ -337,7 +335,7 @@ const StatsScreen = ({ navigation }) => {
               data={barData}
               spacing={0.2}
               gridMin={0}
-              svg={{ fill: 'rgb(134, 65, 244)' }}
+              svg={{ fill: colors.theme[THEME].brandMedium }}
               yAccessor={({ item }) => item.value}
             />
             <XAxis

@@ -48,8 +48,8 @@ const AddEditCategory = ({ navigation, route, type }: IAddEditCategory) => {
   const transactionCategory: ITransactionCategory =
     route?.params?.transactionCategory ?? null;
   // const {expense}: {expense: IExpense} = route.params;
-  console.log(transactionCategory);
-  const categoryType: TransactionType = route?.params?.transactionType || type;
+  const categoryType: TransactionType =
+    route?.params?.transactionType || route?.params?.type;
 
   const [errMsg, setErrMsg] = useState<IErrorMessages>(defaultErrMsg);
 
@@ -108,7 +108,7 @@ const AddEditCategory = ({ navigation, route, type }: IAddEditCategory) => {
             },
           ],
         });
-        navigation.goBack();
+        navigation.goBack({ type: type });
       }
     } else {
       result = await saveTransactionCategory(modCategory);
@@ -121,7 +121,7 @@ const AddEditCategory = ({ navigation, route, type }: IAddEditCategory) => {
             },
           ],
         });
-        navigation.goBack();
+        navigation.goBack({ type: type });
       }
     }
     const expenseCategories = await getTransactionCategories(
