@@ -181,7 +181,9 @@ const Router = () => {
           gestureEnabled: true,
           gestureDirection: 'horizontal',
           headerShown: false,
-          contentStyle: { backgroundColor: colors.theme[THEME].brandDanger },
+          contentStyle: {
+            backgroundColor: colors.theme[THEME].brandDanger,
+          },
 
           // headerBackButtonMenuEnabled: true,
         })}>
