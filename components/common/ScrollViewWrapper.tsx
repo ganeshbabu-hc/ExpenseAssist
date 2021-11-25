@@ -7,6 +7,7 @@ interface IScrollViewWrapper extends ScrollViewProps {
 const ScrollViewWrapper = (props: IScrollViewWrapper) => {
   return (
     <Animated.ScrollView
+      showsVerticalScrollIndicator={false}
       bounces={false}
       contentInsetAdjustmentBehavior="automatic"
       keyboardDismissMode="interactive"

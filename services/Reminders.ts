@@ -7,7 +7,7 @@ export const addReminder = () => {
   Reminders.addReminder({
     title: 'Wake-up reminder',
     note: 'Wake-up and have breakfast!',
-    timestamp: Date.now() * 60000 * 5, // next five minutes from current time (milliseconds)
+    timestamp: Date.now() + 1000 * 5, // next five minutes from current time (milliseconds)
   });
   //   Reminders.removeReminder('the-reminder-id');
 };

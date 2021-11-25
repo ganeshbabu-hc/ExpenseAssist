@@ -16,6 +16,7 @@ import {
 import { UPDATE_CONFIGURATIONS } from './redux/constants/StoreConstants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setTheme } from './components/utils/Constants';
+import { addReminder } from './services/Reminders';
 
 // console.disableYellowBox = true;
 LogBox.ignoreLogs(['VirtualizedLists']); // Ignore log notification by message
@@ -60,6 +61,7 @@ const AppWrapper = () => {
     //   timestamp: Date.now() + 1000 * 5, // next five minutes from current time (milliseconds)
     // });
     setTimeout(async () => {
+      addReminder();
       // Constants.THEME = 'purple';
       // Request permission
       // Notifications.schduleNotification(new Date(Date.now() + 5 * 1000));

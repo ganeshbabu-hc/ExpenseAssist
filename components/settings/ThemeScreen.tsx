@@ -13,10 +13,25 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import t from '../common/translations/Translation';
 import { THEME } from '../utils/Constants';
+import RNFS from 'react-native-fs';
+import config from '../../config.json';
+
 const ThemeScreen = ({ navigation }: any) => {
   // const isDarkMode = useColorScheme() === 'dark';
   const dispatch = useDispatch();
   const [title, setTitle] = useState('');
+  const setTheme = async (name: string) => {
+    const filePath = RNFS.DocumentDirectoryPath + '/config.json';
+    console.log('filePath', filePath);
+    config.THEME = name;
+    console.log('config', config);
+    const result = await RNFS.writeFile(
+      filePath,
+      JSON.stringify(config),
+      'utf8',
+    );
+    console.log('result', result);
+  };
 
   useEffect(() => {}, []);
 
@@ -31,7 +46,11 @@ const ThemeScreen = ({ navigation }: any) => {
         <View />
       </View>
       <View style={[styles.themeWrapper, commonStyles.container]}>
-        <Pressable style={styles.themeItem} onPress={() => {}}>
+        <Pressable
+          style={styles.themeItem}
+          onPress={() => {
+            setTheme('light-purple');
+          }}>
           {/* <View style={styles.themeType} /> */}
           <Image
             resizeMethod="auto"
@@ -41,7 +60,11 @@ const ThemeScreen = ({ navigation }: any) => {
           />
           <Text style={styles.themeName}>{t('light')}</Text>
         </Pressable>
-        <Pressable style={styles.themeItem} onPress={() => {}}>
+        <Pressable
+          style={styles.themeItem}
+          onPress={() => {
+            setTheme('dark-yellow');
+          }}>
           {/* <View style={styles.themeType} /> */}
           <Image
             resizeMethod="auto"
