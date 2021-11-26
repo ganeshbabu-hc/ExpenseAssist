@@ -6,17 +6,14 @@ import { CardStyleInterpolators } from '@react-navigation/stack';
 import { HomeScreen } from './home/HomeScreen';
 import { StyleSheet, View } from 'react-native';
 import Add from './home/Add';
-import { colors } from './styles/theme';
 import AddType from './common/add/AddType';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import AddEditCategory from './common/AddEditCategory';
 import StatsScreen1 from './stats/StatsScreen';
 import TransactionList from './transaction/TransactionList';
 import { SettingsScreen } from './settings/SettingsScreen';
 import CurrencyScreen from './settings/CurrencyScreen';
 import ThemeScreen from './settings/ThemeScreen';
-import { THEME } from './utils/Constants';
 import { AccountsScreen } from './settings/AccountsScreen';
 import AddEditTransaction from './transaction/AddEditTransaction';
 import IconMap from './common/IconMap';
@@ -24,6 +21,8 @@ import ImageView from './common/ImageViewer';
 import TransactionSearch from './transaction/TransactionSearch';
 import RemindersScreen from './settings/RemindersScreen';
 import CategoriesScreen from './settings/CategoriesScreen';
+import HelpScreen from './settings/HelpScreen';
+import { GetTheme } from './styles/GetThemeHook';
 const Stack = createNativeStackNavigator();
 // const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -44,6 +43,7 @@ enum Routes {
 //   />
 // ),
 const Home = ({ navigation }) => {
+  const { colors } = GetTheme();
   return (
     <View style={styles.appContainer}>
       <Tab.Navigator
@@ -55,7 +55,7 @@ const Home = ({ navigation }) => {
           tabBarStyle: {
             height: 64,
             borderTopWidth: 0,
-            shadowcolor: colors.theme[THEME].shadowBrandMedium,
+            shadowcolor: colors.shadowBrandMedium,
             elevation: 20,
             shadowOffset: {
               width: 20,
@@ -93,11 +93,7 @@ const Home = ({ navigation }) => {
                 <IconMap
                   name={iconName}
                   size={28}
-                  color={
-                    focused
-                      ? colors.theme[THEME].textBrandMedium
-                      : colors.theme[THEME].textCardGray
-                  }
+                  color={focused ? colors.textBrandMedium : colors.textCardGray}
                 />
               );
             }
@@ -132,7 +128,7 @@ const config = {
 };
 
 const Router = () => {
-  const dispatch = useDispatch();
+  const { colors } = GetTheme();
   const intializeStore = async () => {
     // const transactioList = await getTransactions(10, TransactionType.ALL);
     // dispatch({ type: UPDATE_TRANSACTION_LIST, payload: transactioList });
@@ -167,12 +163,12 @@ const Router = () => {
       theme={{
         dark: false,
         colors: {
-          primary: colors.theme[THEME].bgLight,
-          background: colors.theme[THEME].bgLight,
-          card: colors.theme[THEME].bgLight,
-          text: colors.theme[THEME].bgLight,
-          border: colors.theme[THEME].bgLight,
-          notification: colors.theme[THEME].bgLight,
+          primary: colors.bgLight,
+          background: colors.bgLight,
+          card: colors.bgLight,
+          text: colors.bgLight,
+          border: colors.bgLight,
+          notification: colors.bgLight,
         },
       }}>
       <Stack.Navigator
@@ -182,7 +178,7 @@ const Router = () => {
           gestureDirection: 'horizontal',
           headerShown: false,
           contentStyle: {
-            backgroundColor: colors.theme[THEME].brandDanger,
+            backgroundColor: colors.brandDanger,
           },
 
           // headerBackButtonMenuEnabled: true,
@@ -240,6 +236,11 @@ const Router = () => {
           <Stack.Screen
             name="ThemeScreen"
             component={ThemeScreen}
+            initialParams={{}}
+          />
+          <Stack.Screen
+            name="HelpScreen"
+            component={HelpScreen}
             initialParams={{}}
           />
         </Stack.Group>

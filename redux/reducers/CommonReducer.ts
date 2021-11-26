@@ -6,8 +6,8 @@ import {
   HIDE_MODAL,
   UPDATE_CURRENCY,
   UPDATE_CONFIGURATIONS,
-  UPDATE_SCROLLX,
   SHOW_TOAST,
+  SET_THEME,
 } from '../constants/StoreConstants';
 
 export interface ICommonState {
@@ -16,6 +16,7 @@ export interface ICommonState {
   configuration: {
     currency: IConfiguration;
   };
+  theme: string;
   scrollX: number;
   toast: IToast[];
 }
@@ -31,6 +32,7 @@ const initialState: ICommonState = {
       value: { code: 'INR', currencyId: 47, name: 'Rupees', symbol: '₹' },
     },
   },
+  theme: 'lightPurple',
   toast: [],
 };
 export const CommonReducer = (state = initialState, action: any) => {
@@ -56,17 +58,17 @@ export const CommonReducer = (state = initialState, action: any) => {
         ...state,
         configuration: action.payload,
       };
-    case UPDATE_SCROLLX:
-      return {
-        ...state,
-        scrollX: action.payload,
-      };
     default:
       return state;
     case SHOW_TOAST:
       return {
         ...state,
         toast: action.payload,
+      };
+    case SET_THEME:
+      return {
+        ...state,
+        theme: action.payload,
       };
   }
 };

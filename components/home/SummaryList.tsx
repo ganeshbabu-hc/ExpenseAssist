@@ -1,21 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
-import { colors, commonStyles, utils } from '../styles/theme';
-import Icon from 'react-native-vector-icons/dist/MaterialIcons';
+import { FlatList, Pressable, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { getSummary, ISummary } from '../database/common/SummaryController';
 import { numberFormatter } from '../utils/Formatter';
 import { ICurrency } from '../database/common/CurrencyController';
-import { THEME } from '../utils/Constants';
 import { TransactionType } from '../transaction/TransactionTypes';
 import IconMap from '../common/IconMap';
 import t from '../common/translations/Translation';
-import PressableRipple from '../common/PressableRipple';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-// import {TransactionType} from '../database/transaction/TransactionTypes';
-// import UilHome from '@iconscout/react-native-unicons/icons/uil-home';
-// import UilAward from '@iconscout/react-native-unicons/icons/uil-award';
-
+import { GetTheme } from '../styles/GetThemeHook';
+import { summaryListStyles } from '../styles/commonStyles';
 interface ISummaryItem {
   id: number;
   title: string;
@@ -25,16 +18,14 @@ interface ISummaryItem {
 }
 
 const SummaryList = ({ navigation }: any) => {
+  const { styles, commonStyles } = GetTheme(summaryListStyles);
+
   const [summary, setSummary] = useState<ISummary>({
     totalExpense: 0,
     totalIncome: 0,
     monthlyExpense: 0,
     monthlyIncome: 0,
   });
-
-  // const summary: ISummary = useSelector(
-  //   (state: any) => state.summary.summaryList,
-  // );
   const currency: ICurrency = useSelector((state: any) => {
     return state.common.configuration.currency.value;
   });
@@ -173,10 +164,8 @@ const SummaryList = ({ navigation }: any) => {
             commonStyles.card.firstCard,
           ]}>
           Overview
-          {/* <UilAward size="140" color="#61DAFB" /> */}
         </Text>
         <FlatList
-          style={styles.list}
           showsHorizontalScrollIndicator={false}
           horizontal
           data={summaryCardList}
@@ -187,45 +176,4 @@ const SummaryList = ({ navigation }: any) => {
     </View>
   );
 };
-
 export default SummaryList;
-
-const styles = StyleSheet.create({
-  summaryListWrapper: {
-    backgroundColor: colors.theme[THEME].brandBg,
-    overflow: 'hidden',
-  },
-  summaryListContainer: {
-    // marginBottom: 10,
-    // backgroundColor: colors.theme[THEME].brandBg,
-    // borderBottomRightRadius: 40,
-    overflow: 'hidden',
-    paddingBottom: 20,
-  },
-  summaryCard: {
-    display: 'flex',
-    icon: {
-      marginTop: 6,
-    },
-    title: {
-      marginTop: 6,
-      fontFamily: utils.fontFamily.Bold,
-      fontSize: utils.fontSize.small,
-    },
-    total: {
-      marginTop: 4,
-      fontSize: utils.fontSize.small,
-      fontFamily: utils.fontFamily.Bold,
-    },
-  },
-  currencyIcon: {
-    fontSize: utils.fontSize.small,
-    fontWeight: '700',
-    marginTop: 16,
-  },
-  list: {},
-  title: {
-    marginLeft: commonStyles.container.paddingHorizontal,
-    // fontSize: utils.fontSize.xsmall,
-  },
-});

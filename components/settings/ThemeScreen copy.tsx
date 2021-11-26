@@ -6,11 +6,11 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import t from '../common/translations/Translation';
 
-interface ThemeScreen {
+interface IThemeScreen {
   navigation: any;
 }
 
-const ThemeScreen = ({ navigation }: ThemeScreen) => {
+const ThemeScreen = ({ navigation }: IThemeScreen) => {
   // const isDarkMode = useColorScheme() === 'dark';
   const dispatch = useDispatch();
   const [title, setTitle] = useState('');

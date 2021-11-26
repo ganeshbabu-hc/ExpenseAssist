@@ -1,22 +1,13 @@
 import * as React from 'react';
-import {
-  Animated,
-  Pressable,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { Animated, Pressable, SafeAreaView, Text, View } from 'react-native';
 import AppHeader from '../common/AppHeader';
-import { colors, commonStyles, recentList, utils } from '../styles/theme';
-import { useSelector } from 'react-redux';
 import t from '../common/translations/Translation';
-import { THEME } from '../utils/Constants';
 import ScrollViewWrapper from '../common/ScrollViewWrapper';
 import { useRef } from 'react';
 import IconMap from '../common/IconMap';
+import { accountsScreenStyle } from '../styles/commonStyles';
+import { GetTheme, GetStyle } from '../styles/GetThemeHook';
+import { recentListStyles } from '../styles/recentList';
 
 interface IAccountsScreen {
   navigation: any;
@@ -24,14 +15,10 @@ interface IAccountsScreen {
 
 export const AccountsScreen = ({ navigation }: IAccountsScreen) => {
   const scrollY = useRef(new Animated.Value(0)).current;
-  // const isDarkMode = useColorScheme() === 'dark';
 
-  // const userConfiguration: any = useSelector((state: any) => {
-  //   return state.common.configuration;
-  // });
-  const currency: any = useSelector((state: any) => {
-    return state.common.configuration.currency.value;
-  });
+  const { commonStyles, colors } = GetTheme();
+  const recentList = GetStyle(recentListStyles);
+  const styles = GetStyle(accountsScreenStyle);
 
   return (
     <SafeAreaView style={commonStyles.screen}>
@@ -55,7 +42,7 @@ export const AccountsScreen = ({ navigation }: IAccountsScreen) => {
               <IconMap
                 name={'ul-li'}
                 size={28}
-                color={colors.theme[THEME].textBrandMedium}
+                color={colors.textBrandMedium}
               />
             </View>
             <View style={styles.settingDesc}>
@@ -63,7 +50,7 @@ export const AccountsScreen = ({ navigation }: IAccountsScreen) => {
               <IconMap
                 name={'angle-right'}
                 size={28}
-                color={colors.theme[THEME].textBrandLightMedium}
+                color={colors.textBrandLightMedium}
               />
             </View>
           </Pressable>
@@ -75,7 +62,7 @@ export const AccountsScreen = ({ navigation }: IAccountsScreen) => {
               <IconMap
                 name={'payments'}
                 size={28}
-                color={colors.theme[THEME].textBrandMedium}
+                color={colors.textBrandMedium}
               />
             </View>
             <View style={styles.settingDesc}>
@@ -83,7 +70,7 @@ export const AccountsScreen = ({ navigation }: IAccountsScreen) => {
               <IconMap
                 name={'angle-right'}
                 size={28}
-                color={colors.theme[THEME].textBrandLightMedium}
+                color={colors.textBrandLightMedium}
               />
             </View>
           </Pressable>
@@ -99,7 +86,7 @@ export const AccountsScreen = ({ navigation }: IAccountsScreen) => {
               <IconMap
                 name={'alarm'}
                 size={28}
-                color={colors.theme[THEME].textBrandMedium}
+                color={colors.textBrandMedium}
               />
             </View>
             <View style={styles.settingDesc}>
@@ -107,7 +94,7 @@ export const AccountsScreen = ({ navigation }: IAccountsScreen) => {
               <IconMap
                 name={'angle-right'}
                 size={28}
-                color={colors.theme[THEME].textBrandLightMedium}
+                color={colors.textBrandLightMedium}
               />
             </View>
           </Pressable>
@@ -116,45 +103,3 @@ export const AccountsScreen = ({ navigation }: IAccountsScreen) => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  quickMenuContainer: {
-    backgroundColor: colors.theme[THEME].brandBg,
-    marginTop: 10,
-  },
-  divider: {
-    marginVertical: 0,
-  },
-  settingWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    marginVertical: 20,
-  },
-  settingIconWrapper: {
-    marginRight: 10,
-  },
-  settingDesc: {
-    display: 'flex',
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  settingName: {
-    color: colors.theme[THEME].textDark,
-    fontSize: utils.fontSize.medium,
-    fontFamily: utils.fontFamily.Bold,
-  },
-  settingValueWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  settingValue: {
-    color: colors.theme[THEME].textDark,
-    fontSize: utils.fontSize.medium,
-    fontFamily: utils.fontFamily.Bold,
-  },
-});

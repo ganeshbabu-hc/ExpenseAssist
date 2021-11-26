@@ -1,13 +1,13 @@
 import React from 'react';
-import Svg, {Circle, Path, Ellipse, Polygon} from 'react-native-svg';
-import {colors} from '../styles/theme';
-import { THEME } from '../utils/Constants';
+import Svg, { Circle, Path, Ellipse, Polygon } from 'react-native-svg';
+import { GetTheme } from '../styles/GetThemeHook';
 
 interface IPiggyBank {
   style?: any;
 }
 
-const AddInfo = ({style}: IPiggyBank) => {
+const AddInfo = ({ style }: IPiggyBank) => {
+  const { colors } = GetTheme();
   return (
     <Svg
       data-name="Layer 1"
@@ -29,51 +29,51 @@ const AddInfo = ({style}: IPiggyBank) => {
         cy="11.16881"
         rx="10.92534"
         ry="11.16881"
-        fill={colors.theme[THEME].brandDark}
+        fill={colors.brandDark}
       />
       <Ellipse
         cx="224.69531"
         cy="11.16881"
         rx="10.92534"
         ry="11.16881"
-        fill={colors.theme[THEME].brandDark}
+        fill={colors.brandDark}
       />
       <Ellipse
         cx="262.43738"
         cy="11.16881"
         rx="10.92534"
         ry="11.16881"
-        fill={colors.theme[THEME].brandDark}
+        fill={colors.brandDark}
       />
       <Path
         d="M925.64529,174.28068h-26.81a2.0304,2.0304,0,0,0,0,4.06h26.81a2.0304,2.0304,0,0,0,0-4.06Z"
         transform="translate(-151.34081 -171.51238)"
-        fill={colors.theme[THEME].brandDark}
+        fill={colors.brandDark}
       />
       <Path
         d="M925.64529,181.90068h-26.81a2.0304,2.0304,0,0,0,0,4.06h26.81a2.0304,2.0304,0,0,0,0-4.06Z"
         transform="translate(-151.34081 -171.51238)"
-        fill={colors.theme[THEME].brandDark}
+        fill={colors.brandDark}
       />
       <Path
         d="M925.64529,189.51066h-26.81a2.0304,2.0304,0,0,0,0,4.06h26.81a2.0304,2.0304,0,0,0,0-4.06Z"
         transform="translate(-151.34081 -171.51238)"
-        fill={colors.theme[THEME].brandDark}
+        fill={colors.brandDark}
       />
       <Path
         d="M808.05408,287.65387h-434.01a8.07034,8.07034,0,0,0-8.06995,8.06v204.87a8.07888,8.07888,0,0,0,8.06995,8.07h434.01a8.07677,8.07677,0,0,0,8.06-8.07v-204.87A8.06821,8.06821,0,0,0,808.05408,287.65387Z"
         transform="translate(-151.34081 -171.51238)"
-        fill={colors.theme[THEME].brandDark}
+        fill={colors.brandDark}
       />
       <Path
         d="M693.41412,386.35389a8.06825,8.06825,0,0,0-8.06005,8.06v57.87a8.07687,8.07687,0,0,0,8.06005,8.07H816.11407v-74Z"
         transform="translate(-151.34081 -171.51238)"
-        fill={colors.theme[THEME].brandMedium}
+        fill={colors.brandMedium}
       />
       <Path
         d="M1022.42853,460.3497H693.4184a8.07557,8.07557,0,0,1-8.06636-8.06636V394.41576a8.07532,8.07532,0,0,1,8.06636-8.06606h329.01013a8.07532,8.07532,0,0,1,8.06636,8.06606v57.86758A8.07557,8.07557,0,0,1,1022.42853,460.3497Z"
         transform="translate(-151.34081 -171.51238)"
-        fill={colors.theme[THEME].brandMedium}
+        fill={colors.brandMedium}
         opacity="0.5"
       />
       <Circle cx="586.57108" cy="255.53675" r="13.08937" fill="#fff" />
@@ -113,7 +113,7 @@ const AddInfo = ({style}: IPiggyBank) => {
       <Path
         d="M1021.02122,409.86014a27.638,27.638,0,1,1,27.638-27.638A27.638,27.638,0,0,1,1021.02122,409.86014Z"
         transform="translate(-151.34081 -171.51238)"
-        fill={colors.theme[THEME].brandMedium}
+        fill={colors.brandMedium}
       />
       <Path
         d="M1031.92643,379.49592h-8.17886v-8.179a2.72635,2.72635,0,0,0-5.4527,0v8.179h-8.179a2.72631,2.72631,0,1,0,0,5.45261h8.179v8.179a2.72635,2.72635,0,0,0,5.4527,0v-8.179h8.17886a2.7263,2.7263,0,1,0,0-5.45261Z"
@@ -123,12 +123,12 @@ const AddInfo = ({style}: IPiggyBank) => {
       <Path
         d="M599.22412,460.72388h-105.01a8.07889,8.07889,0,0,0-8.07,8.07v39.86h121.14v-39.86A8.07677,8.07677,0,0,0,599.22412,460.72388Z"
         transform="translate(-151.34081 -171.51238)"
-        fill={colors.theme[THEME].brandMedium}
+        fill={colors.brandMedium}
       />
       <Path
         d="M599.2206,572.72388H494.21046a8.07558,8.07558,0,0,1-8.06636-8.06636V468.78994a8.07532,8.07532,0,0,1,8.06636-8.06606H599.2206a8.07532,8.07532,0,0,1,8.06636,8.06606v95.86758A8.07557,8.07557,0,0,1,599.2206,572.72388Z"
         transform="translate(-151.34081 -171.51238)"
-        fill={colors.theme[THEME].brandMedium}
+        fill={colors.brandMedium}
         opacity="0.5"
       />
       <Circle cx="373.80837" cy="321.56284" r="13.08937" fill="#fff" />
@@ -145,7 +145,7 @@ const AddInfo = ({style}: IPiggyBank) => {
       <Path
         d="M492.02122,600.86014a27.638,27.638,0,1,1,27.638-27.638A27.638,27.638,0,0,1,492.02122,600.86014Z"
         transform="translate(-151.34081 -171.51238)"
-        fill={colors.theme[THEME].brandMedium}
+        fill={colors.brandMedium}
       />
       <Path
         d="M502.92643,570.49592h-8.17886v-8.179a2.72635,2.72635,0,1,0-5.4527,0v8.179h-8.179a2.72631,2.72631,0,1,0,0,5.45261h8.179v8.179a2.72635,2.72635,0,1,0,5.4527,0v-8.179h8.17886a2.7263,2.7263,0,1,0,0-5.45261Z"
@@ -155,28 +155,28 @@ const AddInfo = ({style}: IPiggyBank) => {
       <Path
         d="M479.22775,399.77883H374.21761a8.07557,8.07557,0,0,1-8.06636-8.06636V295.84489a8.07532,8.07532,0,0,1,8.06636-8.06606H479.22775a8.07532,8.07532,0,0,1,8.06636,8.06606v95.86758A8.07558,8.07558,0,0,1,479.22775,399.77883Z"
         transform="translate(-151.34081 -171.51238)"
-        fill={colors.theme[THEME].brandMedium}
+        fill={colors.brandMedium}
       />
       <Circle
         cx="253.81624"
         cy="156.61796"
         r="13.08937"
-        fill={colors.theme[THEME].brandMedium}
+        fill={colors.brandMedium}
       />
       <Path
         d="M457.47973,357.11475h-61.5141a3.89775,3.89775,0,1,1,0-7.7955h61.5141a3.89775,3.89775,0,1,1,0,7.7955Z"
         transform="translate(-151.34081 -171.51238)"
-        fill={colors.theme[THEME].brandMedium}
+        fill={colors.brandMedium}
       />
       <Path
         d="M425.64929,372.5167H395.96563a3.89794,3.89794,0,1,1,0-7.79588h29.68366a3.89794,3.89794,0,1,1,0,7.79588Z"
         transform="translate(-151.34081 -171.51238)"
-        fill={colors.theme[THEME].brandMedium}
+        fill={colors.brandMedium}
       />
       <Path
         d="M479.22775,399.77883H374.21761a8.07557,8.07557,0,0,1-8.06636-8.06636V295.84489a8.07532,8.07532,0,0,1,8.06636-8.06606H479.22775a8.07532,8.07532,0,0,1,8.06636,8.06606v95.86758A8.07558,8.07558,0,0,1,479.22775,399.77883Z"
         transform="translate(-151.34081 -171.51238)"
-        fill={colors.theme[THEME].brandMedium}
+        fill={colors.brandMedium}
         opacity="0.5"
       />
       <Circle cx="253.81624" cy="156.61796" r="13.08937" fill="#fff" />
@@ -204,7 +204,7 @@ const AddInfo = ({style}: IPiggyBank) => {
       <Path
         d="M275.88113,420.03658s10.09745-13.34141,46.7389-12.976l20.79776-7.55641,4.75311-43.57011,16.63586,3.96092-2.37655,53.8685-35.64828,20.59678-46.73885,9.50621Z"
         transform="translate(-151.34081 -171.51238)"
-        fill={colors.theme[THEME].brandDark}
+        fill={colors.brandDark}
       />
       <Circle
         id="a9729a65-ee7a-4a83-8b52-5849077a5ed0"
@@ -217,7 +217,7 @@ const AddInfo = ({style}: IPiggyBank) => {
       <Path
         d="M233.70808,535.39a.41692.41692,0,0,1-.11411-.01547c-.4015-.11217-.71869-.20037.7303-12.72948l1.56387-9.90346L234.3614,503.997l-2.568-2.568,4.12725-4.12686,3.46346-9.83821-5.9928-8.88023-6.87553-36.3163a28.972,28.972,0,0,1,15.9106-31.47847l7.95773-2.325,2.89542-5.30994a9.51973,9.51973,0,0,1,8.28668-4.962l14.57262-.10908a9.51971,9.51971,0,0,1,7.61675,3.7151l5.084,6.609,21.08261,7.16176-3.49559,75.3212,0,0a5.23278,5.23278,0,0,1,.35914,7.69535c-.21921.22108-.3934.40127-.50072.52007-.35548.50479.31138,4.27462,1.1349,7.47546l1.056,4.90134h0a3.01324,3.01324,0,0,0-.54773,4.39846l1.34649,1.5905v0a7.59918,7.59918,0,0,1-6.50745,8.53505C283.49975,528.62839,233.80879,535.39,233.70808,535.39Z"
         transform="translate(-151.34081 -171.51238)"
-        fill={colors.theme[THEME].brandDark}
+        fill={colors.brandDark}
       />
       <Path
         d="M264.9527,391.1777q-.13937-.30683-.27795-.61578c.03561.00114.07086.00626.10647.00719Z"
@@ -237,7 +237,7 @@ const AddInfo = ({style}: IPiggyBank) => {
       <Path
         d="M237.73617,549.58654,214.38409,497.1033l-.23387-41.45184,7.36109-22.39047a23.92467,23.92467,0,0,1,30.82742-15.04008l.16208.05839.068.15844c.27206.635,6.44593,15.90631-11.86713,47.3222l-3.68552,21.49645,12.93216,49.27378Z"
         transform="translate(-151.34081 -171.51238)"
-        fill={colors.theme[THEME].brandDark}
+        fill={colors.brandDark}
       />
     </Svg>
   );

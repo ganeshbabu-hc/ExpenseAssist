@@ -1,14 +1,18 @@
 import React, { useMemo } from 'react';
-import { Animated, StyleSheet, Text, View } from 'react-native';
+import { Animated, Text, View } from 'react-native';
 import { IStat } from '../database/common/StatsController';
-import { colors, utils } from '../styles/theme';
 import { THEME } from '../utils/Constants';
 import IconMap from '../common/IconMap';
+import { GetStyle, GetTheme } from '../styles/GetThemeHook';
+import { categoryStatStyle } from '../styles/commonStyles';
 interface ICategoryStat {
   statlist: IStat[];
 }
 
 const CategoryStat = ({ statlist }: ICategoryStat) => {
+  const styles = GetStyle(categoryStatStyle);
+  const { colors } = GetTheme();
+
   const getProgress = (amount: number) => {
     const percentageRaw = (100 * amount) / total;
     const percentage = Math.round(percentageRaw * 100) / 100;
@@ -32,7 +36,7 @@ const CategoryStat = ({ statlist }: ICategoryStat) => {
               <View style={styles.barLabelContainer}>
                 <IconMap
                   style={styles.barIcon}
-                  color={colors.theme[THEME].textBrandLightMedium}
+                  color={colors.textBrandLightMedium}
                   name={stat.transactionCategoryIcon}
                   size={24}
                 />
@@ -63,6 +67,7 @@ const ProgressWrapper = ({
   index: number;
 }) => {
   const animatedValue = new Animated.Value(0);
+  const styles = GetStyle(categoryStatStyle);
   const progressValue = animatedValue?.interpolate({
     inputRange: [0, 1],
     outputRange: ['0%', `${progress}%`],
@@ -83,52 +88,3 @@ const ProgressWrapper = ({
 };
 
 export default CategoryStat;
-
-const styles = StyleSheet.create({
-  statContainer: {
-    display: 'flex',
-    flex: 1,
-    marginTop: 30,
-  },
-  barWrapper: {
-    // padding
-    paddingVertical: 10,
-  },
-  barLabel: {
-    color: colors.theme[THEME].textDark,
-    fontFamily: utils.fontFamily.Bold,
-    fontSize: utils.fontSize.small,
-  },
-  barLabelContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
-  barLabelWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 4,
-  },
-  barContainer: {
-    flex: 1,
-    backgroundColor: colors.theme[THEME].textLightGray,
-    height: 14,
-    borderRadius: 30,
-    marginTop: 6,
-    overflow: 'hidden',
-  },
-  bar: {
-    borderRadius: 30,
-    flex: 1,
-    height: '100%',
-    width: 20,
-    backgroundColor: colors.theme[THEME].brandMedium,
-    // transform: [{ scaleY: 5.0 }],
-  },
-  barIcon: {
-    marginRight: 4,
-  },
-});

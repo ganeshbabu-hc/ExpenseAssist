@@ -7,16 +7,13 @@ import IconMap from '../common/IconMap';
 import ModalContent from '../common/modal/ModalContent';
 import { ToastType } from '../common/ToastNotification';
 import t from '../common/translations/Translation';
-import { recentList, colors, commonStyles } from '../styles/theme';
-import { THEME } from '../utils/Constants';
-import {
-  removeTransaction,
-  removeTransactionCategory,
-} from '../transaction/TransactionController';
+import { removeTransactionCategory } from '../transaction/TransactionController';
 import {
   TransactionType,
   ITransactionCategory,
 } from '../transaction/TransactionTypes';
+import { recentListStyles } from '../styles/recentList';
+import { GetStyle, GetTheme } from '../styles/GetThemeHook';
 
 interface ITransactionCategoryItem {
   index: number;
@@ -32,9 +29,11 @@ const TransactionCategoryItem = ({
   onUpdate,
 }: ITransactionCategoryItem) => {
   const dispatch = useDispatch();
+  const { commonStyles, colors } = GetTheme();
+  const recentList = GetStyle(recentListStyles);
+
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const removeAnimation = useRef(new Animated.Value(0)).current;
-  // console.log(category);
 
   const removeTranslate = removeAnimation?.interpolate({
     inputRange: [0, 1],
@@ -106,10 +105,7 @@ const TransactionCategoryItem = ({
                   recentList.swipeIcon,
                   index !== 0 ? recentList.dividerMargin : {},
                 ]}>
-                <IconMap
-                  color={colors.theme[THEME].textBrandMedium}
-                  name="trash"
-                />
+                <IconMap color={colors.textBrandMedium} name="trash" />
               </View>
             ),
           },
@@ -141,9 +137,7 @@ const TransactionCategoryItem = ({
                   commonStyles.mt0,
                   {
                     backgroundColor:
-                      index % 2 === 0
-                        ? colors.theme[THEME].brandMedium
-                        : colors.theme[THEME].brandMedium,
+                      index % 2 === 0 ? colors.brandMedium : colors.brandMedium,
                   },
                 ]}>
                 <IconMap
@@ -152,7 +146,7 @@ const TransactionCategoryItem = ({
                       ? category.categoryIcon ?? 'cash-plus'
                       : category.categoryIcon ?? 'cash-minus'
                   }
-                  color={colors.theme[THEME].textLight}
+                  color={colors.textLight}
                 />
               </View>
               <View style={recentList.listItemInfoWrapper}>
@@ -170,10 +164,7 @@ const TransactionCategoryItem = ({
                       onPress={() => {
                         editTransactionCategory(category);
                       }}>
-                      <IconMap
-                        name={'edit'}
-                        color={colors.theme[THEME].textBrandMedium}
-                      />
+                      <IconMap name={'edit'} color={colors.textBrandMedium} />
                     </Pressable>
                   )}
                 </View>

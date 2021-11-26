@@ -1,9 +1,9 @@
 import React from 'react';
-import { Animated, Pressable, StatusBar, StyleSheet, View } from 'react-native';
-import { colors, commonStyles, utils } from '../styles/theme';
-import { THEME } from '../utils/Constants';
+import { Animated, Pressable, StatusBar, View } from 'react-native';
 import t from './translations/Translation';
 import IconMap from './IconMap';
+import { GetTheme } from '../styles/GetThemeHook';
+import { headerStyles } from '../styles/appHeader';
 
 interface IAppHeader {
   navigation?: any;
@@ -25,6 +25,7 @@ const AppHeader = ({
   scrollY = new Animated.Value(0),
   backBtn = true,
 }: IAppHeader) => {
+  const { styles, colors, utils } = GetTheme(headerStyles);
   const animatedImgHeight = scrollY?.interpolate({
     inputRange: [0, MIN_HEIGHT - MAX_HEIGHT],
     outputRange: [90, 50],
@@ -57,10 +58,7 @@ const AppHeader = ({
           elevation: headerElevation,
         },
       ]}>
-      <StatusBar
-        backgroundColor={colors.theme[THEME].brandBg}
-        barStyle={colors.theme[THEME].content}
-      />
+      <StatusBar backgroundColor={colors.brandBg} barStyle={colors.content} />
       {homeScreen && (
         <View style={styles.headerDesc}>
           <Animated.Text
@@ -85,7 +83,7 @@ const AppHeader = ({
           }}>
           <IconMap
             style={styles.icon}
-            color={colors.theme[THEME].textBrandMedium}
+            color={colors.textBrandMedium}
             size={32}
             name="arrow-left"
           />
@@ -115,54 +113,5 @@ const AppHeader = ({
     </Animated.View>
   );
 };
-
-const styles = StyleSheet.create({
-  homeMenuIcon: {
-    transform: [{ rotateZ: '90deg' }],
-  },
-  icon: {
-    paddingVertical: 10,
-    paddingRight: 10,
-  },
-  headerContainer: {
-    zIndex: 1,
-    position: 'relative',
-    elevation: 10,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 20,
-    marginBottom: 10,
-    shadowcolor: colors.theme[THEME].shadowBrandMedium,
-    shadowOffset: {
-      width: 20,
-      height: 20,
-    },
-    img: {
-      width: 50,
-      height: 90,
-      borderRadius: commonStyles.r10.borderRadius,
-    },
-  },
-  appTitle: {
-    fontSize: utils.fontSize.xlarge,
-    fontFamily: utils.fontFamily.Bold,
-    color: colors.theme[THEME].textDark,
-  },
-  headerDesc: {
-    paddingVertical: 20,
-  },
-  headerDescTitle: {
-    color: colors.theme[THEME].textDark,
-    fontSize: utils.fontSize.xxlarge,
-    fontFamily: utils.fontFamily.Bold,
-  },
-  headerDescSubTitle: {
-    color: colors.theme[THEME].textCardGray,
-    fontSize: utils.fontSize.xsmall,
-    fontFamily: utils.fontFamily.Regular,
-  },
-});
 
 export default AppHeader;

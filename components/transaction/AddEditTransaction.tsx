@@ -3,7 +3,6 @@ import {
   View,
   Text,
   TextInput,
-  StyleSheet,
   Pressable,
   Animated,
   Image,
@@ -23,18 +22,17 @@ import {
   ITransactionImage,
   TransactionType,
 } from '../transaction/TransactionTypes';
-import { colors, commonStyles, formStyles, uploadMenu } from '../styles/theme';
 import { dateFormatter } from '../utils/Formatter';
 import PaymentsDropdown from '../common/PaymentsDropdown';
 import WeeklyView from '../common/WeeklyView';
 import ScrollViewWrapper from '../common/ScrollViewWrapper';
-import { THEME } from '../utils/Constants';
 import t from '../common/translations/Translation';
 import TransactionCategotyList from '../transaction/TransactionCategotyList';
 import { ICurrency } from '../database/common/CurrencyController';
 import IconMap from '../common/IconMap';
 import UploadMenu from './UploadMenu';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { GetStyle, GetTheme } from '../styles/GetThemeHook';
+import { categoryStyles, uploadMenuStyle } from '../styles/commonStyles';
 
 interface IAddEditTransaction {
   navigation: any;
@@ -55,6 +53,10 @@ const defaultErrMsg: IErrorMessages = {
 
 const AddEditTransaction = ({ navigation, route }: IAddEditTransaction) => {
   const scrollY = useRef(new Animated.Value(0)).current;
+
+  const { colors, formStyles, styles, commonStyles } = GetTheme(categoryStyles);
+
+  const uploadMenuStyles = GetStyle(uploadMenuStyle);
 
   const currency: ICurrency = useSelector((state: any) => {
     return state.common.configuration.currency.value;
@@ -92,7 +94,7 @@ const AddEditTransaction = ({ navigation, route }: IAddEditTransaction) => {
   });
 
   const [pinned, setPinned] = useState(() => {
-    return transaction?.pinned ?? false;
+    return transaction?.pinned ?? 0;
     // return new Date();
   });
 
@@ -271,7 +273,7 @@ const AddEditTransaction = ({ navigation, route }: IAddEditTransaction) => {
             <View style={formStyles.inputWrapper}>
               <Text style={formStyles.inputLabel}>Expense title</Text>
               <TextInput
-                placeholderTextColor={colors.theme[THEME].textCardGray}
+                placeholderTextColor={colors.textCardGray}
                 placeholder="Eg, Spetember salary"
                 style={formStyles.input}
                 onChangeText={setTitle}
@@ -288,7 +290,7 @@ const AddEditTransaction = ({ navigation, route }: IAddEditTransaction) => {
                 {currency.symbol} {t('amount')}
               </Text>
               <TextInput
-                placeholderTextColor={colors.theme[THEME].textCardGray}
+                placeholderTextColor={colors.textCardGray}
                 keyboardType="number-pad"
                 numberOfLines={1}
                 placeholder="Eg, 20,000"
@@ -324,7 +326,7 @@ const AddEditTransaction = ({ navigation, route }: IAddEditTransaction) => {
                 multiline
                 numberOfLines={4}
                 placeholder={t('description')}
-                placeholderTextColor={colors.theme[THEME].textCardGray}
+                placeholderTextColor={colors.textCardGray}
                 style={formStyles.input}
                 onChangeText={setDescription}
                 value={description}
@@ -332,22 +334,22 @@ const AddEditTransaction = ({ navigation, route }: IAddEditTransaction) => {
             </View>
           </View>
           {imageList.length > 0 && (
-            <View style={uploadMenu.imageListWrapper}>
+            <View style={uploadMenuStyles.imageListWrapper}>
               <View>
                 <Text style={formStyles.inputLabel}>{t('uploads')}</Text>
               </View>
               <Pressable
-                style={uploadMenu.imageListContainer}
+                style={uploadMenuStyles.imageListContainer}
                 onPress={() => {
                   navigation.navigate('ImageView', { imageList });
                 }}>
                 {imageList.map((image: ITransactionImage, index: number) => {
                   return (
                     <View
-                      style={uploadMenu.imageListItemWrapper}
+                      style={uploadMenuStyles.imageListItemWrapper}
                       key={`image-${index}`}>
                       <Image
-                        style={uploadMenu.imageListItem}
+                        style={uploadMenuStyles.imageListItem}
                         resizeMode="cover"
                         source={{
                           uri: image.base64,
@@ -357,11 +359,11 @@ const AddEditTransaction = ({ navigation, route }: IAddEditTransaction) => {
                         onPress={() => {
                           removeImage(image.imageId);
                         }}
-                        style={uploadMenu.imageListItemRemove}>
+                        style={uploadMenuStyles.imageListItemRemove}>
                         <IconMap
                           size={32}
                           name={'close'}
-                          color={colors.theme[THEME].textBrandLightMedium}
+                          color={colors.textBrandLightMedium}
                         />
                       </Pressable>
                     </View>
@@ -379,7 +381,7 @@ const AddEditTransaction = ({ navigation, route }: IAddEditTransaction) => {
                 style={[formStyles.actionBtn, formStyles.pinnedActive]}>
                 <IconMap
                   name="image"
-                  color={colors.theme[THEME].textBrandMedium}
+                  color={colors.textBrandMedium}
                   size={28}
                 />
               </Pressable>
@@ -403,17 +405,13 @@ const AddEditTransaction = ({ navigation, route }: IAddEditTransaction) => {
                   pinned ? formStyles.pinnedActive : formStyles.pinnedInactive,
                   {
                     backgroundColor: pinned
-                      ? colors.theme[THEME].brandMedium
-                      : colors.theme[THEME].brandLight,
+                      ? colors.brandMedium
+                      : colors.brandLight,
                   },
                 ]}>
                 <IconMap
                   name="paper-clip"
-                  color={
-                    pinned
-                      ? colors.theme[THEME].textLight
-                      : colors.theme[THEME].textBrandMedium
-                  }
+                  color={pinned ? colors.textLight : colors.textBrandMedium}
                   size={28}
                 />
               </Pressable>
@@ -439,7 +437,7 @@ const AddEditTransaction = ({ navigation, route }: IAddEditTransaction) => {
       </ScrollViewWrapper>
       <Animated.View
         style={[
-          uploadMenu.uploadWrapper,
+          uploadMenuStyles.uploadWrapper,
           {
             transform: [
               {
@@ -452,23 +450,22 @@ const AddEditTransaction = ({ navigation, route }: IAddEditTransaction) => {
             ],
           },
         ]}>
-        <View style={[commonStyles.container, uploadMenu.uploadMenuHeader]}>
+        <View
+          style={[commonStyles.container, uploadMenuStyles.uploadMenuHeader]}>
           <View>
-            <Text style={uploadMenu.uploadMenuTitle}>{t('uploadImages')}</Text>
-            <Text style={uploadMenu.uploadMenuSubTitle}>
+            <Text style={uploadMenuStyles.uploadMenuTitle}>
+              {t('uploadImages')}
+            </Text>
+            <Text style={uploadMenuStyles.uploadMenuSubTitle}>
               {t('uploadImagesNotification')}
             </Text>
           </View>
           <Pressable
-            style={uploadMenu.uploadMenuClose}
+            style={uploadMenuStyles.uploadMenuClose}
             onPress={() => {
               showUploadMenu(false);
             }}>
-            <IconMap
-              size={34}
-              name="close"
-              color={colors.theme[THEME].textBrandMedium}
-            />
+            <IconMap size={34} name="close" color={colors.textBrandMedium} />
           </Pressable>
         </View>
         <UploadMenu
@@ -479,15 +476,5 @@ const AddEditTransaction = ({ navigation, route }: IAddEditTransaction) => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  expenseWrapper: {
-    backgroundColor: colors.theme[THEME].brandBg,
-    display: 'flex',
-    flex: 1,
-    marginTop: 30,
-    marginVertical: 40,
-  },
-});
 
 export default AddEditTransaction;

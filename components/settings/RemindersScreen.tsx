@@ -1,19 +1,44 @@
 import * as React from 'react';
-import { Pressable, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, SafeAreaView, Text, TextInput, View } from 'react-native';
 import AppHeader from '../common/AppHeader';
-import { colors, commonStyles, formStyles, utils } from '../styles/theme';
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import t from '../common/translations/Translation';
 import WeeklyView from '../common/WeeklyView';
-import { THEME } from '../utils/Constants';
+import { GetTheme, GetStyle } from '../styles/GetThemeHook';
+import { remindersScreenStyle } from '../styles/commonStyles';
+import { useState } from 'react';
+
+enum ReminderType {
+  DAILY = 'daily',
+  WEEKLY = 'weekly',
+  MONTHLY = 'monthly',
+}
+
+interface IReminder {
+  name: string;
+  type: ReminderType;
+}
+
+const reminderTypes: IReminder[] = [
+  {
+    name: 'Daily',
+    type: ReminderType.DAILY,
+  },
+  {
+    name: 'Weekly',
+    type: ReminderType.WEEKLY,
+  },
+  {
+    name: 'Monthly',
+    type: ReminderType.MONTHLY,
+  },
+];
 
 const RemindersScreen = ({ navigation }: any) => {
-  // const isDarkMode = useColorScheme() === 'dark';
-  const dispatch = useDispatch();
-  const [title, setTitle] = useState('');
-
-  useEffect(() => {}, []);
+  const { commonStyles, colors, formStyles } = GetTheme();
+  const styles = GetStyle(remindersScreenStyle);
+  const [reminderType, setReminderType] = useState<ReminderType>(
+    ReminderType.DAILY,
+  );
 
   return (
     <SafeAreaView style={commonStyles.screen}>
@@ -30,52 +55,65 @@ const RemindersScreen = ({ navigation }: any) => {
         <View style={formStyles.inputWrapper}>
           <Text style={formStyles.inputLabel}>{t('repeat')}</Text>
           <View style={styles.repeatWrapper}>
-            <Pressable style={[styles.repeatType, styles.repeatTypeActive]}>
-              <Text style={[styles.repeatLabel, styles.repeatLabelActive]}>
-                Daily
-              </Text>
-            </Pressable>
-            <Pressable style={styles.repeatType}>
-              <Text style={styles.repeatLabel}>Weekly</Text>
-            </Pressable>
-            <Pressable style={styles.repeatType}>
-              <Text style={styles.repeatLabel}>Monthly</Text>
-            </Pressable>
+            {reminderTypes.map((reminder: IReminder) => {
+              return (
+                <Pressable
+                  style={[
+                    styles.repeatType,
+                    reminder.type === reminderType
+                      ? styles.repeatTypeActive
+                      : null,
+                  ]}
+                  onPress={() => {
+                    setReminderType(reminder.type);
+                  }}>
+                  <Text
+                    style={[
+                      styles.repeatLabel,
+                      reminder.type === reminderType
+                        ? styles.repeatLabelActive
+                        : null,
+                    ]}>
+                    {reminder.name}
+                  </Text>
+                </Pressable>
+              );
+            })}
           </View>
+        </View>
+        <View>
+          <View style={formStyles.inputWrapper}>
+            <Text style={formStyles.inputLabel}>{t('reminderName')}</Text>
+            <TextInput
+              multiline
+              numberOfLines={4}
+              // placeholder={t('description')}
+              placeholderTextColor={colors.textCardGray}
+              style={formStyles.input}
+              // onChangeText={setDescription}
+              // value={'description'}
+            />
+          </View>
+        </View>
+        <View style={formStyles.actionContainer}>
+          <Pressable
+            // activeOpacity={0.8}
+            // extraButtonProps={{ rippleColor: 'red' }}
+            // activeOpacity={0.6}
+            style={[
+              formStyles.button,
+              formStyles.saveButton,
+              formStyles.fullWidth,
+            ]}
+            onPress={() => {
+              // saveEditTransactioneHandler();
+            }}>
+            <Text style={formStyles.buttonLabel}>{t('add')}</Text>
+          </Pressable>
         </View>
       </View>
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  repeatWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  repeatType: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: utils.inputRadius,
-    borderColor: colors.theme[THEME].textBrandMedium,
-    borderWidth: 1,
-  },
-  repeatTypeActive: {
-    backgroundColor: colors.theme[THEME].brandMedium,
-    color: colors.theme[THEME].textLight,
-  },
-  repeatLabelActive: {
-    color: colors.theme[THEME].textLight,
-    fontSize: utils.fontSize.small,
-    fontFamily: utils.fontFamily.Bold,
-  },
-  repeatLabel: {
-    color: colors.theme[THEME].textBrandMedium,
-    fontSize: utils.fontSize.small,
-    fontFamily: utils.fontFamily.Bold,
-  },
-});
 
 export default RemindersScreen;

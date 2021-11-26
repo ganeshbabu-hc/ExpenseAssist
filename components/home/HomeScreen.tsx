@@ -2,30 +2,25 @@ import * as React from 'react';
 import {
   Animated,
   SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
   useColorScheme,
   View,
 } from 'react-native';
 // import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 // import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import AppHeader from '../common/AppHeader';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {colors, commonStyles} from '../styles/theme';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 import SummaryList from './SummaryList';
 import QuickMenu from './QuickMenu';
-import RecentExpenses from '../expense/RecentExpenses';
-import RecentIncomes from '../income/RecentIncomes';
-import NeuMorph from '../common/NeuMorph';
-import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import TransactionList from '../transaction/TransactionList';
 import ScrollViewWrapper from '../common/ScrollViewWrapper';
 import { THEME } from '../utils/Constants';
 import { useRef } from 'react';
 import { TransactionType } from '../transaction/TransactionTypes';
+import { GetStyle, GetTheme } from '../styles/GetThemeHook';
+import { homeScreenStyles } from '../styles/commonStyles';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -38,11 +33,13 @@ export const HomeStackScreen = () => {
   );
 };
 
-export const ProfileScreen = ({route}: any) => {
+export const ProfileScreen = ({ route }: any) => {
   return <Text>This is me</Text>;
 };
 
-export const HomeScreen = ({navigation}: any) => {
+export const HomeScreen = ({ navigation }: any) => {
+  const { commonStyles } = GetTheme();
+  const styles = GetStyle(homeScreenStyles);
   const isDarkMode = useColorScheme() === 'dark';
   const scrollY = useRef(new Animated.Value(0)).current;
 
@@ -68,8 +65,4 @@ export const HomeScreen = ({navigation}: any) => {
   );
 };
 
-const styles = StyleSheet.create({
-  quickMenuContainer: {
-    backgroundColor: colors.theme[THEME].brandBg,
-  },
-});
+

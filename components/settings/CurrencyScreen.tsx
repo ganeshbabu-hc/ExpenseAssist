@@ -4,19 +4,11 @@ import {
   FlatList,
   Pressable,
   SafeAreaView,
-  StyleSheet,
   Text,
   TextInput,
   View,
 } from 'react-native';
 import AppHeader from '../common/AppHeader';
-import {
-  colors,
-  commonStyles,
-  formStyles,
-  recentList,
-  utils,
-} from '../styles/theme';
 import { useEffect, useRef, useState } from 'react';
 import {
   getCurrncyTypes,
@@ -28,12 +20,17 @@ import {
   SHOW_TOAST,
   UPDATE_CURRENCY,
 } from '../../redux/constants/StoreConstants';
-import { THEME } from '../utils/Constants';
 import t from '../common/translations/Translation';
 import IconMap from '../common/IconMap';
+import { GetStyle, GetTheme } from '../styles/GetThemeHook';
+import { currencyScreenStyle } from '../styles/commonStyles';
+import { recentListStyles } from '../styles/recentList';
 const CurrencyScreen = ({ navigation }: any) => {
   // const isDarkMode = useColorScheme() === 'dark';
   const scrollY = useRef(new Animated.Value(0)).current;
+  const { colors, commonStyles, formStyles } = GetTheme();
+  const styles = GetStyle(currencyScreenStyle);
+  const recentList = GetStyle(recentListStyles);
   const dispatch = useDispatch();
   const [title, setTitle] = useState('');
   const [currencyList, setCurrencyList] = useState<ICurrency[]>([]);
@@ -99,13 +96,13 @@ const CurrencyScreen = ({ navigation }: any) => {
           <View style={styles.iconWrapper}>
             {userCurrency.currencyId === item.currencyId ? (
               <IconMap
-                color={colors.theme[THEME].textBrandMedium}
+                color={colors.textBrandMedium}
                 name={'check-circle'}
                 size={commonStyles.icon.width}
               />
             ) : (
               <IconMap
-                color={colors.theme[THEME].textCardGray}
+                color={colors.textCardGray}
                 name={'circle'}
                 size={commonStyles.icon.width}
               />
@@ -159,7 +156,7 @@ const CurrencyScreen = ({ navigation }: any) => {
       <View style={commonStyles.container}>
         <View style={styles.inputWrapper}>
           <TextInput
-            placeholderTextColor={colors.theme[THEME].textCardGray}
+            placeholderTextColor={colors.textCardGray}
             placeholder={t('egDollars')}
             style={formStyles.input}
             onChangeText={setTitle}
@@ -187,41 +184,5 @@ const CurrencyScreen = ({ navigation }: any) => {
   );
 };
 
-const styles = StyleSheet.create({
-  iconWrapper: {},
-  currencyList: {
-    backgroundColor: colors.theme[THEME].brandBg,
-  },
-  listWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-  },
-  currencyDescWrapper: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginLeft: 14,
-  },
-  currencyDesc: {},
-  currencyName: {
-    fontFamily: utils.fontFamily.Bold,
-    color: colors.theme[THEME].textCardGray,
-  },
-  currencyCode: {
-    fontFamily: utils.fontFamily.Bold,
-    color: colors.theme[THEME].textDark,
-  },
-  currencySymbol: {
-    fontFamily: utils.fontFamily.Black,
-    color: colors.theme[THEME].textDark,
-  },
-  inputWrapper: {
-    marginVertical: 30,
-  },
-});
-
+// const styles = 
 export default CurrencyScreen;

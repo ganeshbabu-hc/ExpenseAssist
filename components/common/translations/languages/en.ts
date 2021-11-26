@@ -119,7 +119,9 @@ export default {
   //theme
   light: 'Light',
   dark: 'Dark',
+  themeSet: 'Theme set to %{name}',
 
   //reminders
   repeat: 'Repeat',
+  reminderName:'Reminder name',
 };

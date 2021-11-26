@@ -4,53 +4,38 @@ import {
   Platform,
   Pressable,
   SafeAreaView,
-  StyleSheet,
   Text,
   View,
 } from 'react-native';
 import AppHeader from '../common/AppHeader';
-import { colors, commonStyles, utils } from '../styles/theme';
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import t from '../common/translations/Translation';
-import { THEME } from '../utils/Constants';
-import RNFS from 'react-native-fs';
-import config from '../../config.json';
-
-const basePath = Platform.select({
-  ios: RNFS.MainBundlePath,
-  android: RNFS.ExternalDirectoryPath,
-});
+import { SET_THEME, SHOW_TOAST } from '../../redux/constants/StoreConstants';
+import { setThemeConfig } from '../database/common/CommonController';
+import { themeScreenStyles } from '../styles/themeScreenStyles';
+import { GetTheme } from '../styles/GetThemeHook';
 
 const ThemeScreen = ({ navigation }: any) => {
-  // const isDarkMode = useColorScheme() === 'dark';
+  const themeKey = useSelector(state => state.common.theme);
   const dispatch = useDispatch();
-  const [title, setTitle] = useState('');
-  const setTheme = async (name: string) => {
-    const path = basePath + '/config.json';
-    // const filePath = await RNFS.readFileAssets('config.json', 'utf8');
-    // console.log('filePath', filePath);
-    // config.THEME = name;
-    // console.log('config', config);
 
-    // const input = JSON.stringify();
-    const result = await RNFS.readFile(path); // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
-    // console.log(JSON.parse(result));
-    // await RNFS.writeFile(path, '', 'ascii');
-    console.log('result', result);
-    RNFS.writeFile(path, '----')
-      .then((success: any) => {
-        console.log('FILE WRITTEN!');
-      })
-      .catch(err => {
-        console.log(err.message);
+  //Always at the end
+  const { commonStyles, styles } = GetTheme(themeScreenStyles);
+
+  const setTheme = async (theme: string) => {
+    const result = await setThemeConfig(theme);
+    if (result) {
+      dispatch({
+        type: SHOW_TOAST,
+        payload: [
+          {
+            title: t('themeSet', { name: theme }),
+          },
+        ],
       });
-    // .then(result => {
-    //   console.log('GOT RESULT', result);
-
-    //   // stat the first file
-    //   // return Promise.all([RNFS.stat(result[0].path), result[0].path]);
-    // });
+      dispatch({ type: SET_THEME, payload: theme });
+    }
   };
 
   useEffect(() => {}, []);
@@ -69,13 +54,16 @@ const ThemeScreen = ({ navigation }: any) => {
         <Pressable
           style={styles.themeItem}
           onPress={() => {
-            setTheme('light-purple');
+            setTheme('lightPurple');
           }}>
           {/* <View style={styles.themeType} /> */}
           <Image
             resizeMethod="auto"
             resizeMode="cover"
-            style={[styles.themeType, styles.themeTypeActive]}
+            style={[
+              styles.themeType,
+              themeKey === 'lightPurple' ? styles.themeTypeActive : {},
+            ]}
             source={require('../../assets/img/light.jpg')}
           />
           <Text style={styles.themeName}>{t('light')}</Text>
@@ -83,13 +71,16 @@ const ThemeScreen = ({ navigation }: any) => {
         <Pressable
           style={styles.themeItem}
           onPress={() => {
-            setTheme('dark-yellow');
+            setTheme('darkYellow');
           }}>
           {/* <View style={styles.themeType} /> */}
           <Image
             resizeMethod="auto"
             resizeMode="cover"
-            style={[styles.themeType]}
+            style={[
+              styles.themeType,
+              themeKey === 'darkYellow' ? styles.themeTypeActive : {},
+            ]}
             source={require('../../assets/img/dark.jpg')}
           />
           <Text style={styles.themeName}>{t('dark')}</Text>
@@ -99,40 +90,6 @@ const ThemeScreen = ({ navigation }: any) => {
   );
 };
 
-const styles = StyleSheet.create({
-  themeWrapper: {
-    display: 'flex',
-    alignItems: 'flex-start',
-    justifyContent: 'space-evenly',
-    flex: 1,
-    flexDirection: 'row',
-    marginVertical: 20,
-  },
-  themeItem: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    flex: 1,
-    // flexDirection: 'row',
-  },
-  themeName: {
-    color: colors.theme[THEME].textDark,
-    fontSize: utils.fontSize.large,
-    fontFamily: utils.fontFamily.Bold,
-    paddingVertical: 20,
-  },
-  themeTypeActive: {
-    borderColor: colors.theme[THEME].brandMedium,
-    borderWidth: 3,
-  },
-  themeType: {
-    width: '90%',
-    height: 200,
-    borderWidth: 1,
-    borderColor: colors.theme[THEME].textCardGray,
-    borderRadius: utils.inputRadius,
-    backgroundColor: colors.theme[THEME].brandMedium,
-  },
-});
+// const styles =
 
 export default ThemeScreen;

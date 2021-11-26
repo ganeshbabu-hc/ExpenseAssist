@@ -13,20 +13,18 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { colors, commonStyles, formStyles, recentList } from '../styles/theme';
-import IconMap from '../common/IconMap';
 import { getTransactions } from './TransactionController';
 import AppHeader from '../common/AppHeader';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ScrollViewWrapper from '../common/ScrollViewWrapper';
-import { DEBOUNCE_RATE, THEME } from '../utils/Constants';
+import { DEBOUNCE_RATE } from '../utils/Constants';
 import t from '../common/translations/Translation';
 import { ITransaction, TransactionType } from './TransactionTypes';
-import Empty from '../illustrations/Empty';
 import TransactionItem from './TransactionItem';
-import AddDoc from '../illustrations/AddDoc';
 import debounce from 'lodash.debounce';
 import Search from '../illustrations/Search';
+import { GetTheme } from '../styles/GetThemeHook';
+import { recentListStyles } from '../styles/recentList';
 
 interface ITransactionSearch {
   limit?: number;
@@ -60,10 +58,12 @@ const TransactionSearch = ({
   scrollY = new Animated.Value(0),
 }: ITransactionSearch) => {
   type = route?.params?.type || type;
+  const { colors, commonStyles, formStyles, styles } =
+    GetTheme(recentListStyles);
   const [loading, setLoading] = useState(false);
-  const [transactionType, setTransactionType] = useState<TransactionType>(type);
+  const [transactionType] = useState<TransactionType>(type);
   const [transactionList, setTransactionList] = useState<ITransaction[]>([]);
-  const [enableSearch, setEnableSearch] = useState(false);
+  const [enableSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
   const searchDebounce = useCallback(
@@ -142,7 +142,7 @@ const TransactionSearch = ({
             <View style={formStyles.inputWrapper}>
               <TextInput
                 placeholder={t('searchTransaction')}
-                placeholderTextColor={colors.theme[THEME].textCardGray}
+                placeholderTextColor={colors.textCardGray}
                 style={formStyles.input}
                 onChangeText={onQueryChange}
                 value={searchQuery}
@@ -150,7 +150,7 @@ const TransactionSearch = ({
             </View>
           </View>
         </View>
-        <View style={[commonStyles.container, recentList.listWrapper]}>
+        <View style={[commonStyles.container, styles.listWrapper]}>
           {!loading && (
             <FlatList
               // maxToRenderPerBatch={10}

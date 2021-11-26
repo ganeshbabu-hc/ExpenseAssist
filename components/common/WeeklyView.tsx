@@ -1,17 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { colors, commonStyles, utils } from '../styles/theme';
-import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
-import {
-  DATE_DB_FORMAT,
-  DAYS_SHORT,
-  MONTH_NAMES,
-  THEME,
-} from '../utils/Constants';
+import { DATE_DB_FORMAT, DAYS_SHORT, MONTH_NAMES } from '../utils/Constants';
 import { dateFormatter } from '../utils/Formatter';
 import moment from 'moment';
 import IconMap from './IconMap';
+import { GetTheme } from '../styles/GetThemeHook';
+import { weeklyCalendarStyles } from '../styles/commonStyles';
 
 interface IWeeklyView {
   onChange: Function;
@@ -19,6 +14,8 @@ interface IWeeklyView {
 }
 
 const WeeklyView = ({ onChange, defaultValue }: IWeeklyView) => {
+  const { colors, styles, commonStyles } = GetTheme(weeklyCalendarStyles);
+
   const [date, setDate] = useState(() => {
     if (!defaultValue) {
       return moment(new Date(), DATE_DB_FORMAT).toDate();
@@ -59,6 +56,7 @@ const WeeklyView = ({ onChange, defaultValue }: IWeeklyView) => {
         new Date(todayDate.setDate(selectedDate.getDate() - todayNumber + i)),
       );
     }
+    console.log(daysList);
     return daysList;
   };
 
@@ -81,7 +79,7 @@ const WeeklyView = ({ onChange, defaultValue }: IWeeklyView) => {
             <IconMap
               name={'calendar'}
               size={commonStyles.icon.width}
-              color={colors.theme[THEME].textBrandMedium}
+              color={colors.textBrandMedium}
             />
             <Text style={styles.btnText}>{`${
               MONTH_NAMES[date.getMonth()]
@@ -95,7 +93,7 @@ const WeeklyView = ({ onChange, defaultValue }: IWeeklyView) => {
               style={styles.timeIon}
               name={'clock'}
               size={commonStyles.icon.width}
-              color={colors.theme[THEME].textBrandMedium}
+              color={colors.textBrandMedium}
             />
           </Pressable>
         </View>
@@ -141,75 +139,4 @@ const WeeklyView = ({ onChange, defaultValue }: IWeeklyView) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  dateWrapper: {
-    display: 'flex',
-    overflow: 'scroll',
-    backgroundColor: colors.theme[THEME].brandLight,
-    borderRadius: utils.inputRadius,
-    minHeight: 100,
-    marginBottom: 10,
-  },
-  dateHeader: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    width: '100%',
-    flexDirection: 'row',
-    padding: 10,
-    marginTop: 10,
-  },
-  dateBtn: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  timeBtn: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  timeIon: {
-    marginLeft: 10,
-  },
-  btnText: {
-    color: colors.theme[THEME].textDark,
-    fontSize: utils.fontSize.small,
-    fontFamily: utils.fontFamily.Bold,
-    marginLeft: 10,
-  },
-  daysContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-  },
-  day: {
-    marginVertical: 20,
-  },
-  dayName: {
-    paddingHorizontal: 10,
-    fontSize: utils.fontSize.small,
-    color: colors.theme[THEME].textCardGray,
-    fontFamily: utils.fontFamily.Bold,
-  },
-  dayNumberWrapper: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 30,
-    width: 40,
-    height: 40,
-    marginTop: 10,
-    active: {
-      color: colors.theme[THEME].textLight,
-      backgroundColor: colors.theme[THEME].brandMedium,
-    },
-  },
-  dayNumber: {
-    fontSize: utils.fontSize.small,
-    fontFamily: utils.fontFamily.Bold,
-    color: colors.theme[THEME].textDark,
-  },
-});
-
 export default WeeklyView;

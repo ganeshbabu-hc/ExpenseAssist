@@ -1,36 +1,47 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import {
-  Text,
-  View,
-  Dimensions,
-  Pressable,
-  StyleSheet,
-  Animated,
-} from 'react-native';
+import { Text, View, Pressable, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { G, Line, Rect } from 'react-native-svg';
 import { PieChart, BarChart, XAxis, Grid } from 'react-native-svg-charts';
 import AppHeader from '../common/AppHeader';
 import ScrollViewWrapper from '../common/ScrollViewWrapper';
 import { getMonthlyStats, IStat } from '../database/common/StatsController';
-import { TransactionType } from '../transaction/TransactionTypes';
-import { colors, commonStyles, utils } from '../styles/theme';
-import { THEME } from '../utils/Constants';
+import {
+  ITransactionTypes,
+  TransactionType,
+} from '../transaction/TransactionTypes';
 import CategoryStat from './CategoryStat';
 import * as scale from 'd3-scale';
+import { statsScreenStyle } from '../styles/commonStyles';
+import { GetStyle, GetTheme } from '../styles/GetThemeHook';
+import t from '../common/translations/Translation';
+
+const transactionTypes: ITransactionTypes[] = [
+  {
+    id: 1,
+    label: t('Expense'),
+    type: TransactionType.EXPENSE,
+  },
+  {
+    id: 2,
+    label: t('Income'),
+    type: TransactionType.INCOME,
+  },
+];
 
 const StatsScreen = ({ navigation }) => {
+  const scrollY = useRef(new Animated.Value(0)).current;
+  const rotateVal = new Animated.Value(0);
+  const styles = GetStyle(statsScreenStyle);
+  const { commonStyles, colors } = GetTheme();
   const [slice, setSlice] = useState({
     label: '',
     value: 0,
     key: 0,
   });
   const [statList, setStatList] = useState<IStat[]>([]);
-  const scrollY = useRef(new Animated.Value(0)).current;
   const [type, setType] = useState<TransactionType>(TransactionType.EXPENSE);
   const [data, setData] = useState<any[]>([]);
-  const rotateVal = new Animated.Value(0);
-
   const getStats = async () => {
     const statsList = await getMonthlyStats(type);
 
@@ -45,7 +56,7 @@ const StatsScreen = ({ navigation }) => {
     setStatList(sorted);
   };
   const getGraphColor = (index: number) => {
-    return colors.theme[THEME].graphColorScheme[index];
+    return colors.graphColorScheme[index];
   };
 
   const total = useMemo(() => {
@@ -73,9 +84,9 @@ const StatsScreen = ({ navigation }) => {
       newData.push({
         amount: category.amount,
         name: category.transactionCategoryTitle,
-        color: colors.theme[THEME].graphColorScheme[index],
+        color: colors.graphColorScheme[index],
         legendFontSize: 15,
-        legendFontColor: colors.theme[THEME].graphColorScheme[index],
+        legendFontColor: colors.graphColorScheme[index],
 
         key: category.transactionCategoryId,
         value: category.amount,
@@ -172,8 +183,6 @@ const StatsScreen = ({ navigation }) => {
     getStats();
   }, [type]);
 
-  const deviceWidth = Dimensions.get('window').width;
-
   const Labels = ({ slices }: { slices?: any }) => {
     return slices.map((slice, index) => {
       const { labelCentroid, pieCentroid, data } = slice;
@@ -211,36 +220,6 @@ const StatsScreen = ({ navigation }) => {
         />
       </View>
       <View style={commonStyles.container}>
-        <View style={commonStyles.bottomTabContainer}>
-          <Pressable
-            onPress={() => {
-              setType(TransactionType.INCOME);
-            }}
-            style={commonStyles.bottomTabContainer}>
-            <Text
-              style={[
-                type === TransactionType.INCOME
-                  ? commonStyles.bottomTabTextActive
-                  : commonStyles.bottomTabText,
-              ]}>
-              Income
-            </Text>
-          </Pressable>
-          <Pressable
-            onPress={() => {
-              setType(TransactionType.EXPENSE);
-            }}
-            style={commonStyles.bottomTab}>
-            <Text
-              style={[
-                type === TransactionType.EXPENSE
-                  ? commonStyles.bottomTabTextActive
-                  : commonStyles.bottomTabText,
-              ]}>
-              Expense
-            </Text>
-          </Pressable>
-        </View>
         {/* <View style={styles.tabWrapper}>
           <Pressable
             onPress={() => {
@@ -335,7 +314,7 @@ const StatsScreen = ({ navigation }) => {
               data={barData}
               spacing={0.2}
               gridMin={0}
-              svg={{ fill: colors.theme[THEME].brandMedium }}
+              svg={{ fill: colors.brandMedium }}
               yAccessor={({ item }) => item.value}
             />
             <XAxis
@@ -350,70 +329,30 @@ const StatsScreen = ({ navigation }) => {
         </View>
         <CategoryStat statlist={statList} />
       </ScrollViewWrapper>
+      <View style={commonStyles.bottomTabContainer}>
+        {transactionTypes.map((transactionItem: ITransactionTypes) => {
+          return (
+            <Pressable
+              key={`list-type-${transactionItem.id}`}
+              onPress={() => {
+                setType(transactionItem.type);
+                // setTransactionType(transactionItem.type);
+              }}
+              style={commonStyles.bottomTab}>
+              <Text
+                style={[
+                  type === transactionItem.type
+                    ? commonStyles.bottomTabTextActive
+                    : commonStyles.bottomTabText,
+                ]}>
+                {transactionItem.label}
+              </Text>
+            </Pressable>
+          );
+        })}
+      </View>
     </SafeAreaView>
   );
 };
 
-const styles = StyleSheet.create({
-  tabWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  chartContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  typeWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    overflow: 'scroll',
-  },
-  pieWrapper: {},
-  typeBtnText: {
-    color: colors.theme[THEME].textLight,
-  },
-  typeBtn: {
-    padding: 20,
-    backgroundColor: colors.theme[THEME].brandMedium,
-    borderRadius: utils.inputRadius,
-    marginHorizontal: 20,
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-  statTitle: {
-    color: colors.theme[THEME].textDark,
-    fontFamily: utils.fontFamily.Bold,
-    fontSize: utils.fontSize.heroSubTitle,
-  },
-  statSubTitle: {
-    color: colors.theme[THEME].textBrandMedium,
-    fontFamily: utils.fontFamily.Bold,
-    fontSize: utils.fontSize.xlarge,
-  },
-  bar: {
-    display: 'flex',
-    flex: 1,
-    height: 150,
-    width: 120,
-    // width: '50%',
-  },
-  pie: {
-    display: 'flex',
-    flex: 1,
-    height: 150,
-    width: 120,
-    // width: '50%',
-  },
-});
 export default StatsScreen;

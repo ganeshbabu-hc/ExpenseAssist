@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, FlatList, Pressable } from 'react-native';
-import { categoryList, colors, commonStyles } from '../styles/theme';
 import IconMap from '../common/IconMap';
-import { THEME } from '../utils/Constants';
 import { ITransactionCategory, TransactionType } from './TransactionTypes';
 import { getTransactionCategories } from './TransactionController';
+import { GetTheme } from '../styles/GetThemeHook';
 
 const defaultCategory: ITransactionCategory = {
   transactionCategoryId: 0,
@@ -27,6 +26,7 @@ const TransactionCategotyList = ({
   type,
 }: TransactionCategotyList) => {
   const flatList = useRef<FlatList>(null);
+  const { colors, categoryList, commonStyles } = GetTheme();
   const [activeCategory, setActiveCategory] = useState(defaultValue);
   const [transactionCategories, setTransactionCategories] = useState<
     ITransactionCategory[]
@@ -89,11 +89,7 @@ const TransactionCategotyList = ({
                       type,
                     });
                   }}>
-                  <IconMap
-                    name="plus"
-                    size={34}
-                    color={colors.theme[THEME].textCardGray}
-                  />
+                  <IconMap name="plus" size={34} color={colors.textCardGray} />
                 </Pressable>
               </View>
             );
@@ -114,12 +110,12 @@ const TransactionCategotyList = ({
                 <IconMap
                   style={categoryList.activeCategory}
                   name={'check-circle'}
-                  color={colors.theme[THEME].textLight}
+                  color={colors.textLight}
                 />
               )}
               <IconMap
                 name={item.categoryIcon ?? 'cash-minus'}
-                color={colors.theme[THEME].textLight}
+                color={colors.textLight}
               />
               <Text style={categoryList.categoryTitle}>{item.title}</Text>
             </Pressable>

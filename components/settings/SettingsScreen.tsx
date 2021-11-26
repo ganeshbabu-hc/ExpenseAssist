@@ -1,28 +1,20 @@
 import * as React from 'react';
-import {
-  Animated,
-  Pressable,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { Animated, Pressable, SafeAreaView, Text, View } from 'react-native';
 import AppHeader from '../common/AppHeader';
-import { colors, commonStyles, recentList, utils } from '../styles/theme';
 import { useSelector } from 'react-redux';
-import { THEME } from '../utils/Constants';
 import ScrollViewWrapper from '../common/ScrollViewWrapper';
 import { useRef } from 'react';
 import IconMap from '../common/IconMap';
 import t from '../common/translations/Translation';
+import { GetStyle, GetTheme } from '../styles/GetThemeHook';
+import { recentListStyles } from '../styles/recentList';
+import { settingScreenStyle } from '../styles/commonStyles';
 
 export const SettingsScreen = ({ navigation }: any) => {
+  const { commonStyles, colors } = GetTheme();
+  const recentList = GetStyle(recentListStyles);
+  const styles = GetStyle(settingScreenStyle);
   const scrollY = useRef(new Animated.Value(0)).current;
-  // const isDarkMode = useColorScheme() === 'dark';
-
-  // const userConfiguration: any = useSelector((state: any) => {
-  //   return state.common.configuration;
-  // });
   const currency: any = useSelector((state: any) => {
     return state.common.configuration.currency.value;
   });
@@ -49,7 +41,7 @@ export const SettingsScreen = ({ navigation }: any) => {
               <IconMap
                 name={'swatch-book'}
                 size={28}
-                color={colors.theme[THEME].textBrandMedium}
+                color={colors.textBrandMedium}
               />
             </View>
             <View style={styles.settingDesc}>
@@ -59,7 +51,7 @@ export const SettingsScreen = ({ navigation }: any) => {
                 <IconMap
                   name={'angle-right'}
                   size={28}
-                  color={colors.theme[THEME].textBrandLightMedium}
+                  color={colors.textBrandLightMedium}
                 />
               </View>
             </View>
@@ -76,7 +68,7 @@ export const SettingsScreen = ({ navigation }: any) => {
               <IconMap
                 name={'usd-circle'}
                 size={28}
-                color={colors.theme[THEME].textBrandMedium}
+                color={colors.textBrandMedium}
               />
             </View>
             <View style={styles.settingDesc}>
@@ -86,7 +78,7 @@ export const SettingsScreen = ({ navigation }: any) => {
                 <IconMap
                   name={'angle-right'}
                   size={28}
-                  color={colors.theme[THEME].textBrandLightMedium}
+                  color={colors.textBrandLightMedium}
                 />
               </View>
             </View>
@@ -99,7 +91,7 @@ export const SettingsScreen = ({ navigation }: any) => {
               <IconMap
                 name={'language'}
                 size={28}
-                color={colors.theme[THEME].textBrandMedium}
+                color={colors.textBrandMedium}
               />
             </View>
             <View style={styles.settingDesc}>
@@ -107,7 +99,7 @@ export const SettingsScreen = ({ navigation }: any) => {
               <IconMap
                 name={'angle-right'}
                 size={28}
-                color={colors.theme[THEME].textBrandLightMedium}
+                color={colors.textBrandLightMedium}
               />
             </View>
           </Pressable>
@@ -119,7 +111,7 @@ export const SettingsScreen = ({ navigation }: any) => {
               <IconMap
                 name={'image'}
                 size={28}
-                color={colors.theme[THEME].textBrandMedium}
+                color={colors.textBrandMedium}
               />
             </View>
             <View style={styles.settingDesc}>
@@ -127,7 +119,7 @@ export const SettingsScreen = ({ navigation }: any) => {
               <IconMap
                 name={'angle-right'}
                 size={28}
-                color={colors.theme[THEME].textBrandLightMedium}
+                color={colors.textBrandLightMedium}
               />
             </View>
           </Pressable>
@@ -139,7 +131,7 @@ export const SettingsScreen = ({ navigation }: any) => {
               <IconMap
                 name={'data-sharing'}
                 size={28}
-                color={colors.theme[THEME].textBrandMedium}
+                color={colors.textBrandMedium}
               />
             </View>
             <View style={styles.settingDesc}>
@@ -147,19 +139,23 @@ export const SettingsScreen = ({ navigation }: any) => {
               <IconMap
                 name={'angle-right'}
                 size={28}
-                color={colors.theme[THEME].textBrandLightMedium}
+                color={colors.textBrandLightMedium}
               />
             </View>
           </Pressable>
           <View style={[recentList.dividerWrapper, styles.divider]}>
             <Text style={recentList.divider} />
           </View>
-          <Pressable style={styles.settingWrapper}>
+          <Pressable
+            style={styles.settingWrapper}
+            onPress={() => {
+              navigation.navigate('HelpScreen');
+            }}>
             <View style={styles.settingIconWrapper}>
               <IconMap
                 name={'help-circle'}
                 size={28}
-                color={colors.theme[THEME].textBrandMedium}
+                color={colors.textBrandMedium}
               />
             </View>
             <View style={styles.settingDesc}>
@@ -167,7 +163,7 @@ export const SettingsScreen = ({ navigation }: any) => {
               <IconMap
                 name={'angle-right'}
                 size={28}
-                color={colors.theme[THEME].textBrandLightMedium}
+                color={colors.textBrandLightMedium}
               />
             </View>
           </Pressable>
@@ -176,45 +172,3 @@ export const SettingsScreen = ({ navigation }: any) => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  quickMenuContainer: {
-    backgroundColor: colors.theme[THEME].brandBg,
-    marginTop: 10,
-  },
-  divider: {
-    marginVertical: 0,
-  },
-  settingWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    marginVertical: 20,
-  },
-  settingIconWrapper: {
-    marginRight: 10,
-  },
-  settingDesc: {
-    display: 'flex',
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  settingName: {
-    color: colors.theme[THEME].textDark,
-    fontSize: utils.fontSize.medium,
-    fontFamily: utils.fontFamily.Bold,
-  },
-  settingValueWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  settingValue: {
-    color: colors.theme[THEME].textDark,
-    fontSize: utils.fontSize.medium,
-    fontFamily: utils.fontFamily.Bold,
-  },
-});

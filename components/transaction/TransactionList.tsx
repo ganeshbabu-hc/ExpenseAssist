@@ -1,12 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, FlatList, Pressable, Text, View } from 'react-native';
-import { colors, commonStyles, recentList } from '../styles/theme';
 import IconMap from '../common/IconMap';
 import { getTransactions } from './TransactionController';
 import AppHeader from '../common/AppHeader';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ScrollViewWrapper from '../common/ScrollViewWrapper';
-import { THEME } from '../utils/Constants';
 import t from '../common/translations/Translation';
 import {
   ITransaction,
@@ -16,6 +14,8 @@ import {
 import Empty from '../illustrations/Empty';
 import TransactionItem from './TransactionItem';
 import AddDoc from '../illustrations/AddDoc';
+import { GetTheme } from '../styles/GetThemeHook';
+import { recentListStyles } from '../styles/recentList';
 
 interface ITransactionList {
   limit?: number;
@@ -69,6 +69,7 @@ const TransactionList = ({
 }: ITransactionList) => {
   header = route?.params?.header || header || false;
   type = route?.params?.type || type;
+  const { commonStyles, styles, colors } = GetTheme(recentListStyles);
   const animatedValue = useRef(new Animated.Value(0)).current;
   const [loading, setLoading] = useState(false);
   const [transactionType, setTransactionType] = useState<TransactionType>(type);
@@ -156,20 +157,6 @@ const TransactionList = ({
         setTitle(t('pinned'));
         break;
     }
-    // animatedTitle.setValue(0);
-    // Animated.sequence([
-    //   Animated.timing(animatedTitle, {
-    //     toValue: 1,
-    //     duration: 300,
-    //     useNativeDriver: true,
-    //   }),
-    //   Animated.delay(300),
-    //   Animated.timing(animatedTitle, {
-    //     toValue: 2,
-    //     duration: 300,
-    //     useNativeDriver: true,
-    //   }),
-    // ]).start();
   };
   useEffect(() => {
     updateTransactions();
@@ -211,11 +198,11 @@ const TransactionList = ({
         <View
           style={[
             commonStyles.container,
-            recentList.listWrapper,
-            header ? recentList.mb50 : {},
+            styles.listWrapper,
+            header ? styles.mb50 : {},
           ]}>
-          <View style={recentList.listHeader}>
-            <Text style={[commonStyles.title, recentList.listTitle]}>
+          <View style={styles.listHeader}>
+            <Text style={[commonStyles.title, styles.listTitle]}>
               {t('transactions')}
             </Text>
             {!header && (
@@ -227,17 +214,17 @@ const TransactionList = ({
                     header: true,
                   });
                 }}
-                style={recentList.listHeaderIconWrapper}>
+                style={styles.listHeaderIconWrapper}>
                 <IconMap
-                  style={recentList.listHeaderIcon}
+                  style={styles.listHeaderIcon}
                   name={'ellipse-horz'}
                   size={commonStyles.icon.width}
-                  color={colors.theme[THEME].textBrandMedium}
+                  color={colors.textBrandMedium}
                 />
               </Pressable>
             )}
             {header && (
-              <View style={recentList.txActionWrapper}>
+              <View style={styles.txActionWrapper}>
                 <Animated.View
                   style={[
                     {
@@ -249,12 +236,12 @@ const TransactionList = ({
                     onPress={() => {
                       navigation.navigate('TransactionSearch');
                     }}
-                    style={recentList.listHeaderIconWrapper}>
+                    style={styles.listHeaderIconWrapper}>
                     <IconMap
-                      style={recentList.listHeaderIcon}
+                      style={styles.listHeaderIcon}
                       name="search"
                       size={32}
-                      color={colors.theme[THEME].textBrandMedium}
+                      color={colors.textBrandMedium}
                     />
                   </Pressable>
                 </Animated.View>
@@ -274,12 +261,12 @@ const TransactionList = ({
                             : TransactionType.EXPENSE,
                       });
                     }}
-                    style={recentList.listHeaderIconWrapper}>
+                    style={styles.listHeaderIconWrapper}>
                     <IconMap
-                      style={recentList.listHeaderIcon}
+                      style={styles.listHeaderIcon}
                       name="plus-circle"
                       size={32}
-                      color={colors.theme[THEME].textBrandMedium}
+                      color={colors.textBrandMedium}
                     />
                   </Pressable>
                 </Animated.View>
@@ -331,11 +318,7 @@ const TransactionList = ({
                     });
                   }}
                   style={commonStyles.illustrationTitleBtn}>
-                  <IconMap
-                    name="plus"
-                    color={colors.theme[THEME].textLight}
-                    size={32}
-                  />
+                  <IconMap name="plus" color={colors.textLight} size={32} />
                 </Pressable>
               )}
             </View>

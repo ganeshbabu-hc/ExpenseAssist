@@ -46,68 +46,104 @@ export const saveTransactionCategory = async (
   return db.executeSql(insertQuery);
 };
 
-export const trucateTable = async () => {
-  // console.log('In trucateTable table');
-  const insertQuery = `DELETE FROM ${TNAME_TRANSACTIONS}`;
-  const db = await getDBConnection();
-  const result = await db.executeSql(insertQuery);
-  // console.log('trucateTable', result);
+export const setThemeConfig = async (themeName: string): Promise<any> => {
+  try {
+    const updateQuery = `UPDATE ${TNAME_CONFIGURATION} SET VALUE='${themeName}', DATE_UPDATED_TLM = CURRENT_TIMESTAMP WHERE NAME='theme'`;
+    const db = await getDBConnection();
+    return await db.executeSql(updateQuery);
+  } catch (error) {
+    console.log(error);
+    throw Error('Failed to get currencies !!!');
+  }
 };
 
-export const dropTables = async () => {
-  // console.log('In dropTables table');
-  const insertQuery = `DROP TABLE ${TNAME_CONFIGURATION}`;
-  const db = await getDBConnection();
-  const result = await db.executeSql(insertQuery);
-  // console.log('dropTables', result);
+export const getThemeConfig = async (): Promise<any> => {
+  try {
+    const updateQuery = `SELECT VALUE as themeName FROM ${TNAME_CONFIGURATION} WHERE NAME='theme'`;
+    const db = await getDBConnection();
+    const results = await db.executeSql(updateQuery);
+    let themeName = 'lightPurple';
+    results.forEach((result: any) => {
+      for (let index = 0; index < result.rows.length; index++) {
+        themeName = result.rows.item(index).themeName;
+        return;
+      }
+    });
+    return themeName;
+  } catch (error) {
+    console.log(error);
+    throw Error('Failed to get currencies !!!');
+  }
 };
 
-export const createConfigTable = async () => {
-  // console.log('In creating the config table');
-  const insertQuery = `CREATE TABLE CONFIGURATION (
-      CONFIGURATION_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-      NAME text NOT NULL,
-      DESCRIPTION text,
-      TYPE text NOT NULL DEFAULT 'string',
-      VALUE text NOT NULL DEFAULT '',
-      DATE_ADDED_TLM DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      DATE_UPDATED_TLM DATE NOT NULL DEFAULT CURRENT_TIMESTAMP
-    )`;
-  const db = await getDBConnection();
-  const result = await db.executeSql(insertQuery);
-  // console.log('createConfigTable', result);
-};
+// export const trucateTable = async () => {
+//   // console.log('In trucateTable table');
+//   const insertQuery = `DELETE FROM ${TNAME_TRANSACTIONS}`;
+//   const db = await getDBConnection();
+//   const result = await db.executeSql(insertQuery);
+//   // console.log('trucateTable', result);
+// };
 
-export const createImageTable = async () => {
-  // console.log('In creating the config table');
-  const insertQuery = `CREATE TABLE TRANSACTION_IMAGES (
-    IMAGE_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-    TRANSACTION_ID text NOT NULL,
-    IMAGE BLOB NOT NULL,
-    DATE_ADDED_TLM DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    DATE_UPDATED_TLM DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY(TRANSACTION_ID) REFERENCES TRANSACTION_CATEGORIES(TRANSACTION_ID)
-  );`;
-  const db = await getDBConnection();
-  const result = await db.executeSql(insertQuery);
-  // console.log('createConfigTable', result);
-};
+// export const addThemeConfig = async () => {
+//   const insertQuery =
+//     'INSERT INTO ${TNAME_CONFIGURATION}(NAME, DESCRIPTION, TYPE, VALUE, DATE_ADDED_TLM, DATE_UPDATED_TLM) VALUES ("theme", "","string", \'lighturple\',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)';
+//   const db = await getDBConnection();
+//   const result = await db.executeSql(insertQuery);
+//   console.log('addThemeConfig', result);
+// };
+// export const dropTables = async () => {
+//   // console.log('In dropTables table');
+//   const insertQuery = `DROP TABLE ${TNAME_CONFIGURATION}`;
+//   const db = await getDBConnection();
+//   const result = await db.executeSql(insertQuery);
+// };
 
-export const addColumn = async () => {
-  const query = 'ALTER TABLE TRANSACTIONS  ADD COLUMN PINNED NUMBER DEFAULT 0;';
-  const db = await getDBConnection();
-  const result = await db.executeSql(query);
-  console.log(result);
-};
+// export const createConfigTable = async () => {
+//   // console.log('In creating the config table');
+//   const insertQuery = `CREATE TABLE CONFIGURATION (
+//       CONFIGURATION_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+//       NAME text NOT NULL,
+//       DESCRIPTION text,
+//       TYPE text NOT NULL DEFAULT 'string',
+//       VALUE text NOT NULL DEFAULT '',
+//       DATE_ADDED_TLM DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+//       DATE_UPDATED_TLM DATE NOT NULL DEFAULT CURRENT_TIMESTAMP
+//     )`;
+//   const db = await getDBConnection();
+//   const result = await db.executeSql(insertQuery);
+//   // console.log('createConfigTable', result);
+// };
 
-export const insertStatements = async () => {
-  // console.log('In insertStatements config table');
-  const insertQuery =
-    'INSERT OR REPLACE INTO CONFIGURATION(NAME, DESCRIPTION, TYPE, VALUE, DATE_ADDED_TLM, DATE_UPDATED_TLM) VALUES (\'currency\', \'\',\'json\', \'{"code":"INR","currencyId":47,"name":"Rupees","symbol":"₹"}\',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);';
-  const db = await getDBConnection();
-  const result = await db.executeSql(insertQuery);
-  // console.log('insertStatements', result);
-};
+// export const createImageTable = async () => {
+//   // console.log('In creating the config table');
+//   const insertQuery = `CREATE TABLE TRANSACTION_IMAGES (
+//     IMAGE_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+//     TRANSACTION_ID text NOT NULL,
+//     IMAGE BLOB NOT NULL,
+//     DATE_ADDED_TLM DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+//     DATE_UPDATED_TLM DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+//     FOREIGN KEY(TRANSACTION_ID) REFERENCES TRANSACTION_CATEGORIES(TRANSACTION_ID)
+//   );`;
+//   const db = await getDBConnection();
+//   const result = await db.executeSql(insertQuery);
+//   // console.log('createConfigTable', result);
+// };
+
+// export const addColumn = async () => {
+//   const query = 'ALTER TABLE TRANSACTIONS  ADD COLUMN PINNED NUMBER DEFAULT 0;';
+//   const db = await getDBConnection();
+//   const result = await db.executeSql(query);
+//   console.log(result);
+// };
+
+// export const insertStatements = async () => {
+//   // console.log('In insertStatements config table');
+//   const insertQuery =
+//     'INSERT OR REPLACE INTO CONFIGURATION(NAME, DESCRIPTION, TYPE, VALUE, DATE_ADDED_TLM, DATE_UPDATED_TLM) VALUES (\'currency\', \'\',\'json\', \'{"code":"INR","currencyId":47,"name":"Rupees","symbol":"₹"}\',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);';
+//   const db = await getDBConnection();
+//   const result = await db.executeSql(insertQuery);
+//   // console.log('insertStatements', result);
+// };
 
 export const resetDatabase = async () => {
   // console.log('In resetting DB table');

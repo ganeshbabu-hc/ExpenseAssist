@@ -10,7 +10,6 @@ import t from '../common/translations/Translation';
 import UniconEdit from '../icons/unicons/UniconEdit';
 import UniconPaperClip from '../icons/unicons/UniconPaperClip';
 import UniconTrashAlt from '../icons/unicons/UniconTrashAlt';
-import { recentList, colors } from '../styles/theme';
 import { THEME } from '../utils/Constants';
 import { displayDateFormat } from '../utils/Formatter';
 import { ICurrency } from '../database/common/CurrencyController';
@@ -19,6 +18,8 @@ import {
   togglePinTransaction,
 } from './TransactionController';
 import { TransactionType, ITransaction } from './TransactionTypes';
+import { GetTheme } from '../styles/GetThemeHook';
+import { recentListStyles } from '../styles/recentList';
 
 interface ITransactionItem {
   index: number;
@@ -33,6 +34,7 @@ const TransactionItem = ({
   index,
   onUpdate,
 }: ITransactionItem) => {
+  const { styles, colors } = GetTheme(recentListStyles);
   const dispatch = useDispatch();
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const removeAnimation = useRef(new Animated.Value(0)).current;
@@ -117,7 +119,7 @@ const TransactionItem = ({
       }}>
       <Swipeout
         autoClose={true}
-        style={recentList.swiper}
+        style={styles.swiper}
         left={[
           {
             onPress: () => {
@@ -126,10 +128,10 @@ const TransactionItem = ({
             component: (
               <View
                 style={[
-                  recentList.swipeIcon,
-                  index !== 0 ? recentList.dividerMargin : {},
+                  styles.swipeIcon,
+                  index !== 0 ? styles.dividerMargin : {},
                 ]}>
-                <UniconPaperClip color={colors.theme[THEME].textBrandMedium} />
+                <UniconPaperClip color={colors.textBrandMedium} />
               </View>
             ),
           },
@@ -142,10 +144,10 @@ const TransactionItem = ({
             component: (
               <View
                 style={[
-                  recentList.swipeIcon,
-                  index !== 0 ? recentList.dividerMargin : {},
+                  styles.swipeIcon,
+                  index !== 0 ? styles.dividerMargin : {},
                 ]}>
-                <UniconTrashAlt color={colors.theme[THEME].textBrandMedium} />
+                <UniconTrashAlt color={colors.textBrandMedium} />
               </View>
             ),
           },
@@ -156,18 +158,18 @@ const TransactionItem = ({
             component: (
               <View
                 style={[
-                  recentList.swipeIcon,
-                  index !== 0 ? recentList.dividerMargin : {},
+                  styles.swipeIcon,
+                  index !== 0 ? styles.dividerMargin : {},
                 ]}>
-                <UniconEdit color={colors.theme[THEME].textBrandMedium} />
+                <UniconEdit color={colors.textBrandMedium} />
               </View>
             ),
           },
         ]}>
         <View>
           {index !== 0 && (
-            <View style={recentList.dividerWrapper}>
-              <Text style={recentList.divider} />
+            <View style={styles.dividerWrapper}>
+              <Text style={styles.divider} />
             </View>
           )}
           <Pressable
@@ -183,16 +185,14 @@ const TransactionItem = ({
                 },
               });
             }}
-            style={recentList.listItem}>
-            <View style={recentList.listItemInfo}>
+            style={styles.listItem}>
+            <View style={styles.listItemInfo}>
               <View
                 style={[
-                  recentList.listItemIconWrapper,
+                  styles.listItemIconWrapper,
                   {
                     backgroundColor:
-                      index % 2 === 0
-                        ? colors.theme[THEME].brandMedium
-                        : colors.theme[THEME].brandMedium,
+                      index % 2 === 0 ? colors.brandMedium : colors.brandMedium,
                   },
                 ]}>
                 <IconMap
@@ -201,33 +201,30 @@ const TransactionItem = ({
                       ? item.transactionCategoryIcon ?? 'payment'
                       : item.transactionCategoryIcon ?? 'payment'
                   }
-                  color={colors.theme[THEME].textLight}
+                  color={colors.textLight}
                 />
               </View>
-              <View style={recentList.listItemInfoWrapper}>
+              <View style={styles.listItemInfoWrapper}>
                 <View>
-                  <View style={recentList.listItemDescription}>
-                    <Text style={recentList.listItemPayment}>
+                  <View style={styles.listItemDescription}>
+                    <Text style={styles.listItemPayment}>
                       {`${t(item.paymentTitle ?? '')} • `}
                     </Text>
-                    <Text style={recentList.listItemDate}>
+                    <Text style={styles.listItemDate}>
                       {`${t(item.transactionType)} • `}
                     </Text>
-                    <Text style={recentList.listItemDate}>
+                    <Text style={styles.listItemDate}>
                       {displayDateFormat(item.dateAddedTlm)}
                     </Text>
                   </View>
-                  <Text style={recentList.listItemTitle}>{item.title}</Text>
-                  <Text style={recentList.listItemAmount}>
+                  <Text style={styles.listItemTitle}>{item.title}</Text>
+                  <Text style={styles.listItemAmount}>
                     {currency.symbol} {item.amount}
                   </Text>
                 </View>
-                <View style={recentList.listItemInfoIcon}>
+                <View style={styles.listItemInfoIcon}>
                   {item.pinned === 1 && (
-                    <IconMap
-                      name={'paper-clip'}
-                      color={colors.theme[THEME].textCardGray}
-                    />
+                    <IconMap name={'paper-clip'} color={colors.textCardGray} />
                   )}
                 </View>
               </View>

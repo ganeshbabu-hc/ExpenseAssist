@@ -1,12 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { Animated, StyleSheet, Text, View } from 'react-native';
-import { colors, commonStyles, utils } from '../styles/theme';
-import { THEME } from '../utils/Constants';
-import Icon from 'react-native-vector-icons/dist/MaterialIcons';
+import { Animated, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import IconMap from './IconMap';
 import { SHOW_TOAST } from '../../redux/constants/StoreConstants';
+import { GetTheme } from '../styles/GetThemeHook';
+import { toastStyles } from '../styles/commonStyles';
 
 export enum ToastPosition {
   TOP = 'top',
@@ -32,6 +31,8 @@ interface IMessage {
 }
 
 const Message = ({ message, onHide }: IMessage) => {
+  const { colors, commonStyles, styles } = GetTheme(toastStyles);
+
   const opacity = useRef(new Animated.Value(0)).current;
   const getIcon = () => {
     const toastType = message.toastType ?? ToastType.INFO;
@@ -39,7 +40,7 @@ const Message = ({ message, onHide }: IMessage) => {
       <IconMap
         name={toastType}
         size={commonStyles.icon.width}
-        color={colors.theme[THEME].textLight}
+        color={colors.textLight}
       />
     );
   };
@@ -87,6 +88,7 @@ const Message = ({ message, onHide }: IMessage) => {
 };
 
 export default () => {
+  const { styles } = GetTheme(toastStyles);
   const toastMessages: IToast[] = useSelector(
     (state: any) => state.common.toast,
   );
@@ -127,40 +129,3 @@ export default () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  message1Wrapper: {
-    position: 'absolute',
-    top: 10,
-    left: 0,
-    right: 0,
-  },
-  messageWrapper: {
-    display: 'flex',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  message: {
-    margin: 10,
-    marginBottom: 5,
-    color: colors.theme[THEME].textDark,
-    backgroundColor: colors.theme[THEME].brandDark,
-    padding: 20,
-    borderRadius: utils.inputRadius,
-    shadowcolor: colors.theme[THEME].shadowBrandMedium,
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.15,
-    shadowRadius: 5,
-    elevation: 6,
-  },
-  messageText: {
-    color: colors.theme[THEME].textLight,
-    marginLeft: 10,
-  },
-  messageIconWrapper: {},
-  messageIcon: {},
-});

@@ -40,17 +40,17 @@ export const INCOME_QUERY_LIMIT = 5;
 export const DATE_DB_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 export const DATE_DISPLAY_FORMAT = 'DD MMM YY';
 
-export let THEME = 'yellow';
+export let THEME = 'darkYellow';
 
 export const DEBOUNCE_RATE = 300;
-const setTheme = async () => {
-  await AsyncStorage.setItem('@themekey', 'purple');
-  const result = await AsyncStorage.getItem('@themekey');
-  global.THEME = result;
-  return result ?? 'red';
-};
-// x();
-setTheme();
+// const setTheme = async () => {
+//   await AsyncStorage.setItem('@themekey', 'purple');
+//   const result = await AsyncStorage.getItem('@themekey');
+//   global.THEME = result;
+//   return result ?? 'red';
+// };
+// // x();
+// setTheme();
 // export let THEME = 'deepPurple';
 
 // export let THEME = 'purple';

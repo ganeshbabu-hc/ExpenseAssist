@@ -1,11 +1,11 @@
 import React from 'react';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
-import { commonStyles, colors, utils, ripple } from '../../styles/theme';
-import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import { THEME } from '../../utils/Constants';
 import IconMap from '../IconMap';
 import t from '../translations/Translation';
 import { TransactionType } from '../../transaction/TransactionTypes';
+import { GetTheme } from '../../styles/GetThemeHook';
+import { typeListStyles } from '../../styles/commonStyles';
 
 interface ITypeItem {
   id: number;
@@ -40,6 +40,7 @@ const typeList: ITypeItem[] = [
 ];
 
 const TypeList = ({ navigation }: any) => {
+  const { commonStyles, colors, styles } = GetTheme(typeListStyles);
   const _keyExtractor = (item: any) => item.id;
 
   const _renderItem = (item: ITypeItem, index: number) => {
@@ -56,11 +57,7 @@ const TypeList = ({ navigation }: any) => {
             onPress={() => {
               navigation.navigate(item.route);
             }}>
-            <IconMap
-              name="plus"
-              size={48}
-              color={colors.theme[THEME].textCardGray}
-            />
+            <IconMap name="plus" size={48} color={colors.textCardGray} />
           </Pressable>
         </View>
       );
@@ -110,38 +107,4 @@ const TypeList = ({ navigation }: any) => {
 
 export default TypeList;
 
-const styles = StyleSheet.create({
-  typeListContainer: {
-    backgroundColor: colors.theme[THEME].brandBg,
-    overflow: 'hidden',
-  },
-  typeCard: {
-    display: 'flex',
-    icon: {
-      marginTop: 8,
-    },
-    title: {
-      marginTop: 10,
-      fontSize: utils.fontSize.small,
-      fontFamily: utils.fontFamily.Bold,
-    },
-  },
-  list: {
-    marginTop: 10,
-  },
-  title: {
-    marginTop: 20,
-  },
-  addBtnWrapper: {
-    display: 'flex',
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-    marginLeft: commonStyles.container.paddingHorizontal,
-  },
-  addBtn: {
-    borderRadius: utils.inputRadius,
-    borderWidth: 2,
-    borderColor: colors.theme[THEME].textCardGray,
-    borderStyle: 'dotted',
-  },
-});
+// const styles =

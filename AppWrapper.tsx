@@ -10,10 +10,15 @@ import configureStore from './redux/store/ConfigureStore';
 import Notification from './components/common/ToastNotification';
 import { LogBox, StyleSheet, View } from 'react-native';
 import {
+  addThemeConfig,
   createImageTable,
   getConfigurations,
+  getThemeConfig,
 } from './components/database/common/CommonController';
-import { UPDATE_CONFIGURATIONS } from './redux/constants/StoreConstants';
+import {
+  SET_THEME,
+  UPDATE_CONFIGURATIONS,
+} from './redux/constants/StoreConstants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setTheme } from './components/utils/Constants';
 import { addReminder } from './services/Reminders';
@@ -34,11 +39,9 @@ const AppWrapper = () => {
   const setConfigs = async () => {
     try {
       const configs = await getConfigurations();
-      //   await AsyncStorage.setItem('@themekey', 'purple');
-      //   const result = await AsyncStorage.getItem('@themekey');
-      //   console.log('--themekey--', result);
-      //   setTheme(result ?? 'purple');
       dispatch({ type: UPDATE_CONFIGURATIONS, payload: configs });
+      const themeName = await getThemeConfig();
+      dispatch({ type: SET_THEME, payload: themeName });
       setLoading(false);
     } catch (error) {
       console.log(error);

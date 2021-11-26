@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Modal, StyleSheet, Pressable } from 'react-native';
+import { View, Text, Modal, Pressable } from 'react-native';
 import {
   getPaymentTypes,
   IPayment,
 } from '../database/common/PaymentController';
-import { colors, formStyles, utils } from '../styles/theme';
-import Icon from 'react-native-vector-icons/dist/MaterialIcons';
 import IconMap from './IconMap';
-import { THEME } from '../utils/Constants';
 import t from './translations/Translation';
+import { GetTheme } from '../styles/GetThemeHook';
+import { paymentStyles } from '../styles/commonStyles';
 
 interface IpaymentDropdown {
   onChange: Function;
@@ -16,6 +15,7 @@ interface IpaymentDropdown {
 }
 
 const PaymentsDropdown = ({ onChange, defaultValue }: IpaymentDropdown) => {
+  const { colors, styles, formStyles } = GetTheme(paymentStyles);
   const [paymentId, setPaymentId] = useState(defaultValue);
   const [paymentList, setPaymentList] = useState<IPayment[]>([]);
   const [showModal, setShowModal] = useState(false);
@@ -63,10 +63,7 @@ const PaymentsDropdown = ({ onChange, defaultValue }: IpaymentDropdown) => {
           <View style={styles.modalView}>
             <View style={styles.paymentHeader}>
               <Text style={formStyles.inputLabel}>Paid by</Text>
-              <IconMap
-                name={'close'}
-                color={colors.theme[THEME].textCardGray}
-              />
+              <IconMap name={'close'} color={colors.textCardGray} />
             </View>
             {paymentList.map((payment: IPayment) => {
               return (
@@ -81,14 +78,14 @@ const PaymentsDropdown = ({ onChange, defaultValue }: IpaymentDropdown) => {
                       {payment.paymentId === paymentId && (
                         <IconMap
                           name="check-circle"
-                          color={colors.theme[THEME].textBrandMedium}
+                          color={colors.textBrandMedium}
                           size={28}
                         />
                       )}
                     </View>
                     <IconMap
                       name={payment.paymentIcon}
-                      color={colors.theme[THEME].textCardGray}
+                      color={colors.textCardGray}
                     />
                     <Text style={styles.paymentTitle}>{t(payment.title)}</Text>
                   </View>
@@ -101,55 +98,6 @@ const PaymentsDropdown = ({ onChange, defaultValue }: IpaymentDropdown) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.8)',
-  },
-  modalView: {
-    minWidth: '75%',
-    backgroundColor: 'white',
-    borderRadius: utils.inputRadius,
-    paddingHorizontal: 20,
-    alignItems: 'flex-start',
-    shadowColor: colors.theme[THEME].shadowBrandMedium,
-    paddingVertical: 10,
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  paymentWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    paddingVertical: 10,
-    width: '100%',
-  },
-  paymentCheckWrapper: {
-    marginRight: 10,
-    width: 30,
-  },
-  paymentTitle: {
-    color: colors.theme[THEME].brandMedium,
-    fontFamily: utils.fontFamily.Bold,
-    fontSize: utils.fontSize.large,
-    marginLeft: 10,
-  },
-  paymentHeader: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-});
 
 export default PaymentsDropdown;
 

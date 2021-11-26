@@ -86,7 +86,7 @@ export let colors: IColors = {
     //     deepPurple[700],
     //   ],
     // },
-    yellow: {
+    darkYellow: {
       content: 'light-content',
       // brandLight: deepPurple[50],
       brandBg: '#212328',
@@ -120,6 +120,39 @@ export let colors: IColors = {
       ],
     },
     purple: {
+      content: 'dark-content',
+      // brandLight: deepPurple[50],
+      brandBg: 'hsla(230, 0%, 98%, 1)',
+      brandLight: '#fff',
+      brandMedium: deepPurple.A700,
+      brandLightMedium: deepPurple[200],
+      brandDark: deepPurple[900],
+      brandDanger: pink[600],
+      textDark: '#000',
+      textGray: grey[500],
+      textCardGray: grey[400],
+      textLight: '#fff',
+      textLightGray: 'hsla(0, 0%, 100%, 0.15)',
+      bgLight: '#fff',
+      textBrandMedium: deepPurple.A700,
+      textBrandDark: deepPurple[900],
+      textBrandLightMedium: deepPurple[200],
+      shadowBrandLight: grey[400],
+      shadowBrandMedium: deepPurple[900],
+      shadowBrandDark: deepPurple.A700,
+      graphColorScheme: [
+        // deepPurple[900],
+        // deepPurple[800],
+        deepPurple[900],
+        deepPurple[700],
+        deepPurple[500],
+        deepPurple[300],
+        deepPurple[100],
+        deepPurple[600],
+        deepPurple[700],
+      ],
+    },
+    lightPurple: {
       content: 'dark-content',
       // brandLight: deepPurple[50],
       brandBg: 'hsla(230, 0%, 98%, 1)',
@@ -275,15 +308,9 @@ export let colors: IColors = {
   },
 };
 
-// setTimeout(() => {
-//   colors.theme[THEME] = {
-//     brandLight: '#f2ffff',
-//     brandMedium: '#00b4d8',
-//     brandLightMedium: '#023e8a',
-//     brandDark: '#03045e',
-//     brandDanger: '#E83641',
-//   };
-// }, 5000);
+export const containerLeftMargin = 50;
+export const containerGutter = 20;
+// export const themeCode = 'lightPurple';
 
 export const utils = {
   fontSize: {
@@ -298,52 +325,16 @@ export const utils = {
     heroSubTitle: 32,
     heroTitle: 40,
   },
-  // fontFamily: {
-  //   ExtraLight: 'Nunito-ExtraLight',
-  //   Light: 'Nunito-Light',
-  //   Regular: 'Nunito-Regular',
-  //   SemiBold: 'Nunito-SemiBold',
-  //   Bold: 'Nunito-Bold',
-  //   ExtraBold: 'Nunito-ExtraBold',
-  //   Black: 'Nunito-Black',
-  // },
   fontFamily: {
     Thin: 'Brandon_thin',
     Light: 'Brandon_light',
     Regular: 'Brandon_reg',
-    // Medium: 'Brandon_med',
     SemiBold: 'Brandon_med',
     Bold: 'Brandon_bld',
     Black: 'Brandon_blk',
   },
-  // fontFamily: {
-  //   ExtraLight: 'WorkSans-Thin',
-  //   Light: 'WorkSans-Light',
-  //   Medium: 'WorkSans-Medium',
-  //   Regular: 'WorkSans-Regular',
-  //   SemiBold: 'WorkSans-SemiBold',
-  //   Bold: 'WorkSans-Bold',
-  //   ExtraBold: 'WorkSans-ExtraBold',
-  //   Black: 'WorkSans-Black',
-  // },
-  // fontFamily: {
-  //   Light: 'OpenSans-Light',
-  //   Medium: 'OpenSans-Medium',
-  //   Regular: 'OpenSans-Regular',
-  //   SemiBold: 'OpenSans-SemiBold',
-  //   Bold: 'OpenSans-Bold',
-  //   ExtraBold: 'OpenSans-ExtraBold',
-  //   // Black: 'OpenSans-Black',
-  // },
   inputRadius: 15,
-  inputElevation: {
-    elevation: 10,
-    shadowColor: colors.theme[THEME].shadowBrandLight,
-    shadowOpacity: 1,
-  },
-  bgWhite: {
-    backgroundColor: colors.theme[THEME].textLight,
-  },
+  inputElevation: 10,
 };
 
 export const ripple = {
@@ -430,6 +421,7 @@ export const formStyles = StyleSheet.create({
   actionBtn: {
     padding: 8,
     marginRight: 10,
+    backgroundColor: colors.theme[THEME].brandLight,
   },
   pinnedActive: {
     borderRadius: utils.inputRadius,
@@ -463,7 +455,6 @@ export const formStyles = StyleSheet.create({
   },
 });
 
-export const containerLeftMargin = 50;
 export const commonStyles = StyleSheet.create({
   mb160: {
     marginBottom: 160,
@@ -633,109 +624,109 @@ export const commonStyles = StyleSheet.create({
   },
 });
 
-export const uploadMenu = StyleSheet.create({
-  uploadWrapper: {
-    position: 'absolute',
-    bottom: 0,
-    width: '100%',
-    display: 'flex',
-    flex: 1,
-    elevation: 10,
-    zIndex: 100,
-    shadowColor: colors.theme[THEME].shadowBrandMedium,
-    shadowOffset: {
-      width: -10,
-      height: -10,
-    },
-  },
-  elevationWrapper: {
-    display: 'flex',
-    flex: 1,
-    height: 10,
-    elevation: 10,
-  },
-  uploadMenuHeader: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  uploadMenuTitle: {
-    color: colors.theme[THEME].textBrandMedium,
-    fontSize: utils.fontSize.medium,
-    fontFamily: utils.fontFamily.Bold,
-    paddingTop: 20,
-  },
-  uploadMenuSubTitle: {
-    color: colors.theme[THEME].textCardGray,
-    fontSize: utils.fontSize.xxsmall,
-    fontFamily: utils.fontFamily.Bold,
-    paddingBottom: 20,
-  },
-  uploadContainer: {
-    paddingBottom: 20,
-    backgroundColor: colors.theme[THEME].brandBg,
-  },
-  uploadMenu: {
-    display: 'flex',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    flexDirection: 'row',
-    paddingVertical: 10,
-  },
-  uploadText: {
-    color: colors.theme[THEME].textBrandMedium,
-    fontSize: utils.fontSize.medium,
-    marginLeft: 10,
-    fontFamily: utils.fontFamily.Bold,
-  },
-  uploadMenuClose: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    width: 60,
-    padding: 6,
-    // backgroundColor: colors.theme[THEME].brandMedium,
-    borderTopLeftRadius: utils.inputRadius,
-    borderTopRightRadius: utils.inputRadius,
-  },
-  imageListWrapper: {
-    marginTop: 20,
-  },
-  imageListContainer: {
-    marginVertical: 10,
-    display: 'flex',
-    flexWrap: 'wrap',
-    flexDirection: 'row',
-  },
-  imageListItemWrapper: {
-    display: 'flex',
-    flex: 1,
-    position: 'relative',
-  },
-  imageListItem: {
-    borderRadius: utils.inputRadius,
-    // borderWidth: 1,
-    borderColor: colors.theme[THEME].textBrandMedium,
-    // marginBottom: 10,
-    // marginRight: 10,
-    width: '100%',
-    height: 120,
-  },
-  imageListItemRemove: {
-    backgroundColor: colors.theme[THEME].brandMedium,
-    margin: 4,
-    borderRadius: utils.inputRadius,
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    zIndex: 1,
-  },
-});
+// export const uploadMenu = StyleSheet.create({
+//   uploadWrapper: {
+//     position: 'absolute',
+//     bottom: 0,
+//     width: '100%',
+//     display: 'flex',
+//     flex: 1,
+//     elevation: 10,
+//     zIndex: 100,
+//     shadowColor: colors.theme[THEME].shadowBrandMedium,
+//     shadowOffset: {
+//       width: -10,
+//       height: -10,
+//     },
+//   },
+//   elevationWrapper: {
+//     display: 'flex',
+//     flex: 1,
+//     height: 10,
+//     elevation: 10,
+//   },
+//   uploadMenuHeader: {
+//     display: 'flex',
+//     justifyContent: 'space-between',
+//     alignItems: 'center',
+//     flexDirection: 'row',
+//   },
+//   uploadMenuTitle: {
+//     color: colors.theme[THEME].textBrandMedium,
+//     fontSize: utils.fontSize.medium,
+//     fontFamily: utils.fontFamily.Bold,
+//     paddingTop: 20,
+//   },
+//   uploadMenuSubTitle: {
+//     color: colors.theme[THEME].textCardGray,
+//     fontSize: utils.fontSize.xxsmall,
+//     fontFamily: utils.fontFamily.Bold,
+//     paddingBottom: 20,
+//   },
+//   uploadContainer: {
+//     paddingBottom: 20,
+//     backgroundColor: colors.theme[THEME].brandBg,
+//   },
+//   uploadMenu: {
+//     display: 'flex',
+//     justifyContent: 'flex-start',
+//     alignItems: 'center',
+//     flexDirection: 'row',
+//     paddingVertical: 10,
+//   },
+//   uploadText: {
+//     color: colors.theme[THEME].textBrandMedium,
+//     fontSize: utils.fontSize.medium,
+//     marginLeft: 10,
+//     fontFamily: utils.fontFamily.Bold,
+//   },
+//   uploadMenuClose: {
+//     display: 'flex',
+//     flexDirection: 'row',
+//     justifyContent: 'flex-end',
+//     width: 60,
+//     padding: 6,
+//     // backgroundColor: colors.theme[THEME].brandMedium,
+//     borderTopLeftRadius: utils.inputRadius,
+//     borderTopRightRadius: utils.inputRadius,
+//   },
+//   imageListWrapper: {
+//     marginTop: 20,
+//   },
+//   imageListContainer: {
+//     marginVertical: 10,
+//     display: 'flex',
+//     flexWrap: 'wrap',
+//     flexDirection: 'row',
+//   },
+//   imageListItemWrapper: {
+//     display: 'flex',
+//     flex: 1,
+//     position: 'relative',
+//   },
+//   imageListItem: {
+//     borderRadius: utils.inputRadius,
+//     // borderWidth: 1,
+//     borderColor: colors.theme[THEME].textBrandMedium,
+//     // marginBottom: 10,
+//     // marginRight: 10,
+//     width: '100%',
+//     height: 120,
+//   },
+//   imageListItemRemove: {
+//     backgroundColor: colors.theme[THEME].brandMedium,
+//     margin: 4,
+//     borderRadius: utils.inputRadius,
+//     position: 'absolute',
+//     top: 0,
+//     right: 0,
+//     zIndex: 1,
+//   },
+// });
 
 export const recentList = StyleSheet.create({
   empty: {
-    paddingHorizontal: commonStyles.container.paddingHorizontal,
+    paddingHorizontal: containerGutter,
     paddingBottom: 20,
   },
   dividerMargin: {
@@ -895,7 +886,7 @@ export const categoryList = StyleSheet.create({
     display: 'flex',
     overflow: 'scroll',
     marginLeft: -commonStyles.container.paddingLeft,
-    marginRight: -commonStyles.container.paddingHorizontal,
+    marginRight: -containerGutter,
   },
   categoryAddBtnWrapper: {
     display: 'flex',
@@ -945,3 +936,4 @@ export const categoryList = StyleSheet.create({
     marginLeft: 10,
   },
 });
+

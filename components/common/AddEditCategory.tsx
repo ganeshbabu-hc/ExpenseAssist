@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  Pressable,
-  ScrollView,
-} from 'react-native';
+import { View, Text, TextInput, Pressable, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 import {
@@ -18,15 +11,14 @@ import {
   getTransactionCategories,
   updateTransactionCategory,
 } from '../transaction/TransactionController';
-import { colors, commonStyles, formStyles } from '../styles/theme';
 // import {ShowSnackBar} from './Util';
 import { saveTransactionCategory } from '../database/common/CommonController';
-import { THEME } from '../utils/Constants';
 import t from './translations/Translation';
 import {
   ITransactionCategory,
   TransactionType,
 } from '../transaction/TransactionTypes';
+import { GetTheme } from '../styles/GetThemeHook';
 
 interface IAddEditCategory {
   navigation: any;
@@ -45,9 +37,10 @@ const defaultErrMsg: IErrorMessages = {
 };
 
 const AddEditCategory = ({ navigation, route, type }: IAddEditCategory) => {
+  const { commonStyles, formStyles, colors } = GetTheme();
+
   const transactionCategory: ITransactionCategory =
     route?.params?.transactionCategory ?? null;
-  // const {expense}: {expense: IExpense} = route.params;
   const categoryType: TransactionType =
     route?.params?.transactionType || route?.params?.type;
 
@@ -56,9 +49,6 @@ const AddEditCategory = ({ navigation, route, type }: IAddEditCategory) => {
   const [title, setTitle] = useState(() => {
     return transactionCategory?.title ?? '';
   });
-  // const [categoryId, setCategoryId] = useState(() => {
-  //   return expense?.paymentId ?? 1;
-  // });
   const [description, setDescription] = useState(() => {
     return transactionCategory?.description ?? '';
   });
@@ -144,7 +134,7 @@ const AddEditCategory = ({ navigation, route, type }: IAddEditCategory) => {
         keyboardShouldPersistTaps="always"
         showsVerticalScrollIndicator={false}
         contentInsetAdjustmentBehavior="automatic">
-        <View style={[commonStyles.container, styles.categoryWrapper]}>
+        <View style={[commonStyles.container]}>
           <AppHeader
             title={`${editMode ? 'Edit' : 'Add'} Category`}
             navigation={navigation}
@@ -155,7 +145,7 @@ const AddEditCategory = ({ navigation, route, type }: IAddEditCategory) => {
             <View style={formStyles.inputWrapper}>
               <Text style={formStyles.inputLabel}>Category name</Text>
               <TextInput
-                placeholderTextColor={colors.theme[THEME].textCardGray}
+                placeholderTextColor={colors.textCardGray}
                 placeholder="Eg, Spetember salary"
                 style={formStyles.input}
                 onChangeText={setTitle}
@@ -173,7 +163,7 @@ const AddEditCategory = ({ navigation, route, type }: IAddEditCategory) => {
                 multiline
                 numberOfLines={4}
                 placeholder="Description"
-                placeholderTextColor={colors.theme[THEME].textCardGray}
+                placeholderTextColor={colors.textCardGray}
                 style={formStyles.input}
                 onChangeText={setDescription}
                 value={description}
@@ -198,13 +188,5 @@ const AddEditCategory = ({ navigation, route, type }: IAddEditCategory) => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  categoryWrapper: {
-    backgroundColor: colors.theme[THEME].brandBg,
-    display: 'flex',
-    overflow: 'scroll',
-  },
-});
 
 export default AddEditCategory;

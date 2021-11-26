@@ -2,8 +2,6 @@ import React from 'react';
 import { Pressable, Text, View } from 'react-native';
 import IconMap from '../common/IconMap';
 import t from '../common/translations/Translation';
-import { colors, commonStyles, uploadMenu } from '../styles/theme';
-import { THEME } from '../utils/Constants';
 import {
   Asset,
   CameraOptions,
@@ -12,11 +10,15 @@ import {
   launchCamera,
   launchImageLibrary,
 } from 'react-native-image-picker';
+import { GetStyle, GetTheme } from '../styles/GetThemeHook';
+import { uploadMenuStyle } from '../styles/commonStyles';
 interface IUploadMenu {
   menuHandler: Function;
   imageListCallback: Function;
 }
 const UploadMenu = ({ menuHandler, imageListCallback }: IUploadMenu) => {
+  const { colors, commonStyles } = GetTheme();
+  const styles = GetStyle(uploadMenuStyle);
   const getAssets = (assets?: Asset[]): Asset[] => {
     if (!assets) {
       return [];
@@ -63,30 +65,22 @@ const UploadMenu = ({ menuHandler, imageListCallback }: IUploadMenu) => {
   };
   // 'data:image/png;base64,'
   return (
-    <View style={[commonStyles.container, uploadMenu.uploadContainer]}>
+    <View style={[commonStyles.container, styles.uploadContainer]}>
       <Pressable
-        style={uploadMenu.uploadMenu}
+        style={styles.styles}
         onPress={() => {
           cameraUpload();
         }}>
-        <IconMap
-          size={30}
-          name="camera"
-          color={colors.theme[THEME].textBrandMedium}
-        />
-        <Text style={uploadMenu.uploadText}>{t('camera')}</Text>
+        <IconMap size={30} name="camera" color={colors.textBrandMedium} />
+        <Text style={styles.uploadText}>{t('camera')}</Text>
       </Pressable>
       <Pressable
-        style={uploadMenu.uploadMenu}
+        style={styles.styles}
         onPress={() => {
           galleryUpload();
         }}>
-        <IconMap
-          size={28}
-          name="scenary"
-          color={colors.theme[THEME].textBrandMedium}
-        />
-        <Text style={uploadMenu.uploadText}>{t('gallery')}</Text>
+        <IconMap size={28} name="scenary" color={colors.textBrandMedium} />
+        <Text style={styles.uploadText}>{t('gallery')}</Text>
       </Pressable>
     </View>
   );

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import Svg, { Rect, Path, Circle } from 'react-native-svg';
-import { colors } from '../styles/theme';
-import { THEME } from '../utils/Constants';
+import { GetTheme } from '../styles/GetThemeHook';
 
 const AddFile = props => {
+  const { colors } = GetTheme();
   return (
     <Svg
       xmlns="http://www.w3.org/2000/svg"
@@ -40,12 +40,7 @@ const AddFile = props => {
         d="M654.66 123.846H278.34a34.31 34.31 0 00-34.27 34.27v441.877a34.31 34.31 0 0034.27 34.27h376.32a34.31 34.31 0 0034.27-34.27V158.117a34.31 34.31 0 00-34.27-34.271z"
         fill="#fff"
       />
-      <Circle
-        cx={694.194}
-        cy={614.03}
-        r={87.85}
-        fill={colors.theme[THEME].brandMedium}
-      />
+      <Circle cx={694.194} cy={614.03} r={87.85} fill={colors.brandMedium} />
       <Path
         d="M736.21 602.57h-30.557v-30.556a11.459 11.459 0 00-22.918 0v30.557H652.18a11.459 11.459 0 000 22.917h30.556v30.557a11.459 11.459 0 1022.918 0v-30.557h30.556a11.459 11.459 0 000-22.917z"
         fill="#fff"
@@ -60,7 +55,7 @@ const AddFile = props => {
       />
       <Path
         d="M426.881 291.547H297.535a3.847 3.847 0 01-3.842-3.843V186.757a3.847 3.847 0 013.842-3.843h129.346a3.847 3.847 0 013.843 3.843v100.947a3.847 3.847 0 01-3.843 3.843z"
-        fill={colors.theme[THEME].brandMedium}
+        fill={colors.brandMedium}
       />
     </Svg>
   );

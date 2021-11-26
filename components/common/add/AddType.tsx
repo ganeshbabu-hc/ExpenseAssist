@@ -1,13 +1,14 @@
 import React from 'react';
-import {Animated, SafeAreaView, StyleSheet, View} from 'react-native';
-import {commonStyles} from '../../styles/theme';
+import { Animated, SafeAreaView, View } from 'react-native';
 import AppHeader from '../AppHeader';
 import TypeList from './TypeList';
 import TransactionList from '../../transaction/TransactionList';
-import {useRef} from 'react';
+import { useRef } from 'react';
+import { GetTheme } from '../../styles/GetThemeHook';
 
-const AddType = ({navigation}) => {
+const AddType = ({ navigation }) => {
   const scrollY = useRef(new Animated.Value(0)).current;
+  const { commonStyles } = GetTheme();
   return (
     <SafeAreaView style={commonStyles.screen}>
       <View style={commonStyles.container}>
@@ -25,10 +26,5 @@ const AddType = ({navigation}) => {
   );
 };
 
-const styles = StyleSheet.create({
-  // typeWrapper: {
-  //   backgroundColor: colors.theme[THEME].textLight,
-  // },
-});
 
 export default AddType;
