@@ -65,19 +65,6 @@ const TransactionItem = ({
         ],
       });
       onUpdate();
-      // const savedExpenses = await getTransactions(10, type);
-      // dispatch({type: UPDATE_TRANSACTION_LIST, payload: savedExpenses});
-      // Animated.timing(removeAnimation, {
-      //   useNativeDriver: true,
-      //   toValue: 1,
-      //   duration: 350,
-      //   easing: Easing.out(Easing.ease),
-      // }).start();
-      // setTimeout(() => {
-
-      // }, 400);
-      // const summary = await getSummary();
-      // dispatch({ type: UPDATE_SUMMARY, payload: summary });
     }
   };
 
@@ -173,17 +160,20 @@ const TransactionItem = ({
             </View>
           )}
           <Pressable
-            onLongPress={() => {
-              dispatch({
-                type: SHOW_MODAL,
-                payload: {
-                  modalContent: () => (
-                    <ModalContent header={'Expense : ' + item.title}>
-                      <Text>Hai</Text>
-                    </ModalContent>
-                  ),
-                },
+            onPress={() => {
+              navigation.navigate('TransactionView', {
+                transaction: item,
               });
+              // dispatch({
+              //   type: SHOW_MODAL,
+              //   payload: {
+              //     modalContent: () => (
+              //       <ModalContent header={'Expense : ' + item.title}>
+              //         <Text>Hai</Text>
+              //       </ModalContent>
+              //     ),
+              //   },
+              // });
             }}
             style={styles.listItem}>
             <View style={styles.listItemInfo}>

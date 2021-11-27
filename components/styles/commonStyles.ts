@@ -888,3 +888,12 @@ export const categoryStatStyle = (themeCode: string) =>
       marginRight: 4,
     },
   });
+
+export const transactionViewStyle = (themeCode: string) =>
+  StyleSheet.create({
+    typeLabel: {
+      color: colors.theme[themeCode].textDark,
+      fontFamily: utils.fontFamily.Bold,
+      fontSize: utils.fontSize.xxxlarge,
+    },
+  });

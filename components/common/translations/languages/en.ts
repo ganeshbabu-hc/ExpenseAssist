@@ -38,6 +38,8 @@ export default {
   totalExpense: 'Total\nexpense',
   totalIncome: 'Total\nincome',
   transactions: 'Transactions',
+  transaction: 'Transaction',
+
 
   //Transaction add/edit
   expense: 'expense',
@@ -123,5 +125,5 @@ export default {
 
   //reminders
   repeat: 'Repeat',
-  reminderName:'Reminder name',
+  reminderName: 'Reminder name',
 };

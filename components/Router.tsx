@@ -23,6 +23,7 @@ import RemindersScreen from './settings/RemindersScreen';
 import CategoriesScreen from './settings/CategoriesScreen';
 import HelpScreen from './settings/HelpScreen';
 import { GetTheme } from './styles/GetThemeHook';
+import TransactionView from './transaction/TransactionView';
 const Stack = createNativeStackNavigator();
 // const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -214,6 +215,11 @@ const Router = () => {
           <Stack.Screen
             name="TransactionSearch"
             component={TransactionSearch}
+            initialParams={{}}
+          />
+          <Stack.Screen
+            name="TransactionView"
+            component={TransactionView}
             initialParams={{}}
           />
           <Stack.Screen

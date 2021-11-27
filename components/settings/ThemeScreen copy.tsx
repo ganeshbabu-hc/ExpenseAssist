@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
 import AppHeader from '../common/AppHeader';
-import { commonStyles } from '../styles/theme';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import t from '../common/translations/Translation';
