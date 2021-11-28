@@ -163,7 +163,7 @@ const SummaryList = ({ navigation }: any) => {
             commonStyles.title,
             commonStyles.card.firstCard,
           ]}>
-          Overview
+          {t('overview')}
         </Text>
         <FlatList
           showsHorizontalScrollIndicator={false}

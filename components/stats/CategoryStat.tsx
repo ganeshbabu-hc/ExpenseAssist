@@ -5,6 +5,7 @@ import { THEME } from '../utils/Constants';
 import IconMap from '../common/IconMap';
 import { GetStyle, GetTheme } from '../styles/GetThemeHook';
 import { categoryStatStyle } from '../styles/commonStyles';
+import t from '../common/translations/Translation';
 interface ICategoryStat {
   statlist: IStat[];
 }
@@ -41,7 +42,7 @@ const CategoryStat = ({ statlist }: ICategoryStat) => {
                   size={24}
                 />
                 <Text style={styles.barLabel}>
-                  {stat.transactionCategoryTitle}
+                  {t(stat.transactionCategoryTitle)}
                 </Text>
               </View>
               <Text style={styles.barLabel}>

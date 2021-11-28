@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { Image, Dimensions, View } from 'react-native';
 import ImageZoom from 'react-native-image-pan-zoom';
-import { commonStyles } from '../styles/theme';
 import { ITransactionImage } from '../transaction/TransactionTypes';
 import AppHeader from './AppHeader';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { GetTheme } from '../styles/GetThemeHook';
 interface IImageView {
   route: any;
   imageListCallback: Function;
@@ -17,7 +17,9 @@ interface IImageView {
 // }
 const ImageView = ({ navigation, route }: IImageView) => {
   // console.log(route?.params);
+  const { commonStyles } = GetTheme();
   const imageList: ITransactionImage[] = route?.params?.imageList ?? [];
+
   // const [image, setImage] = useState<ITransactionImage>({});
   console.log('imageList[0]---', imageList[0].base64);
 

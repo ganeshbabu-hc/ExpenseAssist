@@ -74,7 +74,7 @@ const RemindersScreen = ({ navigation }: any) => {
                         ? styles.repeatLabelActive
                         : null,
                     ]}>
-                    {reminder.name}
+                    {t(reminder.name)}
                   </Text>
                 </Pressable>
               );
@@ -97,9 +97,6 @@ const RemindersScreen = ({ navigation }: any) => {
         </View>
         <View style={formStyles.actionContainer}>
           <Pressable
-            // activeOpacity={0.8}
-            // extraButtonProps={{ rippleColor: 'red' }}
-            // activeOpacity={0.6}
             style={[
               formStyles.button,
               formStyles.saveButton,

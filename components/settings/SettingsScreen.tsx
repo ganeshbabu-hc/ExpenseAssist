@@ -86,7 +86,11 @@ export const SettingsScreen = ({ navigation }: any) => {
           <View style={[recentList.dividerWrapper, styles.divider]}>
             <Text style={recentList.divider} />
           </View>
-          <Pressable style={styles.settingWrapper}>
+          <Pressable
+            style={styles.settingWrapper}
+            onPress={() => {
+              navigation.navigate('LanguageScreen');
+            }}>
             <View style={styles.settingIconWrapper}>
               <IconMap
                 name={'language'}

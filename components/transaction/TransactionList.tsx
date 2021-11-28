@@ -49,12 +49,20 @@ const transactionTypes: ITransactionTypes[] = [
   },
 ];
 
+const usePrevious = (value: TransactionType) => {
+  const ref = useRef();
+  // Store current value in ref
+  useEffect(() => {
+    ref.current = value;
+  }, [value]); // Only re-run if value changes
+  // Return previous value (happens before update in useEffect above)
+  return ref.current;
+};
+
 // const usePrevious = (value: TransactionType) => {
 //   const ref = useRef();
 //   // Store current value in ref
-//   useEffect(() => {
-//     ref.current = value;
-//   }, [value]); // Only re-run if value changes
+//   ref.current = value;
 //   // Return previous value (happens before update in useEffect above)
 //   return ref.current;
 // };
@@ -166,6 +174,9 @@ const TransactionList = ({
   }, [transactionType]);
 
   useEffect(() => {
+    // if (prevTransaction) {
+    //   setTransactionType(prevTransaction);
+    // }
     const unsubscribe = navigation.addListener('focus', () => {
       updateTransactions(false, transactionType);
     });

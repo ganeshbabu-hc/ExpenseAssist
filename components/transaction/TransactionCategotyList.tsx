@@ -4,6 +4,7 @@ import IconMap from '../common/IconMap';
 import { ITransactionCategory, TransactionType } from './TransactionTypes';
 import { getTransactionCategories } from './TransactionController';
 import { GetTheme } from '../styles/GetThemeHook';
+import t from '../common/translations/Translation';
 
 const defaultCategory: ITransactionCategory = {
   transactionCategoryId: 0,
@@ -117,7 +118,9 @@ const TransactionCategotyList = ({
                 name={item.categoryIcon ?? 'cash-minus'}
                 color={colors.textLight}
               />
-              <Text style={categoryList.categoryTitle}>{item.title}</Text>
+              <Text style={categoryList.categoryTitle}>
+                {item.editable ? item.title : t(item.title)}
+              </Text>
             </Pressable>
           );
         }}

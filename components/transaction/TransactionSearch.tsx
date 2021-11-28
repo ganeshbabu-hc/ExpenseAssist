@@ -133,7 +133,7 @@ const TransactionSearch = ({
           navigation={navigation}
           homeScreen={false}
           scrollY={scrollY}
-          title={'Search'}
+          title={t('search')}
         />
       </View>
       <ScrollViewWrapper scrollY={scrollY}>

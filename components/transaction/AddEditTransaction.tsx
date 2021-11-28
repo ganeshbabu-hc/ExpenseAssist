@@ -210,7 +210,7 @@ const AddEditTransaction = ({ navigation, route }: IAddEditTransaction) => {
     Animated.timing(menuAnimamated, {
       useNativeDriver: true,
       toValue: showUpload ? 1 : 0,
-      duration: 300,
+      duration: 200,
     }).start();
     setShowImageUpload(showUpload);
   };
@@ -271,10 +271,10 @@ const AddEditTransaction = ({ navigation, route }: IAddEditTransaction) => {
           <WeeklyView defaultValue={dateAddedTlm} onChange={setDateAddedTlm} />
           <View>
             <View style={formStyles.inputWrapper}>
-              <Text style={formStyles.inputLabel}>Expense title</Text>
+              <Text style={formStyles.inputLabel}>{t('expenseTitle')}</Text>
               <TextInput
                 placeholderTextColor={colors.textCardGray}
-                placeholder="Eg, Spetember salary"
+                placeholder={t('egSalary')}
                 style={formStyles.input}
                 onChangeText={setTitle}
                 value={title}
@@ -363,7 +363,7 @@ const AddEditTransaction = ({ navigation, route }: IAddEditTransaction) => {
                         <IconMap
                           size={32}
                           name={'close'}
-                          color={colors.textBrandLightMedium}
+                          color={colors.textLight}
                         />
                       </Pressable>
                     </View>

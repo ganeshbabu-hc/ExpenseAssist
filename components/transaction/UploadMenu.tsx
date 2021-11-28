@@ -67,7 +67,7 @@ const UploadMenu = ({ menuHandler, imageListCallback }: IUploadMenu) => {
   return (
     <View style={[commonStyles.container, styles.uploadContainer]}>
       <Pressable
-        style={styles.styles}
+        style={styles.uploadMenu}
         onPress={() => {
           cameraUpload();
         }}>
@@ -75,7 +75,7 @@ const UploadMenu = ({ menuHandler, imageListCallback }: IUploadMenu) => {
         <Text style={styles.uploadText}>{t('camera')}</Text>
       </Pressable>
       <Pressable
-        style={styles.styles}
+        style={styles.uploadMenu}
         onPress={() => {
           galleryUpload();
         }}>

@@ -414,11 +414,13 @@ export const paymentStyles = (themeCode: string) =>
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: 'rgba(255,255,255,0.8)',
+      backgroundColor: themeCode.includes('light')
+        ? 'rgba(255,255,255,0.8)'
+        : 'rgba(0,0,0,0.8)',
     },
     modalView: {
       minWidth: '75%',
-      backgroundColor: 'white',
+      backgroundColor: colors.theme[themeCode].brandLight,
       borderRadius: utils.inputRadius,
       paddingHorizontal: 20,
       alignItems: 'flex-start',
@@ -450,11 +452,11 @@ export const paymentStyles = (themeCode: string) =>
       fontSize: utils.fontSize.large,
       marginLeft: 10,
     },
-    paymentHeader: {
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
+    closeBtn: {
+      position: 'absolute',
+      right: 0,
+      top: 0,
+      padding: 10,
     },
   });
 
@@ -891,9 +893,42 @@ export const categoryStatStyle = (themeCode: string) =>
 
 export const transactionViewStyle = (themeCode: string) =>
   StyleSheet.create({
+    labelWrapper: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      // alignContent: 'center',
+      alignItems: 'center',
+      marginVertical: 10,
+    },
+    labelRight: {
+      marginLeft: 10,
+    },
     typeLabel: {
+      color: colors.theme[themeCode].textLightGray,
+      fontFamily: utils.fontFamily.Bold,
+      fontSize: utils.fontSize.heroSubTitle,
+    },
+    txnTitle: {
       color: colors.theme[themeCode].textDark,
       fontFamily: utils.fontFamily.Bold,
-      fontSize: utils.fontSize.xxxlarge,
+      fontSize: utils.fontSize.large,
+    },
+    txnSymbol: {
+      color: colors.theme[themeCode].textDark,
+      fontFamily: utils.fontFamily.Bold,
+      fontSize: utils.fontSize.heroSubTitle,
+    },
+    txnAmount: {
+      color: colors.theme[themeCode].textDark,
+      fontFamily: utils.fontFamily.Bold,
+      fontSize: utils.fontSize.heroTitle,
+      marginBottom: 10,
+    },
+    txnDesc: {
+      color: colors.theme[themeCode].textGray,
+      fontFamily: utils.fontFamily.Bold,
+      fontSize: utils.fontSize.small,
+      // marginBottom: 10,
     },
   });

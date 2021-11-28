@@ -6,7 +6,7 @@ import {
 } from '../database/common/PaymentController';
 import IconMap from './IconMap';
 import t from './translations/Translation';
-import { GetTheme } from '../styles/GetThemeHook';
+import { GetStyle, GetTheme } from '../styles/GetThemeHook';
 import { paymentStyles } from '../styles/commonStyles';
 
 interface IpaymentDropdown {
@@ -15,7 +15,8 @@ interface IpaymentDropdown {
 }
 
 const PaymentsDropdown = ({ onChange, defaultValue }: IpaymentDropdown) => {
-  const { colors, styles, formStyles } = GetTheme(paymentStyles);
+  const styles = GetStyle(paymentStyles);
+  const { colors, formStyles } = GetTheme();
   const [paymentId, setPaymentId] = useState(defaultValue);
   const [paymentList, setPaymentList] = useState<IPayment[]>([]);
   const [showModal, setShowModal] = useState(false);
@@ -45,13 +46,13 @@ const PaymentsDropdown = ({ onChange, defaultValue }: IpaymentDropdown) => {
   }, []);
   return (
     <View style={[formStyles.inputWrapper, formStyles.halfWidth]}>
-      <Text style={formStyles.inputLabel}>Paid by</Text>
+      <Text style={formStyles.inputLabel}>{t('paidBy')}</Text>
       <Pressable
         style={formStyles.selectBtn}
         onPress={() => {
           setShowModal(true);
         }}>
-        <Text style={formStyles.selectBtnLabel}>{getLabel()}</Text>
+        <Text style={formStyles.selectBtnLabel}>{t(getLabel())}</Text>
       </Pressable>
       <Modal
         hardwareAccelerated
@@ -61,10 +62,13 @@ const PaymentsDropdown = ({ onChange, defaultValue }: IpaymentDropdown) => {
         onRequestClose={() => {}}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <View style={styles.paymentHeader}>
-              <Text style={formStyles.inputLabel}>Paid by</Text>
+            <Pressable
+              style={styles.closeBtn}
+              onPress={() => {
+                setShowModal(false);
+              }}>
               <IconMap name={'close'} color={colors.textCardGray} />
-            </View>
+            </Pressable>
             {paymentList.map((payment: IPayment) => {
               return (
                 <Pressable

@@ -101,6 +101,7 @@ export const recentListStyles = (themeCode: string) =>
       color: colors.theme[themeCode].textDark,
       fontSize: utils.fontSize.medium,
       fontFamily: utils.fontFamily.Bold,
+      flex: 1,
       // maxWidth: '90%',
     },
     listItemInfoWrapper: {
@@ -108,12 +109,13 @@ export const recentListStyles = (themeCode: string) =>
       justifyContent: 'space-between',
       alignItems: 'center',
       flexDirection: 'row',
-      flex: 1,
+      // flex: 1,
     },
     listItemInfoIcon: {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
+      // minWidth: 40,
     },
     listItemAmountWrapper: {
       // marginRight: 10,

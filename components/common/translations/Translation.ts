@@ -1,9 +1,11 @@
 import I18n from 'react-native-i18n';
 import en from './languages/en';
+import kn from './languages/kn';
 // import en-IN from './languages/en-IN';
 
 I18n.fallbacks = true;
-I18n.defaultLocale = 'en';
+I18n.defaultLocale = 'em';
+// I18n.locale = 'kn';
 // const locale = I18n.currentLocale();
 //TODO enable for prod
 // I18n.missingBehaviour = 'guess';
@@ -11,6 +13,7 @@ I18n.defaultLocale = 'en';
 I18n.translations = {
   en,
   'en-IN': en,
+  kn,
 };
 
 /**

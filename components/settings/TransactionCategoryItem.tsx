@@ -97,7 +97,9 @@ const TransactionCategoryItem = ({
         right={[
           {
             onPress: () => {
-              removeTransactionCategories(category);
+              if (category.editable) {
+                removeTransactionCategories(category);
+              }
             },
             component: (
               <View
@@ -105,7 +107,14 @@ const TransactionCategoryItem = ({
                   recentList.swipeIcon,
                   index !== 0 ? recentList.dividerMargin : {},
                 ]}>
-                <IconMap color={colors.textBrandMedium} name="trash" />
+                <IconMap
+                  color={
+                    category.editable
+                      ? colors.textBrandMedium
+                      : colors.textLightGray
+                  }
+                  name="trash"
+                />
               </View>
             ),
           },
@@ -149,25 +158,27 @@ const TransactionCategoryItem = ({
                   color={colors.textLight}
                 />
               </View>
-              <View style={recentList.listItemInfoWrapper}>
+              <View style={[recentList.listItemInfoWrapper]}>
                 <View>
-                  <Text style={recentList.listItemTitle}>{category.title}</Text>
+                  <Text style={recentList.listItemTitle} numberOfLines={1}>
+                    {t(category.title)}
+                  </Text>
                   {category.description !== null && (
-                    <Text style={recentList.listItemDate}>
+                    <Text style={recentList.listItemDate} numberOfLines={2}>
                       {category.description}
                     </Text>
                   )}
                 </View>
-                <View style={recentList.listItemInfoIcon}>
-                  {category.editable === 1 && (
-                    <Pressable
-                      onPress={() => {
-                        editTransactionCategory(category);
-                      }}>
-                      <IconMap name={'edit'} color={colors.textBrandMedium} />
-                    </Pressable>
-                  )}
-                </View>
+              </View>
+              <View style={recentList.listItemInfoIcon}>
+                {category.editable === 1 && (
+                  <Pressable
+                    onPress={() => {
+                      editTransactionCategory(category);
+                    }}>
+                    <IconMap name={'edit'} color={colors.textBrandMedium} />
+                  </Pressable>
+                )}
               </View>
             </View>
           </Pressable>

@@ -2,7 +2,6 @@ import * as React from 'react';
 import {
   Animated,
   SafeAreaView,
-  StyleSheet,
   Text,
   useColorScheme,
   View,
@@ -16,7 +15,6 @@ import SummaryList from './SummaryList';
 import QuickMenu from './QuickMenu';
 import TransactionList from '../transaction/TransactionList';
 import ScrollViewWrapper from '../common/ScrollViewWrapper';
-import { THEME } from '../utils/Constants';
 import { useRef } from 'react';
 import { TransactionType } from '../transaction/TransactionTypes';
 import { GetStyle, GetTheme } from '../styles/GetThemeHook';

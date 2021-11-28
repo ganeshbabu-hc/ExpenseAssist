@@ -136,17 +136,21 @@ const AddEditCategory = ({ navigation, route, type }: IAddEditCategory) => {
         contentInsetAdjustmentBehavior="automatic">
         <View style={[commonStyles.container]}>
           <AppHeader
-            title={`${editMode ? 'Edit' : 'Add'} Category`}
+            title={`${editMode ? t('editCategory') : t('addCategory')}`}
             navigation={navigation}
             homeScreen={false}
             backTo=""
           />
           <View>
             <View style={formStyles.inputWrapper}>
-              <Text style={formStyles.inputLabel}>Category name</Text>
+              <Text style={formStyles.inputLabel}>{t('categoryName')}</Text>
               <TextInput
                 placeholderTextColor={colors.textCardGray}
-                placeholder="Eg, Spetember salary"
+                placeholder={
+                  categoryType === TransactionType.INCOME
+                    ? t('egSalary')
+                    : t('egGrocery')
+                }
                 style={formStyles.input}
                 onChangeText={setTitle}
                 value={title}
@@ -158,11 +162,10 @@ const AddEditCategory = ({ navigation, route, type }: IAddEditCategory) => {
           </View>
           <View>
             <View style={formStyles.inputWrapper}>
-              <Text style={formStyles.inputLabel}>Description</Text>
+              <Text style={formStyles.inputLabel}>{t('description')}</Text>
               <TextInput
                 multiline
                 numberOfLines={4}
-                placeholder="Description"
                 placeholderTextColor={colors.textCardGray}
                 style={formStyles.input}
                 onChangeText={setDescription}

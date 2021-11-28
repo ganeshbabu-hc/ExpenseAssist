@@ -93,7 +93,7 @@ const QuickMenu = ({ navigation }) => {
     <View style={styles.quickMenuContainer}>
       <View style={styles.typeListContainer}>
         <Text style={[commonStyles.title, commonStyles.card.firstCard]}>
-          Quick Menu
+          {t('quickMenu')}
         </Text>
         <FlatList
           style={styles.list}

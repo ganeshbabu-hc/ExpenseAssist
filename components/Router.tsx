@@ -2,7 +2,10 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { CardStyleInterpolators } from '@react-navigation/stack';
+import {
+  CardStyleInterpolators,
+  createStackNavigator,
+} from '@react-navigation/stack';
 import { HomeScreen } from './home/HomeScreen';
 import { StyleSheet, View } from 'react-native';
 import Add from './home/Add';
@@ -24,8 +27,9 @@ import CategoriesScreen from './settings/CategoriesScreen';
 import HelpScreen from './settings/HelpScreen';
 import { GetTheme } from './styles/GetThemeHook';
 import TransactionView from './transaction/TransactionView';
-const Stack = createNativeStackNavigator();
-// const Stack = createStackNavigator();
+import LanguageScreen from './settings/LanguageScreen';
+// const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 enum Routes {
@@ -247,6 +251,11 @@ const Router = () => {
           <Stack.Screen
             name="HelpScreen"
             component={HelpScreen}
+            initialParams={{}}
+          />
+          <Stack.Screen
+            name="LanguageScreen"
+            component={LanguageScreen}
             initialParams={{}}
           />
         </Stack.Group>

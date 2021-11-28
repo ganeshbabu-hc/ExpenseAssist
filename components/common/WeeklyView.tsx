@@ -48,15 +48,13 @@ const WeeklyView = ({ onChange, defaultValue }: IWeeklyView) => {
   };
 
   const daysInWeek = (selectedDate: Date): Date[] => {
-    const todayDate = new Date(selectedDate);
-    const todayNumber = selectedDate.getDay();
+    const todayNumber = selectedDate.getTime();
     const daysList: Date[] = [];
-    for (let i = 0; i <= 6; i++) {
-      daysList.push(
-        new Date(todayDate.setDate(selectedDate.getDate() - todayNumber + i)),
-      );
+    for (let i = -3; i <= 3; i++) {
+      daysList.push(new Date(todayNumber + i * 24 * 60 * 60 * 1000));
     }
     console.log(daysList);
+
     return daysList;
   };
 
